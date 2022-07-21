@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+
 import styled from "styled-components";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -157,6 +159,69 @@ const Navbar = () => {
               Among
             </Link>
           </Typography>
+
+          {/* 펼친 Navbar 버튼들 */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              mx: 3,
+            }}
+          >
+            {pages.map((page) => {
+              if (page.link !== currentPage)
+                return (
+                  <Button
+                    key={page.name}
+                    onClick={() => {
+                      navigate(`/${page.link}`);
+                      setCurrentPage(page.link);
+                    }}
+                    sx={{
+                      textAlign: "center",
+                      mx: 1,
+                      my: 2,
+                      color: "black",
+                      fontSize: "20px",
+                      fontFamily: "AppleSDGothicNeo",
+                      fontWeight: 400,
+                      display: "block",
+                      ":hover": {
+                        color: "rgb(76, 46, 208)",
+                        bgcolor: "#f4f5fa",
+                      },
+                    }}
+                  >
+                    {page.name}
+                  </Button>
+                );
+              return (
+                <Button
+                  key={page.name}
+                  onClick={() => {
+                    navigate(`/${page.link}`);
+                    setCurrentPage(page.link);
+                  }}
+                  sx={{
+                    textAlign: "center",
+                    mx: 1,
+                    my: 2,
+                    color: "rgb(76, 46, 208)",
+                    fontSize: "20px",
+                    fontFamily: "AppleSDGothicNeo",
+                    fontWeight: 700,
+                    display: "block",
+                    ":hover": {
+                      color: "rgb(76, 46, 208)",
+                      bgcolor: "#f4f5fa",
+                    },
+                  }}
+                >
+                  {page.name}
+                </Button>
+              );
+            })}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
