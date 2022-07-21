@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import styled from "styled-components";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -23,6 +24,12 @@ const pages = [
   { name: "티켓리셀", link: "TicketReSell" },
   { name: "가이드", link: "Guide" },
 ];
+
+const Logo = styled.img`
+  width: 107px;
+  margin-top: 5px;
+  background-color: #f5f5f5;
+`;
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -136,6 +143,20 @@ const Navbar = () => {
               })}
             </Menu>
           </Box>
+          {/* 안펼친 로고 */}
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            onClick={() => {
+              setCurrentPage("Home");
+            }}
+          >
+            <Link className="Logo2" to="/">
+              Among
+            </Link>
+          </Typography>
         </Toolbar>
       </Container>
     </AppBar>
