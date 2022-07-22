@@ -38,7 +38,7 @@ const SettingModalLayout = styled.div`
   height: 450px;
   background-color: white;
   position: absolute;
-  top: 30%;
+  top: 25%;
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
