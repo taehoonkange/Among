@@ -34,6 +34,29 @@ const ConnectedContainer = styled.div`
     object-fit: cover;
     background: grey;
   }
+
+  & .dappAddressWrapper {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid grey;
+    border-radius: 20px;
+    padding: 0.5rem;
+    margin-top: 10px;
+    display: flex;
+  }
+
+  & .etherSize {
+    width: 20px;
+    height: 20px;
+  }
+
+  & .dappAddressLength {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -79,31 +102,9 @@ const MyPage = () => {
           <h1>김동영</h1>
         </UserInfo>
         {/* 지갑 주소 */}
-        <div
-          style={{
-            width: "200px",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            border: "1px solid grey",
-            borderRadius: "20px",
-            padding: "0.5rem",
-            marginTop: "10px",
-            display: "flex",
-          }}
-        >
-          <img
-            src={ether}
-            alt="eth"
-            style={{ width: "20px", height: "20px" }}
-          />
-          <div
-            style={{
-              width: "180px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
+        <div className="dappAddressWrapper">
+          <img className="etherSize" src={ether} alt="eth" />
+          <div className="dappAddressLength">
             {window.ethereum.selectedAddress}
           </div>
         </div>
