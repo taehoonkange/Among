@@ -4,6 +4,105 @@ import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
 import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
+
+const MyPage = () => {
+  const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
+
+  return (
+    <>
+      <ConnectedContainer>
+        {/* 배경 */}
+        <img
+          className="backgroundImg"
+          src={`https://image.kmib.co.kr/online_image/2022/0101/2021123118131057409_1640941990_0924225097.jpg`}
+          alt=""
+        />
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <div className="profileImgLocation" style={{}}>
+              <img
+                className="profileSize"
+                src={Kdy}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null; // prevents looping
+                  currentTarget.src = "images/MetaMask_Fox.svg.png";
+                }}
+                alt=""
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "0.5rem",
+          }}
+        >
+          {/* 닉네임 */}
+          <UserInfo>
+            <h1>김동영</h1>
+          </UserInfo>
+          {/* 지갑 주소 */}
+          <div className="dappAddressWrapper">
+            <img className="etherSize" src={ether} alt="eth" />
+            <div className="dappAddressLength">
+              {window.ethereum.selectedAddress}
+            </div>
+          </div>
+        </div>
+      </ConnectedContainer>
+      <>
+        <MyPageContainer>
+          <h2>나의 티켓</h2>
+          <div>
+            {dummy.map((el) => {
+              return (
+                <div>
+                  <img
+                    className="myPage_ticket_image"
+                    alt=""
+                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
+                  ></img>
+                  <div className="myPage_ticket_date">2022.07.16</div>
+                  <div className="myPage_ticket_desc">
+                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </MyPageContainer>
+        <MyPageContainer>
+          <h2>판매 티켓</h2>
+          <div>
+            {dummy.map((el) => {
+              return (
+                <div>
+                  <img
+                    className="myPage_ticket_image"
+                    alt=""
+                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
+                  ></img>
+                  <div className="myPage_ticket_date">2022.07.16</div>
+                  <div className="myPage_ticket_desc">
+                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </MyPageContainer>
+      </>
+      <SettingModal></SettingModal>
+    </>
+  );
+};
+
+export default MyPage;
+
 const ConnectedContainer = styled.div`
   display: flex;
   align-items: center;
@@ -107,100 +206,3 @@ const MyPageContainer = styled.div`
     margin-top: 15px;
   }
 `;
-const MyPage = () => {
-  const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
-
-  return (
-    <>
-      <ConnectedContainer>
-        {/* 배경 */}
-        <img
-          className="backgroundImg"
-          src={`https://image.kmib.co.kr/online_image/2022/0101/2021123118131057409_1640941990_0924225097.jpg`}
-          alt=""
-        />
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <div className="profileImgLocation" style={{}}>
-              <img
-                className="profileSize"
-                src={Kdy}
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null; // prevents looping
-                  currentTarget.src = "images/MetaMask_Fox.svg.png";
-                }}
-                alt=""
-              />
-            </div>
-          </Grid>
-        </Grid>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "0.5rem",
-          }}
-        >
-          {/* 닉네임 */}
-          <UserInfo>
-            <h1>김동영</h1>
-          </UserInfo>
-          {/* 지갑 주소 */}
-          <div className="dappAddressWrapper">
-            <img className="etherSize" src={ether} alt="eth" />
-            <div className="dappAddressLength">
-              {window.ethereum.selectedAddress}
-            </div>
-          </div>
-        </div>
-      </ConnectedContainer>
-      <>
-        <MyPageContainer>
-          <h2>나의 티켓</h2>
-          <div>
-            {dummy.map((el) => {
-              return (
-                <div>
-                  <img
-                    className="myPage_ticket_image"
-                    alt=""
-                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
-                  ></img>
-                  <div className="myPage_ticket_date">2022.07.16</div>
-                  <div className="myPage_ticket_desc">
-                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </MyPageContainer>
-        <MyPageContainer>
-          <h2>판매 티켓</h2>
-          <div>
-            {dummy.map((el) => {
-              return (
-                <div>
-                  <img
-                    className="myPage_ticket_image"
-                    alt=""
-                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
-                  ></img>
-                  <div className="myPage_ticket_date">2022.07.16</div>
-                  <div className="myPage_ticket_desc">
-                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </MyPageContainer>
-      </>
-      <SettingModal></SettingModal>
-    </>
-  );
-};
-
-export default MyPage;
