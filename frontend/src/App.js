@@ -9,7 +9,7 @@ import Show from "./pages/Show";
 import Community from "./pages/Community";
 import TicketBook from "./pages/TicketBook";
 import Guide from "./pages/Guide";
-import MyPage from "./pages/MyPage";
+import Login from "./pages/Login";
 
 const TotalWrapDiv = styled.div`
   position: relative;
@@ -33,7 +33,7 @@ function App() {
           <Route path="/Community" element={<Community />} />
           <Route path="/TicketBook" element={<TicketBook />} />
           <Route path="/Guide" element={<Guide />} />
-          <Route path="/MyPage" element={<MyPage />} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </ContentWrapDiv>
       <Footer></Footer>
