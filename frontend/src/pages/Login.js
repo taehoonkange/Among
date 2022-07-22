@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Fox from "../images/MetaMask_Fox.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpen } from "../slice/settingModalSlice";
 
 const UnconnectedContainer = styled.div`
   display: flex;
@@ -36,6 +38,8 @@ const LogInButton = styled.button`
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const dispatcher = useDispatch();
+  const settingModalOpen = useSelector((store) => store.settingModalOpen);
 
   const onC = async () => {
     try {

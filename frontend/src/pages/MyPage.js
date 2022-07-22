@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
 import ether from "../images/ethereum.png";
+import SettingModal from "../components/MyPage/SettingModal";
 const ConnectedContainer = styled.div`
   display: flex;
   align-items: center;
@@ -197,6 +198,7 @@ const MyPage = () => {
           </div>
         </MyPageContainer>
       </>
+      <SettingModal></SettingModal>
     </>
   );
 };
