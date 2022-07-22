@@ -17,9 +17,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./Navbar.css";
 
-import { useSelector, useDispatch } from "react-redux";
-import { setIsConnect, setAccount } from "../../slice/userDataSlice";
-
 // Navbar에 페이지 추가하고싶으시면, 바로 아랫 줄 pages 안에 요소 추가하시면 됩니다.
 const pages = [
   // "Profile",
@@ -39,10 +36,9 @@ const Logo = styled.img`
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const dispatcher = useDispatch();
   const [currentPage, setCurrentPage] = useState("Home");
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const userData = useSelector((store) => store.userData);
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -50,12 +46,12 @@ const Navbar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
   useEffect(() => {
     window.ethereum.on("accountsChanged", (accounts) => {
       if (accounts.length > 0) console.log("good");
       else {
-        dispatcher(setAccount({ value: "" }));
-        dispatcher(setIsConnect({ value: false }));
+        window.localStorage.removeItem("isConnect");
         navigate("/");
       }
     });
@@ -238,36 +234,41 @@ const Navbar = () => {
               );
             })}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton
-                onClick={() => {
-                  navigate("/MyPage");
-                  setCurrentPage("MyPage");
-                }}
-                sx={{ p: 0 }}
-              >
-                {true && (
-                  <div style={{ marginRight: "15px" }} class="login">
-                    마이페이지
-                  </div>
-                )}
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton
-                onClick={() => {
-                  navigate("/Login");
-                  setCurrentPage("Login");
-                }}
-                sx={{ p: 0 }}
-              >
-                <div class="login">로그인</div>
-              </IconButton>
-            </Tooltip>
-          </Box>
+
+          {window.localStorage.getItem("isConnect") === "true" && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton
+                  onClick={() => {
+                    navigate("/MyPage");
+                    setCurrentPage("MyPage");
+                  }}
+                  sx={{ p: 0 }}
+                >
+                  {true && (
+                    <div style={{ marginRight: "15px" }} class="login">
+                      마이페이지
+                    </div>
+                  )}
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          {window.localStorage.getItem("isConnect") !== "true" && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton
+                  onClick={() => {
+                    navigate("/Login");
+                    setCurrentPage("Login");
+                  }}
+                  sx={{ p: 0 }}
+                >
+                  <div class="login">로그인</div>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

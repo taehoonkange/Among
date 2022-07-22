@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Fox from "../images/MetaMask_Fox.png";
+import { useNavigate } from "react-router-dom";
 
 const UnconnectedContainer = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const LogInButton = styled.button`
 `;
 
 const MyPage = () => {
-  const [account, setAccount] = useState("");
+  const navigate = useNavigate();
 
   const onC = async () => {
     try {
@@ -42,14 +43,20 @@ const MyPage = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        setAccount(accounts[0]);
+        console.log(accounts[0]);
+        window.localStorage.setItem("isConnect", "true");
       } else {
         // metamask가 설치되어있지 않은 경우 alert
         alert("Install Metamask!");
       }
     } catch (err) {
-      console.error(err);
+      console.error(err.code);
+      if (err.code === -32002) {
+        window.alert("메타마스크 로그인이 이미 실행중입니다.");
+      }
     }
+
+    navigate("/MyPage");
     // window.location.reload(false);
   };
 
