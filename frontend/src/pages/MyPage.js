@@ -4,9 +4,13 @@ import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
 import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
+import { setOpen } from "../slice/settingModalSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const MyPage = () => {
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
+  const dispatcher = useDispatch();
+  const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
 
   return (
     <>
@@ -28,6 +32,9 @@ const MyPage = () => {
                   currentTarget.src = "images/MetaMask_Fox.svg.png";
                 }}
                 alt=""
+                onClick={() => {
+                  dispatcher(setOpen({ value: true }));
+                }}
               />
             </div>
           </Grid>
@@ -96,7 +103,7 @@ const MyPage = () => {
           </div>
         </MyPageContainer>
       </>
-      <SettingModal></SettingModal>
+      {settingModalOpen && <SettingModal></SettingModal>}
     </>
   );
 };
