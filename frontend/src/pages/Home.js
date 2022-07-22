@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Banner1 from "../components/Home/Banner1";
 import Banner2 from "../components/Home/Banner2";
+import Banner3 from "../components/Home/Banner3";
 const HomeBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,6 +13,7 @@ const Home = () => {
     <HomeBox>
       <Banner1></Banner1>
       <Banner2></Banner2>
+      <Banner3></Banner3>
     </HomeBox>
   );
 };
