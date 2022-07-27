@@ -21,5 +21,5 @@ const ContainMiddle = styled.div`
 `;
 
 const MiddleLeftCss = styled.div`
-  width: 670px;
+  width: 830px;
 `;
