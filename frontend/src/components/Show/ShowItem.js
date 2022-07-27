@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 const PerformContainer = styled.div`
   width: 260px;
 `;
@@ -35,16 +37,18 @@ const handleError = (e) => {
   e.target.src = "images/posterImg1.png";
 };
 
-const ShowItem = () => {
+const ShowItem = ({ idx }) => {
   return (
     <PerformContainer>
-      <PosterImgContainer
-        src={`https://ticketimage.interpark.com/Play/image/large/22/22008692_p.gif`}
-        onError={handleError}
-        alt="poster img"
-      />
-      <DurationDiv>2022.07.16</DurationDiv>
-      <NameDiv>HIPHOPPLAYA FESTIVAL 2022</NameDiv>
+      <Link to={`/Detail/${idx}`}>
+        <PosterImgContainer
+          src={`https://ticketimage.interpark.com/Play/image/large/22/22008692_p.gif`}
+          onError={handleError}
+          alt="poster img"
+        />
+        <DurationDiv>2022.07.16</DurationDiv>
+        <NameDiv>HIPHOPPLAYA FESTIVAL 2022</NameDiv>
+      </Link>
     </PerformContainer>
   );
 };

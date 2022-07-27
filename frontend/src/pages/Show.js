@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -41,6 +41,8 @@ const ShowListArea = styled.div`
 `;
 
 const Show = () => {
+  const [showList, SetShowList] = useState([1, 2, 3, 4, 5]);
+
   return (
     <TotalWidthSetting>
       <UpperTitleArea>
@@ -76,9 +78,11 @@ const Show = () => {
         </SearchBarCategoryArea>
         <ShowListArea>
           <Grid container spacing={7} rowSpacing={6}>
-            <Grid item xs={4}>
-              <ShowItem />
-            </Grid>
+            {showList.map((show, idx) => (
+              <Grid item xs={4} key={idx}>
+                <ShowItem idx={idx} />
+              </Grid>
+            ))}
           </Grid>
         </ShowListArea>
       </TotalWrapJustifyCenter>
