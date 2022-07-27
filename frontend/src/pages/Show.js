@@ -4,6 +4,7 @@ import { Autocomplete, Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
+import ShowItem from "../components/Show/ShowItem";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -74,7 +75,11 @@ const Show = () => {
           />
         </SearchBarCategoryArea>
         <ShowListArea>
-          <Grid container spacing={7} rowSpacing={6}></Grid>
+          <Grid container spacing={7} rowSpacing={6}>
+            <Grid item xs={4}>
+              <ShowItem />
+            </Grid>
+          </Grid>
         </ShowListArea>
       </TotalWrapJustifyCenter>
     </TotalWidthSetting>

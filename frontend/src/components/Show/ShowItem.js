@@ -14,6 +14,23 @@ const PosterImgContainer = styled.img`
   object-fit: cover;
 `;
 
+const DurationDiv = styled.div`
+  font-size: 14px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  color: black;
+  font-weight: 700;
+`;
+
+const NameDiv = styled.div`
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const handleError = (e) => {
   e.target.src = "images/posterImg1.png";
 };
@@ -26,6 +43,8 @@ const ShowItem = () => {
         onError={handleError}
         alt="poster img"
       />
+      <DurationDiv>2022.07.16</DurationDiv>
+      <NameDiv>HIPHOPPLAYA FESTIVAL 2022</NameDiv>
     </PerformContainer>
   );
 };
