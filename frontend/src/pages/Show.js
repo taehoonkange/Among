@@ -73,6 +73,9 @@ const Show = () => {
             }}
           />
         </SearchBarCategoryArea>
+        <ShowListArea>
+          <Grid container spacing={7} rowSpacing={6}></Grid>
+        </ShowListArea>
       </TotalWrapJustifyCenter>
     </TotalWidthSetting>
   );
