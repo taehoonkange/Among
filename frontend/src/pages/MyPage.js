@@ -6,7 +6,7 @@ import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
 import { setOpen } from "../slice/settingModalSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 const MyPage = () => {
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
   const dispatcher = useDispatch();
@@ -59,6 +59,7 @@ const MyPage = () => {
               {window.ethereum.selectedAddress}
             </div>
           </div>
+          <ShowRegister to="/ShowPublish">공연 등록</ShowRegister>
         </div>
       </ConnectedContainer>
       <>
@@ -212,4 +213,12 @@ const MyPageContainer = styled.div`
     width: 200px;
     margin-top: 15px;
   }
+`;
+
+const ShowRegister = styled(Link)`
+  background: rgb(95, 60, 250);
+  margin-top: 20px;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  border-radius: 10px;
 `;
