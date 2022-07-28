@@ -70,6 +70,8 @@ const DatePick = () => {
           ? "sunday"
           : undefined
       }
+      minDate={subDays(new Date(), 5)}
+      maxDate={addDays(new Date(), 5)}
     ></DatePicker>
   );
 };
