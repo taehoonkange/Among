@@ -1,10 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Middle from "../components/ShowDetail/Middle";
 import TopLeft from "../components/ShowDetail/TopLeft";
 import TopRight from "../components/ShowDetail/TopRight";
 
 const ShowDetail = () => {
+  const detectScroll = useRef();
+  const listener = () => {
+    if (window.pageYOffset + 1100 > document.body.scrollHeight)
+      detectScroll.current.style.top = "0px";
+    else {
+      detectScroll.current.style.top = "150px";
+    }
+  };
+
+  useEffect(() => {
+    console.log(document.body.scrollHeight);
+    window.addEventListener("scroll", listener);
+    return () => {
+      window.removeEventListener("scroll", listener);
+    };
+  }, []);
+
   return (
     <>
       <TopCss>
@@ -12,7 +29,7 @@ const ShowDetail = () => {
           <TopLeft></TopLeft>
         </TopLeftCss>
         <TopRightCss>
-          <TopRightFixed>
+          <TopRightFixed ref={detectScroll}>
             <TopRight></TopRight>
             <SideBtnWrap>
               <SideBtn>예매하기</SideBtn>
@@ -56,6 +73,7 @@ const TopRightFixed = styled.div`
   width: 370px;
   height: 630px;
   position: fixed;
+  top: 0px;
   margin-left: 50px;
   background-color: white;
 `;
