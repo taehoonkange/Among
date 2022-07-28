@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import DatePick from "./DatePick";
+import DatePick from "./DatePick/DatePick";
 
 const TopRight = () => {
   return (
