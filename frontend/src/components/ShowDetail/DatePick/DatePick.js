@@ -61,7 +61,7 @@ const DatePick = () => {
       inline
       locale={ko}
       includeDateIntervals={[
-        { start: subDays(new Date(), 5), end: addDays(new Date(), 5) },
+        { start: subDays(new Date(), 1), end: addDays(new Date(), 5) },
       ]}
       dayClassName={(date) =>
         getDayName(createDate(date)) === "토"

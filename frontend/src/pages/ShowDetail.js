@@ -54,4 +54,5 @@ const TopRightFixed = styled.div`
   height: 630px;
   position: fixed;
   margin-left: 50px;
+  background-color: white;
 `;
