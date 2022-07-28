@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import DatePick from "./DatePick";
 
 const TopRight = () => {
   return (
@@ -10,7 +11,9 @@ const TopRight = () => {
             <h4>관람일</h4>
           </SideHeader>
           <SideContent>
-            <SideCalendar></SideCalendar>
+            <SideCalendar>
+              <DatePick></DatePick>
+            </SideCalendar>
           </SideContent>
         </ContainerTop>
       </CoverBox>
