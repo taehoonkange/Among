@@ -26,7 +26,7 @@ const DatePick = () => {
               display: "flex",
               justifyContent: "center",
               fontWeight: 700,
-              fontSize: "18px",
+              fontSize: "20px",
             }}
           >
             <div onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>

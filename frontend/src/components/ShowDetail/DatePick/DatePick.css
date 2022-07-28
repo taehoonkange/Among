@@ -10,15 +10,17 @@
 }
 
 .react-datepicker__day-name {
-  width: 32px;
+  width: 38px;
   line-height: 32px;
   font-weight: 700;
+  font-size: 14px;
 }
 
 .react-datepicker__day {
-  width: 32px;
+  width: 38px;
   line-height: 32px;
   font-weight: 700;
+  font-size: 16px;
 }
 .react-datepicker__day:hover {
   border-radius: 100%;
@@ -39,6 +41,7 @@
   margin-right: 30px;
   margin-left: 30px;
   cursor: pointer;
+  margin-bottom: 2px;
 }
 
 .react-datepicker__day--keyboard-selected {
