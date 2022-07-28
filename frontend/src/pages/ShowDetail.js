@@ -14,6 +14,9 @@ const ShowDetail = () => {
         <TopRightCss>
           <TopRightFixed>
             <TopRight></TopRight>
+            <SideBtnWrap>
+              <SideBtn>예매하기</SideBtn>
+            </SideBtnWrap>
           </TopRightFixed>
         </TopRightCss>
       </TopCss>
@@ -55,4 +58,25 @@ const TopRightFixed = styled.div`
   position: fixed;
   margin-left: 50px;
   background-color: white;
+`;
+
+const SideBtnWrap = styled.div`
+  margin-top: 20px;
+`;
+
+const SideBtn = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(95, 60, 250);
+  border: 0.1rem solid rgb(95, 60, 250);
+  border-radius: 1rem;
+  text-align: center;
+  box-sizing: border-box;
 `;
