@@ -44,6 +44,22 @@
   margin-bottom: 2px;
 }
 
+.saturday {
+  color: rgb(0, 0, 255);
+}
+
+.sunday {
+  color: rgb(255, 0, 0);
+}
+
+.react-datepicker__day--disabled.sunday {
+  color: #ffbec0;
+}
+
+.react-datepicker__day--disabled.saturday {
+  color: #bbdefb;
+}
+
 .react-datepicker__day--keyboard-selected {
   background-color: rgb(95, 60, 250);
   border-radius: 100%;

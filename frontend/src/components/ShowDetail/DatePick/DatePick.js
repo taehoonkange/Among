@@ -9,6 +9,23 @@ import backRight from "../../../images/dateRightArrow.png";
 const DatePick = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
+
+  const getDayName = (date) => {
+    return date
+      .toLocaleDateString("ko-KR", {
+        weekday: "long",
+      })
+      .substr(0, 1);
+  };
+
+  // 날짜 비교시 년 월 일까지만 비교하게끔
+
+  const createDate = (date) => {
+    return new Date(
+      new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+    );
+  };
+
   return (
     <DatePicker
       renderCustomHeader={({
@@ -46,6 +63,13 @@ const DatePick = () => {
       includeDateIntervals={[
         { start: subDays(new Date(), 5), end: addDays(new Date(), 5) },
       ]}
+      dayClassName={(date) =>
+        getDayName(createDate(date)) === "토"
+          ? "saturday"
+          : getDayName(createDate(date)) === "일"
+          ? "sunday"
+          : undefined
+      }
     ></DatePicker>
   );
 };
