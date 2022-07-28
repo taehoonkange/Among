@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Middle from "../components/ShowDetail/Middle";
 import TopLeft from "../components/ShowDetail/TopLeft";
+import TopRight from "../components/ShowDetail/TopRight";
 
 const ShowDetail = () => {
   return (
@@ -10,6 +11,11 @@ const ShowDetail = () => {
         <TopLeftCss>
           <TopLeft></TopLeft>
         </TopLeftCss>
+        <TopRightCss>
+          <TopRightFixed>
+            <TopRight></TopRight>
+          </TopRightFixed>
+        </TopRightCss>
       </TopCss>
       <MiddleCss>
         <Middle></Middle>
@@ -22,18 +28,30 @@ export default ShowDetail;
 
 const TopCss = styled.div`
   display: flex;
-  height: 580px;
   justify-content: center;
+  height: 580px;
   margin-top: 50px;
 `;
 
 const TopLeftCss = styled.div`
-  width: 1300px;
+  width: 830px;
   height: 630px;
 `;
 
 const MiddleCss = styled.div`
-  width: 1300px;
+  width: 830px;
   margin-left: auto;
   margin-right: auto;
+`;
+
+const TopRightCss = styled.div`
+  width: 330px;
+  height: 630px;
+`;
+
+const TopRightFixed = styled.div`
+  width: 370px;
+  height: 630px;
+  position: fixed;
+  margin-left: 50px;
 `;

@@ -51,7 +51,6 @@ const TicketTitle = styled.h1`
 
 const UnderTitle = styled.div`
   display: flex;
-  justify-content: center;
 `;
 
 const PosterArea = styled.div`
