@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Middle from "../components/ShowDetail/Middle";
 import TopLeft from "../components/ShowDetail/TopLeft";
@@ -22,6 +22,7 @@ const ShowDetail = () => {
       </TopCss>
       <MiddleCss>
         <Middle></Middle>
+        <MiddleRightCss></MiddleRightCss>
       </MiddleCss>
     </>
   );
@@ -32,7 +33,7 @@ export default ShowDetail;
 const TopCss = styled.div`
   display: flex;
   justify-content: center;
-  height: 580px;
+  height: 630px;
   margin-top: 50px;
 `;
 
@@ -42,9 +43,8 @@ const TopLeftCss = styled.div`
 `;
 
 const MiddleCss = styled.div`
-  width: 830px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: center;
 `;
 
 const TopRightCss = styled.div`
@@ -79,4 +79,9 @@ const SideBtn = styled.div`
   border-radius: 1rem;
   text-align: center;
   box-sizing: border-box;
+`;
+
+const MiddleRightCss = styled.div`
+  width: 330px;
+  height: 630px;
 `;

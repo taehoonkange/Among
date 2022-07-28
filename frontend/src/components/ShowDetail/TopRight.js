@@ -7,9 +7,7 @@ const TopRight = () => {
     <>
       <CoverBox>
         <ContainerTop>
-          <SideHeader>
-            <h4>관람일</h4>
-          </SideHeader>
+          <SideHeader>{/* <h4>관람일</h4> */}</SideHeader>
           <SideContent>
             <SideCalendar>
               <DatePick></DatePick>
