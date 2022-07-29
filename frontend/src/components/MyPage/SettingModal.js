@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import xbutton from "../../images/close.png";
 import { setOpen } from "../../slice/settingModalSlice";
 import { useDispatch } from "react-redux";
 import Kdy from "../../images/kdy.jpeg";
+
+import axios from "../../api";
+
 const SettingModal = () => {
+  const [name, setName] = useState("");
   const dispatcher = useDispatch();
+  const onChangeName = (e) => {
+    console.log(e.target.value);
+    setName(e.target.value);
+  };
+
+  const submitImgAndName = useCallback(() => {
+    axios
+      .patch(
+        "/user/profile/nickname",
+        {
+          nickname: name,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  }, [name]);
   return (
     <SettingModalLayout>
       <img
@@ -18,10 +40,15 @@ const SettingModal = () => {
       ></img>
       <img className="SettingModalProfile" alt="" src={Kdy}></img>
       <div className="SettingModalName">이름</div>
-      <input className="SettingModalInput"></input>
+      <input
+        className="SettingModalInput"
+        name="name"
+        value={name}
+        onChange={onChangeName}
+      ></input>
       <div
         onClick={() => {
-          dispatcher(setOpen({ value: false }));
+          submitImgAndName();
         }}
         className="SettingModalButton"
       >
