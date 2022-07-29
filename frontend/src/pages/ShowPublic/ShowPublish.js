@@ -242,6 +242,40 @@ const ShowPublish = () => {
               />
               <p style={{ paddingLeft: "2px" }}>~</p>
               <MyDatePickerFinish
+                renderCustomHeader={({
+                  date,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => {
+                  let month = (getMonth(date) + 1).toString().padStart(2, "0");
+                  return (
+                    <div
+                      style={{
+                        margin: 10,
+                        display: "flex",
+                        justifyContent: "center",
+                        fontWeight: 700,
+                        fontSize: "20px",
+                      }}
+                    >
+                      <div
+                        onClick={decreaseMonth}
+                        disabled={prevMonthButtonDisabled}
+                      >
+                        <img className="back" src={backLeft} alt="" />
+                      </div>
+                      {getYear(date)}. {month}
+                      <div
+                        onClick={increaseMonth}
+                        disabled={nextMonthButtonDisabled}
+                      >
+                        <img className="back" src={backRight} alt="" />
+                      </div>
+                    </div>
+                  );
+                }}
                 selected={endDate}
                 locale={ko}
                 onChange={(date) => setEndDate(date)}
