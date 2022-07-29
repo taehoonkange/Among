@@ -1,15 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import xbutton from "../../images/close.png";
 import { setOpen } from "../../slice/settingModalSlice";
-import { setUserName } from "../../slice/userDataSlice";
+import { setUserName, setUserProfile } from "../../slice/userDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Kdy from "../../images/kdy.jpeg";
+import needImg from "../../images/needImg.png";
 
 import axios from "../../api";
 
 const SettingModal = () => {
   const userName = useSelector((store) => store.userData.userName);
+  const userProfile = useSelector((store) => store.userData.userProfile);
+  const [img, setImg] = useState("");
+  const [test, setTest] = useState("");
   const [name, setName] = useState(userName);
   const dispatcher = useDispatch();
   const onChangeName = (e) => {
@@ -29,18 +33,77 @@ const SettingModal = () => {
       .then((res) => {
         console.log(res);
       });
-  }, [name]);
+    console.log(img);
+    axios
+      .patch(
+        "/user/profile/image",
+        {
+          image: userProfile,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        console.log(res);
+        dispatcher(setUserProfile({ value: test }));
+        setImg("");
+      });
+  }, [name, img, test]);
+
+  const captureFile = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    let file = e.target.files[0];
+    setImg(file);
+    const formData = new FormData();
+    formData.append("image", file);
+    await axios({
+      method: "post",
+      url: "/user/image",
+      data: formData,
+      withCredentials: true,
+    })
+      .then((res) => {
+        setTest(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <SettingModalLayout>
       <img
         onClick={() => {
           dispatcher(setOpen({ value: false }));
+          setImg("");
         }}
         className="SettingModalImage"
         alt=""
         src={xbutton}
       ></img>
-      <img className="SettingModalProfile" alt="" src={Kdy}></img>
+      <input
+        id="image"
+        type="file"
+        accept="image/*"
+        onChange={captureFile}
+        hidden
+      />
+      <label style={{ cursor: "pointer" }} htmlFor="image">
+        <img
+          className="SettingModalProfile"
+          alt=""
+          src={(function () {
+            if (img && userProfile) {
+              return URL.createObjectURL(img);
+            } else if (userProfile && !img) {
+              return `http://localhost:3065/${userProfile}`;
+            } else if (!userProfile && img) {
+              return URL.createObjectURL(img);
+            } else {
+              return needImg;
+            }
+          })()}
+        ></img>
+      </label>
+
       <div className="SettingModalName">이름</div>
       <input
         className="SettingModalInput"
