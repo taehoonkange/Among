@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import needImg from "../../images/needImg.png";
 import backLeft from "../../images/dateLeftArrow.png";
@@ -15,6 +15,7 @@ import { addDays, getYear, getMonth } from "date-fns";
 import { ko } from "date-fns/esm/locale";
 
 import "./ShowPublic.css";
+import InputEditor from "../../components/ShowPublish/InputEditor";
 const ShowPublish = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
@@ -26,6 +27,10 @@ const ShowPublish = () => {
     ageLimit: "",
     description: "",
   });
+
+  const dataId = useRef(0);
+  const [seatData, setSeatData] = useState([]);
+
   const handleApiChange = (e) => {
     setApiData({ ...apiData, [e.target.name]: e.target.value });
   };
@@ -35,6 +40,12 @@ const ShowPublish = () => {
     e.preventDefault();
     const file = e.target.files[0];
     setImg(file);
+  };
+
+  const onCreate = (grade, price, seats) => {
+    const newItem = { grade, price, seats, id: dataId.current };
+    dataId.current++;
+    setSeatData([newItem, ...seatData]);
   };
 
   return (
@@ -213,6 +224,11 @@ const ShowPublish = () => {
               />
             </DatePickerBox>
             <ColorHr></ColorHr>
+            <SmallTitleCss>좌석</SmallTitleCss>
+            <div>
+              <InputEditor onCreate={onCreate} />
+              {/* <InputList inputList={seatData} /> */}
+            </div>
           </CoverBox>
         </TopRightCss>
       </TopCss>
@@ -372,6 +388,7 @@ const MyDatePickerFinish = styled(DatePicker)`
 `;
 
 const ColorHr = styled.hr`
+  margin-top: 10px;
   border: 0.5px solid #dadee2;
 `;
 
