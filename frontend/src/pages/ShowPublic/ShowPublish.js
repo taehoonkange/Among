@@ -16,6 +16,7 @@ import { ko } from "date-fns/esm/locale";
 
 import "./ShowPublic.css";
 import InputEditor from "../../components/ShowPublish/InputEditor";
+import InputList from "../../components/ShowPublish/InputList";
 const ShowPublish = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
@@ -45,6 +46,7 @@ const ShowPublish = () => {
   const onCreate = (grade, price, seats) => {
     const newItem = { grade, price, seats, id: dataId.current };
     dataId.current++;
+    console.log(newItem);
     setSeatData([newItem, ...seatData]);
   };
 
@@ -227,8 +229,9 @@ const ShowPublish = () => {
             <SmallTitleCss>좌석</SmallTitleCss>
             <div>
               <InputEditor onCreate={onCreate} />
-              {/* <InputList inputList={seatData} /> */}
+              <InputList inputList={seatData} />
             </div>
+            <ColorHr style={{ marginTop: "20px" }}></ColorHr>
           </CoverBox>
         </TopRightCss>
       </TopCss>
@@ -365,6 +368,7 @@ const SmallTitleCss = styled.div`
 
 const CoverBox = styled.div`
   width: 380px;
+  height: 500px;
   border: 0.1rem solid #b6bdc7;
   border-radius: 15px;
 `;
