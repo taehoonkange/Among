@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
 import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
 import { setOpen } from "../slice/settingModalSlice";
+import { setUserName } from "../slice/userDataSlice";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import fetcher from "../fetcher";
+import useSWR from "swr";
+
 const MyPage = () => {
+  const { data } = useSWR("/user/profile/nickname", fetcher);
+
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
   const dispatcher = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
-
+  const name = useSelector((store) => store.userData.userName);
+  useEffect(() => {
+    dispatcher(setUserName({ value: data?.nickname }));
+  }, [data]);
   return (
     <>
       <ConnectedContainer>
@@ -50,7 +60,7 @@ const MyPage = () => {
         >
           {/* 닉네임 */}
           <UserInfo>
-            <h1>김동영</h1>
+            <h1>{name}</h1>
           </UserInfo>
           {/* 지갑 주소 */}
           <div className="dappAddressWrapper">

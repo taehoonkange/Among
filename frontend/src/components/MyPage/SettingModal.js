@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import xbutton from "../../images/close.png";
 import { setOpen } from "../../slice/settingModalSlice";
+import { setUserName } from "../../slice/userDataSlice";
 import { useDispatch } from "react-redux";
 import Kdy from "../../images/kdy.jpeg";
 
@@ -49,6 +50,8 @@ const SettingModal = () => {
       <div
         onClick={() => {
           submitImgAndName();
+          dispatcher(setUserName({ value: name }));
+          dispatcher(setOpen({ value: false }));
         }}
         className="SettingModalButton"
       >
