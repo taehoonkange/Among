@@ -233,6 +233,9 @@ const ShowPublish = () => {
             </div>
             <ColorHr style={{ marginTop: "20px" }}></ColorHr>
           </CoverBox>
+          <SideBtnWrap>
+            <SideBtn>공연 등록</SideBtn>
+          </SideBtnWrap>
         </TopRightCss>
       </TopCss>
     </div>
@@ -396,26 +399,24 @@ const ColorHr = styled.hr`
   border: 0.5px solid #dadee2;
 `;
 
-const CastingDivCss = styled.div`
-  margin-left: 16px;
-  margin-bottom: 20px;
+const SideBtnWrap = styled.div`
+  margin-top: 20px;
+  width: 380px;
 `;
 
-const ButtonBoxCss = styled.div`
-  margin-top: 10px;
-`;
-
-const SmallInputBox = styled.input`
-  width: 150px;
-  height: 30px;
-  margin-left: auto;
-  margin-bottom: 10px;
-`;
-
-const StyledSpan = styled.span`
-  font-size: 14px;
-  margin-left: 16px;
-`;
-const WarningArea = styled.div`
-  margin: 10px;
+const SideBtn = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(95, 60, 250);
+  border: 0.1rem solid rgb(95, 60, 250);
+  border-radius: 1rem;
+  text-align: center;
+  box-sizing: border-box;
 `;
