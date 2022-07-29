@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import axios from "../../api";
+
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -52,6 +54,19 @@ const Navbar = () => {
       if (accounts.length > 0) console.log("good");
       else {
         window.localStorage.removeItem("isConnect");
+        async function logout() {
+          try {
+            const resLogout = await axios.post(
+              "/user/logout",
+              {},
+              { withCredentials: true },
+            );
+            console.log(resLogout);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        logout();
         navigate("/");
       }
     });

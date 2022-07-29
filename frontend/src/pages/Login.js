@@ -20,15 +20,18 @@ const MyPage = () => {
             wallet_address: accounts[0],
           });
           console.log(resRegister);
-          if (resRegister.status === 201) {
-            const resLogin = await axios.post("/user/login", {
-              wallet_address: accounts[0],
-              nickname: "dd",
-            });
-            console.log(resLogin);
-          }
         } catch (err) {
           console.log(err);
+        } finally {
+          const resLogin = await axios.post(
+            "/user/login",
+            {
+              wallet_address: accounts[0],
+              nickname: "dd",
+            },
+            { withCredentials: true },
+          );
+          console.log(resLogin);
         }
       } else {
         // metamask가 설치되어있지 않은 경우 alert
