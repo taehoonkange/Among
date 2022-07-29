@@ -10,6 +10,7 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import DatePicker from "react-datepicker";
 import Checkbox from "@mui/material/Checkbox";
+import Alert from "@mui/material/Alert";
 
 import { addDays, getYear, getMonth } from "date-fns";
 import { ko } from "date-fns/esm/locale";
@@ -81,70 +82,97 @@ const ShowPublish = () => {
               </PosterArea>
               <InfoWrapper>
                 <div>
-                  <div className="infoHeader">
-                    <th>장소</th>
-                    <th>공연 시간</th>
-                    <th>관람 연령</th>
-                  </div>
-                  <div className="infoBody">
-                    <td>
-                      <StyledTextField
-                        name="stageName"
-                        type="text"
-                        label="장소"
-                        variant="standard"
-                        value={apiData.stageName}
-                        onChange={handleApiChange}
-                      />
-                    </td>
-                    <td>
+                  <InfoDiv>
+                    <span>장소</span>
+                    <StyledTextField
+                      name="stageName"
+                      type="text"
+                      label="장소"
+                      variant="standard"
+                      value={apiData.stageName}
+                      onChange={handleApiChange}
+                    />
+                  </InfoDiv>
+
+                  <InfoDiv>
+                    <span>공연 시간</span>
+                    {!isNaN(apiData.runningTime) ? (
                       <StyledTextField
                         name="runningTime"
-                        type="number"
+                        type="text"
                         label="공연시간(분)"
                         variant="standard"
                         value={apiData.runningTime}
                         onChange={handleApiChange}
                       />
-                    </td>
-                    <td>
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <TextField
+                          error
+                          name="runningTime"
+                          type="text"
+                          label="공연시간(분)"
+                          variant="standard"
+                          value={apiData.runningTime}
+                          onChange={handleApiChange}
+                        />
+                        <Alert severity="error">숫자를 입력해주세요.</Alert>
+                      </div>
+                    )}
+                  </InfoDiv>
+                  <InfoDiv>
+                    <span>관람 연령</span>
+                    {!isNaN(apiData.ageLimit) ? (
                       <StyledTextField
                         name="ageLimit"
-                        type="number"
+                        type="text"
                         label="관람연령"
                         variant="standard"
                         value={apiData.ageLimit}
                         onChange={handleApiChange}
                       />
-                    </td>
-                    <SubmitButtonArea>
-                      <div>
-                        <Button
-                          sx={{
-                            color: "white",
-                            borderColor: "rgb(95, 60, 250)",
-                            backgroundColor: "rgb(95, 60, 250)",
-                            borderRadius: 3,
-                            py: 0.5,
-                            mr: 2,
-                            "&:hover": {
-                              backgroundColor: "rgb(53, 15, 224)",
-                            },
-                          }}
-                          variant="outlined"
-                          component="label" // 이거 안해주면 작동을 안하네요..
-                        >
-                          파일 선택
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={captureFile}
-                            hidden
-                          />
-                        </Button>
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <TextField
+                          error
+                          name="ageLimit"
+                          type="text"
+                          label="관람연령"
+                          variant="standard"
+                          value={apiData.ageLimit}
+                          onChange={handleApiChange}
+                        />
+                        <Alert severity="error">숫자를 입력해주세요.</Alert>
                       </div>
-                    </SubmitButtonArea>
-                  </div>
+                    )}
+                  </InfoDiv>
+                  <SubmitButtonArea>
+                    <div>
+                      <Button
+                        sx={{
+                          color: "white",
+                          borderColor: "rgb(95, 60, 250)",
+                          backgroundColor: "rgb(95, 60, 250)",
+                          borderRadius: 3,
+                          py: 0.5,
+                          mr: 2,
+                          "&:hover": {
+                            backgroundColor: "rgb(53, 15, 224)",
+                          },
+                        }}
+                        variant="outlined"
+                        component="label" // 이거 안해주면 작동을 안하네요..
+                      >
+                        파일 선택
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={captureFile}
+                          hidden
+                        />
+                      </Button>
+                    </div>
+                  </SubmitButtonArea>
                 </div>
               </InfoWrapper>
             </UnderTitle>
@@ -308,28 +336,7 @@ const InfoWrapper = styled.div`
 
   & > div {
     display: flex;
-  }
-
-  & > div > .infoHeader {
-    display: flex;
     flex-direction: column;
-    align-items: start;
-    margin-top: 20px;
-  }
-
-  th {
-    margin-bottom: 28px;
-  }
-
-  th,
-  td {
-    padding: 10px;
-  }
-
-  & > div > .infoBody {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
   }
 `;
 
@@ -419,4 +426,15 @@ const SideBtn = styled.div`
   border-radius: 1rem;
   text-align: center;
   box-sizing: border-box;
+`;
+
+const InfoDiv = styled.div`
+  display: flex;
+  margin-top: 20px;
+  & > span {
+    margin-top: 22px;
+    margin-left: 5px;
+    width: 80px;
+    font-weight: 700;
+  }
 `;
