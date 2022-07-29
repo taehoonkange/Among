@@ -31,7 +31,7 @@ const ShowPublish = () => {
           <TopLeftCss>
             <UpperTitleArea>공연 등록</UpperTitleArea>
             <TicketTitle>
-              <TextField
+              <StyledTextField
                 name="name"
                 type="text"
                 label="공연 제목"
@@ -41,7 +41,7 @@ const ShowPublish = () => {
                 onChange={handleApiChange}
                 style={{ width: 600 }}
                 inputProps={{
-                  style: { fontSize: 36, fontWeight: "bold" },
+                  style: { fontSize: 24, fontWeight: "bold" },
                 }} // font size of input text
                 InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
               />
@@ -62,7 +62,7 @@ const ShowPublish = () => {
                   </div>
                   <div className="infoBody">
                     <td>
-                      <TextField
+                      <StyledTextField
                         name="stageName"
                         type="text"
                         label="장소"
@@ -72,7 +72,7 @@ const ShowPublish = () => {
                       />
                     </td>
                     <td>
-                      <TextField
+                      <StyledTextField
                         name="runningTime"
                         type="number"
                         label="공연시간(분)"
@@ -82,7 +82,7 @@ const ShowPublish = () => {
                       />
                     </td>
                     <td>
-                      <TextField
+                      <StyledTextField
                         name="ageLimit"
                         type="number"
                         label="관람연령"
@@ -123,6 +123,17 @@ const ShowPublish = () => {
               </InfoWrapper>
             </UnderTitle>
           </TopLeftCss>
+          <TicketTitle2>상세 정보</TicketTitle2>
+          <StyledTextField
+            name="description"
+            type="text"
+            label="공연 정보"
+            rows={4}
+            multiline
+            value={apiData.description}
+            sx={{ width: "600px" }}
+            onChange={handleApiChange}
+          ></StyledTextField>
         </TopLeft>
       </TopCss>
     </>
@@ -217,5 +228,27 @@ const InfoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
+  }
+`;
+
+const TicketTitle2 = styled.h1`
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+const StyledTextField = styled(TextField)`
+  & label.Mui-focused {
+    color: rgb(95, 60, 250);
+  }
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: rgb(95, 60, 250);
+    }
+    & fieldset {
+      border: 2px solid #ced4da;
+    }
+  }
+  & .MuiInput-underline::after {
+    border-bottom: 2px solid rgb(95, 60, 250);
   }
 `;
