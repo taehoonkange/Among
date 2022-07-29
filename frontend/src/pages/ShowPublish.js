@@ -91,6 +91,33 @@ const ShowPublish = () => {
                         onChange={handleApiChange}
                       />
                     </td>
+                    <SubmitButtonArea>
+                      <div>
+                        <Button
+                          sx={{
+                            color: "white",
+                            borderColor: "rgb(95, 60, 250)",
+                            backgroundColor: "rgb(95, 60, 250)",
+                            borderRadius: 3,
+                            py: 0.5,
+                            mr: 2,
+                            "&:hover": {
+                              backgroundColor: "rgb(53, 15, 224)",
+                            },
+                          }}
+                          variant="outlined"
+                          component="label" // 이거 안해주면 작동을 안하네요..
+                        >
+                          파일 선택
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={captureFile}
+                            hidden
+                          />
+                        </Button>
+                      </div>
+                    </SubmitButtonArea>
                   </div>
                 </div>
               </InfoWrapper>
@@ -154,12 +181,17 @@ const Poster = styled.img`
 
 const SubmitButtonArea = styled.div`
   margin-top: 30px;
+
+  & > div {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const InfoWrapper = styled.div`
   margin-right: 20px;
   margin-left: 20px;
-  margin-top: 20px;
+  margin-top: 100px;
 
   & > div {
     display: flex;
