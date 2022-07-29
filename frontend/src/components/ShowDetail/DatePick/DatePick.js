@@ -27,52 +27,54 @@ const DatePick = () => {
   };
 
   return (
-    <DatePicker
-      renderCustomHeader={({
-        date,
-        decreaseMonth,
-        increaseMonth,
-        prevMonthButtonDisabled,
-        nextMonthButtonDisabled,
-      }) => {
-        let month = (getMonth(date) + 1).toString().padStart(2, "0");
-        return (
-          <div
-            style={{
-              margin: 10,
-              display: "flex",
-              justifyContent: "center",
-              fontWeight: 700,
-              fontSize: "20px",
-            }}
-          >
-            <div onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-              <img className="back" src={backLeft} alt="" />
+    <div className="DatePick">
+      <DatePicker
+        renderCustomHeader={({
+          date,
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        }) => {
+          let month = (getMonth(date) + 1).toString().padStart(2, "0");
+          return (
+            <div
+              style={{
+                margin: 10,
+                display: "flex",
+                justifyContent: "center",
+                fontWeight: 700,
+                fontSize: "20px",
+              }}
+            >
+              <div onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                <img className="back" src={backLeft} alt="" />
+              </div>
+              {getYear(date)}. {month}
+              <div onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                <img className="back" src={backRight} alt="" />
+              </div>
             </div>
-            {getYear(date)}. {month}
-            <div onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-              <img className="back" src={backRight} alt="" />
-            </div>
-          </div>
-        );
-      }}
-      startDate={startDate}
-      endDate={endDate}
-      inline
-      locale={ko}
-      includeDateIntervals={[
-        { start: subDays(new Date(), 1), end: addDays(new Date(), 5) },
-      ]}
-      dayClassName={(date) =>
-        getDayName(createDate(date)) === "토"
-          ? "saturday"
-          : getDayName(createDate(date)) === "일"
-          ? "sunday"
-          : undefined
-      }
-      minDate={subDays(new Date(), 5)}
-      maxDate={addDays(new Date(), 5)}
-    ></DatePicker>
+          );
+        }}
+        startDate={startDate}
+        endDate={endDate}
+        inline
+        locale={ko}
+        includeDateIntervals={[
+          { start: subDays(new Date(), 1), end: addDays(new Date(), 5) },
+        ]}
+        dayClassName={(date) =>
+          getDayName(createDate(date)) === "토"
+            ? "saturday"
+            : getDayName(createDate(date)) === "일"
+            ? "sunday"
+            : undefined
+        }
+        minDate={subDays(new Date(), 5)}
+        maxDate={addDays(new Date(), 5)}
+      ></DatePicker>
+    </div>
   );
 };
 

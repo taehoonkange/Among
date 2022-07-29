@@ -1,17 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import needImg from "../images/needImg.png";
+import needImg from "../../images/needImg.png";
+import backLeft from "../../images/dateLeftArrow.png";
+import backRight from "../../images/dateRightArrow.png";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import DatePicker from "react-datepicker";
+import Checkbox from "@mui/material/Checkbox";
 
+import { addDays, getYear, getMonth } from "date-fns";
+import { ko } from "date-fns/esm/locale";
+
+import "./ShowPublic.css";
 const ShowPublish = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
   const [img, setImg] = useState("");
   const [apiData, setApiData] = useState({
     name: "",
     stageName: "",
     runningTime: "",
     ageLimit: "",
+    description: "",
   });
   const handleApiChange = (e) => {
     setApiData({ ...apiData, [e.target.name]: e.target.value });
@@ -25,7 +38,7 @@ const ShowPublish = () => {
   };
 
   return (
-    <>
+    <div className="ShowPublic">
       <TopCss>
         <TopLeft>
           <TopLeftCss>
@@ -135,8 +148,75 @@ const ShowPublish = () => {
             onChange={handleApiChange}
           ></StyledTextField>
         </TopLeft>
+        <TopRightCss>
+          <CoverBox>
+            <SmallTitleCss style={{ marginTop: "20px", paddingTop: "4px" }}>
+              판매 기간 선택
+            </SmallTitleCss>
+            <DatePickerBox>
+              <MyDatePickerStart
+                renderCustomHeader={({
+                  date,
+                  decreaseMonth,
+                  increaseMonth,
+                  prevMonthButtonDisabled,
+                  nextMonthButtonDisabled,
+                }) => {
+                  let month = (getMonth(date) + 1).toString().padStart(2, "0");
+                  return (
+                    <div
+                      style={{
+                        margin: 10,
+                        display: "flex",
+                        justifyContent: "center",
+                        fontWeight: 700,
+                        fontSize: "20px",
+                      }}
+                    >
+                      <div
+                        onClick={decreaseMonth}
+                        disabled={prevMonthButtonDisabled}
+                      >
+                        <img className="back" src={backLeft} alt="" />
+                      </div>
+                      {getYear(date)}. {month}
+                      <div
+                        onClick={increaseMonth}
+                        disabled={nextMonthButtonDisabled}
+                      >
+                        <img className="back" src={backRight} alt="" />
+                      </div>
+                    </div>
+                  );
+                }}
+                selected={startDate}
+                locale={ko}
+                onChange={(date) => setStartDate(date)}
+                showTimeSelect // 시간 나오게 하기
+                timeFormat="HH:mm" //시간 포맷
+                timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                timeCaption="time"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                minDate={addDays(new Date(), 1)}
+              />
+              <p style={{ paddingLeft: "2px" }}>~</p>
+              <MyDatePickerFinish
+                selected={endDate}
+                locale={ko}
+                onChange={(date) => setEndDate(date)}
+                showTimeSelect // 시간 나오게 하기
+                timeFormat="HH:mm" //시간 포맷
+                timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                timeCaption="time"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                minDate={startDate}
+              />
+            </DatePickerBox>
+            <ColorHr></ColorHr>
+          </CoverBox>
+        </TopRightCss>
       </TopCss>
-    </>
+    </div>
   );
 };
 
@@ -251,4 +331,70 @@ const StyledTextField = styled(TextField)`
   & .MuiInput-underline::after {
     border-bottom: 2px solid rgb(95, 60, 250);
   }
+`;
+
+const TopRightCss = styled.div`
+  width: 330px;
+  height: 700px;
+  margin-top: 180px;
+`;
+
+const SmallTitleCss = styled.div`
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-left: 18px;
+  margin-bottom: 18px;
+`;
+
+const CoverBox = styled.div`
+  width: 380px;
+  border: 0.1rem solid #b6bdc7;
+  border-radius: 15px;
+`;
+
+const DatePickerBox = styled.div`
+  width: 380px;
+  display: flex;
+  justify-content: center;
+`;
+
+const MyDatePickerStart = styled(DatePicker)`
+  width: 75%;
+  margin-left: 25px;
+  margin-bottom: 10px;
+`;
+
+const MyDatePickerFinish = styled(DatePicker)`
+  width: 70%;
+  margin-left: 10px;
+  margin-bottom: 10px;
+`;
+
+const ColorHr = styled.hr`
+  border: 0.5px solid #dadee2;
+`;
+
+const CastingDivCss = styled.div`
+  margin-left: 16px;
+  margin-bottom: 20px;
+`;
+
+const ButtonBoxCss = styled.div`
+  margin-top: 10px;
+`;
+
+const SmallInputBox = styled.input`
+  width: 150px;
+  height: 30px;
+  margin-left: auto;
+  margin-bottom: 10px;
+`;
+
+const StyledSpan = styled.span`
+  font-size: 14px;
+  margin-left: 16px;
+`;
+const WarningArea = styled.div`
+  margin: 10px;
 `;

@@ -13,7 +13,7 @@ import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
 import TicketReSell from "./pages/TicketReSell";
 import ShowDetail from "./pages/ShowDetail";
-import ShowPublish from "./pages/ShowPublish";
+import ShowPublish from "./pages/ShowPublic/ShowPublish";
 
 const TotalWrapDiv = styled.div`
   position: relative;
