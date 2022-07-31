@@ -460,6 +460,7 @@ const SideBtn = styled.div`
   border-radius: 1rem;
   text-align: center;
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const InfoDiv = styled.div`
