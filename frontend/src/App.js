@@ -12,6 +12,7 @@ import Guide from "./pages/Guide";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
 import TicketReSell from "./pages/TicketReSell";
+import ShowDetail from "./pages/ShowDetail";
 
 const TotalWrapDiv = styled.div`
   position: relative;
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Influencer" element={<Influencer />} />
           <Route path="/Show" element={<Show />} />
+          <Route path="/Show/:idx" element={<ShowDetail />} />
           <Route path="/Community" element={<Community />} />
           <Route path="/TicketBook" element={<TicketBook />} />
           <Route path="/TicketReSell" element={<TicketReSell />} />

@@ -40,7 +40,7 @@ const handleError = (e) => {
 const ShowItem = ({ idx }) => {
   return (
     <PerformContainer>
-      <Link to={`/Detail/${idx}`}>
+      <Link to={`/Show/${idx}`}>
         <PosterImgContainer
           src={`https://ticketimage.interpark.com/Play/image/large/22/22008692_p.gif`}
           onError={handleError}
