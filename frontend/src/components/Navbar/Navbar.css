@@ -1,0 +1,48 @@
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  background: #777777;
+}
+.login {
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 20px;
+  line-height: 21px;
+  background: rgb(95, 60, 250);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.list {
+  list-style-type: none;
+  background: #777777;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.items {
+  margin-right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.AppBar {
+  border-bottom: 1px solid #e9e9f0;
+}
+.ToolBar {
+  height: 105px;
+}
+.Logo {
+  margin-left: 75px;
+  font-size: 30px;
+  font-family: "MaplestoryOTFBold";
+}
+.Logo2 {
+  font-size: 30px;
+  font-family: "MaplestoryOTFBold";
+}
