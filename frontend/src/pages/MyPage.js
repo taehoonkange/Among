@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
+import needImg from "../images/needImg.png";
 import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
 import { setOpen } from "../slice/settingModalSlice";
+import { setUserName, setUserProfile } from "../slice/userDataSlice";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import fetcher from "../fetcher";
+import useSWR from "swr";
+
 const MyPage = () => {
+  const { data: Nick } = useSWR("/user/profile/nickname", fetcher);
+  const { data: ImgSrc } = useSWR("/user/image", fetcher);
+
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
   const dispatcher = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
+  const userProfile = useSelector((store) => store.userData.userProfile);
+  const name = useSelector((store) => store.userData.userName);
+  useEffect(() => {
+    dispatcher(setUserName({ value: Nick?.nickname }));
+    dispatcher(setUserProfile({ value: ImgSrc?.img_src }));
+  }, [Nick, ImgSrc]);
 
   return (
     <>
@@ -26,7 +41,9 @@ const MyPage = () => {
             <div className="profileImgLocation" style={{}}>
               <img
                 className="profileSize"
-                src={Kdy}
+                src={
+                  userProfile ? `http://localhost:3065/${userProfile}` : needImg
+                }
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null; // prevents looping
                   currentTarget.src = "images/MetaMask_Fox.svg.png";
@@ -50,7 +67,7 @@ const MyPage = () => {
         >
           {/* 닉네임 */}
           <UserInfo>
-            <h1>김동영</h1>
+            <h1>{name}</h1>
           </UserInfo>
           {/* 지갑 주소 */}
           <div className="dappAddressWrapper">

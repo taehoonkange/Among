@@ -4,6 +4,8 @@ const initialState = {
   account: "",
   isConnect: false,
   userData: JSON.parse(localStorage.getItem("userAccount")),
+  userName: "",
+  userProfile: "",
 };
 
 const userDataSlice = createSlice({
@@ -20,8 +22,20 @@ const userDataSlice = createSlice({
     setIsConnect: (state, { payload }) => {
       state.isConnect = payload.value;
     },
+    setUserName: (state, { payload }) => {
+      state.userName = payload.value;
+    },
+    setUserProfile: (state, { payload }) => {
+      state.userProfile = payload.value;
+    },
   },
 });
 
-export const { setUserData, setAccount, setIsConnect } = userDataSlice.actions;
+export const {
+  setUserData,
+  setAccount,
+  setIsConnect,
+  setUserName,
+  setUserProfile,
+} = userDataSlice.actions;
 export default userDataSlice.reducer;
