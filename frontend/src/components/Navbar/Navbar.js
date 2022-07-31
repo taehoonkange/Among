@@ -21,7 +21,7 @@ import "./Navbar.css";
 const pages = [
   // "Profile",
   { name: "인플루언서", link: "Influencer" },
-  { name: "행사", link: "Show" },
+  { name: "공연", link: "Show" },
   { name: "커뮤니티", link: "Community" },
   { name: "티켓북", link: "TicketBook" },
   { name: "티켓리셀", link: "TicketReSell" },
