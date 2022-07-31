@@ -1,0 +1,45 @@
+.SliderWrapper {
+  height: 87vh;
+  width: 100vw;
+}
+.textWrapper {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 10%;
+}
+.test {
+  font-size: 50px;
+  line-height: 56px;
+  font-weight: 700;
+}
+.cl {
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(
+    114.08deg,
+    rgb(76, 46, 208) 9.72%,
+    rgb(131, 63, 199) 53.01%,
+    rgb(186, 41, 146) 91.54%
+  );
+  color: transparent;
+  -webkit-background-clip: text;
+}
+
+.disc {
+  margin-top: 30px;
+  font-size: 26px;
+}
+.disc2 {
+  margin-top: 10px;
+  font-size: 26px;
+}
+
+.linkWrapper {
+  margin-top: 100px;
+  display: flex;
+}
+
+.arrowText {
+  margin-left: 13px;
+  font-size: 26px;
+  font-weight: 700;
+}
