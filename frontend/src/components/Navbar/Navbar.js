@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -38,6 +38,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState("Home");
   const [anchorElNav, setAnchorElNav] = useState(null);
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -45,6 +46,16 @@ const Navbar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length > 0) console.log("good");
+      else {
+        window.localStorage.removeItem("isConnect");
+        navigate("/");
+      }
+    });
+  }, []);
   return (
     <AppBar
       className="AppBar"
@@ -223,51 +234,41 @@ const Navbar = () => {
               );
             })}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton
-                onClick={() => {
-                  navigate("/MyPage");
-                  setCurrentPage("MyPage");
-                }}
-                sx={{ p: 0 }}
-              >
-                <div
+
+          {window.localStorage.getItem("isConnect") === "true" && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton
                   onClick={() => {
                     navigate("/MyPage");
                     setCurrentPage("MyPage");
                   }}
-                  class="login"
+                  sx={{ p: 0 }}
                 >
-                  로그인
-                </div>
-              </IconButton>
-            </Tooltip>
-            {/* <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link to={`/${setting}`}>{setting}</Link>
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu> */}
-          </Box>
+                  {true && (
+                    <div style={{ marginRight: "15px" }} class="login">
+                      마이페이지
+                    </div>
+                  )}
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
+          {window.localStorage.getItem("isConnect") !== "true" && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton
+                  onClick={() => {
+                    navigate("/Login");
+                    setCurrentPage("Login");
+                  }}
+                  sx={{ p: 0 }}
+                >
+                  <div class="login">로그인</div>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
