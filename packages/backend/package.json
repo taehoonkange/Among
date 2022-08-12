@@ -20,5 +20,8 @@
     "session": "^0.1.0",
     "swagger-autogen": "^2.21.5",
     "swagger-ui-express": "^4.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
