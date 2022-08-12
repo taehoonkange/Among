@@ -98,7 +98,7 @@ const SettingModal = () => {
             } else if (!userProfile && img) {
               return URL.createObjectURL(img);
             } else {
-              return needImg;
+              return Kdy;
             }
           })()}
         ></img>

@@ -7,7 +7,7 @@ import TopRight from "../components/ShowDetail/TopRight";
 const ShowDetail = () => {
   const detectScroll = useRef();
   const listener = () => {
-    if (window.pageYOffset + 1100 > document.body.scrollHeight)
+    if (window.pageYOffset + 1300 > document.body.scrollHeight)
       detectScroll.current.style.top = "0px";
     else {
       detectScroll.current.style.top = "150px";
