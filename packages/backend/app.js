@@ -1,8 +1,43 @@
-const express = require("express");
-const app = express();
+const express = require(`express`)
+const cors = require(`cors`)
+const session = require(`express-session`)
+const cookieParser = require(`cookie-parser`)
+const morgan = require(`morgan`)
+const path = require(`path`)
+const db = require(`./models`)
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
 
-app.listen(8080, () => console.log("server is running"));
+const app = express()
+
+db.sequelize.sync({force: false})
+    .then(() =>{
+      console.log(`db 연결 성공`)
+    })
+    .catch(console.error)
+passportConfigure()
+
+app.use(morgan(`dev`))
+app.use(cors({
+  // frontserver address
+  origin: true,
+  credentials: true
+}))
+
+app.use(`/`, express.static(path.join(__dirname, `uploads`)))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+  saveUninitialized: false,
+  resave: false,
+  secret: process.env.COOKIE_SECRET
+}))
+
+// app.use(passport.initialize())
+// app.use(passport.session())
+
+
+
+app.listen(3065, () =>{
+  console.log(`서버 실행 중..`)
+})
