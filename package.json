@@ -1,5 +1,5 @@
 {
-  "name": "among-front",
+  "name": "among",
   "version": "1.0.0",
   "description": "",
   "main": ".eslintrc.js",
@@ -30,9 +30,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PNU-SWEFI/Among-Front/issues"
+    "url": "https://github.com/PNU-SWEFI/Among/issues"
   },
-  "homepage": "https://github.com/PNU-SWEFI/Among-Front#readme",
+  "homepage": "https://github.com/PNU-SWEFI/Among#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
