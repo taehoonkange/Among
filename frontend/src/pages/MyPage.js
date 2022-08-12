@@ -41,9 +41,7 @@ const MyPage = () => {
             <div className="profileImgLocation" style={{}}>
               <img
                 className="profileSize"
-                src={
-                  userProfile ? `http://localhost:3065/${userProfile}` : needImg
-                }
+                src={userProfile ? `http://localhost:3065/${userProfile}` : Kdy}
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null; // prevents looping
                   currentTarget.src = "images/MetaMask_Fox.svg.png";
