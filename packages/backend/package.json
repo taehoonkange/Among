@@ -1,7 +1,7 @@
 {
   "name": "@among/backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "license": "",
   "private": true,
   "dependencies": {
