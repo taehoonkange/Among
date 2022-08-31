@@ -7,8 +7,10 @@ import { Grid, Container } from "@mui/material";
 import HomeShow from "./HomeShow";
 
 const TodayPerformContainer = styled.div`
-  display: flex-column;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* height: 100vh; */
+  height: 960px;
   justify-content: center;
   margin-top: 50px;
   padding-bottom: 90px;
