@@ -1,12 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
-const TextArea = () => {
+const TextArea = ({ value, onChange }) => {
   const ref = useRef(null);
-  const [value, setValue] = useState("");
 
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
   useEffect(() => {
     if (ref === null || ref.current === null) {
       return;
@@ -29,7 +25,7 @@ const TextArea = () => {
         value={value}
         onChange={onChange}
         rows={1}
-        placeholder="Among에 메세지를 남겨보세요."
+        placeholder="Among에 메세지를 남겨보세요..."
         ref={ref}
         onInput={handleResizeHeight}
       />

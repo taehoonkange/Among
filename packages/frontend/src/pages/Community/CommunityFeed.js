@@ -1,7 +1,7 @@
 import React from "react";
 import CommunityCategory from "../../components/Community/CommunityCategory";
 import styled from "styled-components";
-import CommunityPost from "../../components/Community/CommunityPost";
+import CommunityPost from "../../components/Community/CommunityPosts";
 
 const Layout = styled.div`
   display: flex;
