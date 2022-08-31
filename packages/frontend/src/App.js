@@ -6,7 +6,8 @@ import Footer from "./components/Footer/Footer";
 import styled from "styled-components";
 import Influencer from "./pages/Influencer";
 import Show from "./pages/Show";
-import Community from "./pages/Community";
+import CommunityFeed from "./pages/Community/CommunityFeed";
+import CommunityInfluencer from "./pages/Community/CommunityInfluencer";
 import TicketBook from "./pages/TicketBook";
 import Guide from "./pages/Guide";
 import Login from "./pages/Login";
@@ -35,7 +36,11 @@ function App() {
           <Route path="/Influencer" element={<Influencer />} />
           <Route path="/Show" element={<Show />} />
           <Route path="/Show/:idx" element={<ShowDetail />} />
-          <Route path="/Community" element={<Community />} />
+          <Route path="/CommunityFeed" element={<CommunityFeed />} />
+          <Route
+            path="/CommunityInfluencer"
+            element={<CommunityInfluencer />}
+          />
           <Route path="/TicketBook" element={<TicketBook />} />
           <Route path="/TicketReSell" element={<TicketReSell />} />
           <Route path="/Guide" element={<Guide />} />
