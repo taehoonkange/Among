@@ -48,26 +48,12 @@
     "chart.js": "^3.9.1",
     "data-fns": "^0.1.8",
     "dayjs": "^1.11.5",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "file-saver": "^2.0.5",
     "gh-pages": "^4.0.0",
     "lodash": "^4.17.21",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "qrcode": "^1.5.1",
-=======
->>>>>>> f7af8e7 (build: yarn add lodash)
-=======
-    "qrcode": "^1.5.1",
->>>>>>> cb1b9ca (build: yarn add qrcode)
     "react": "^18.1.0",
     "react-chartjs-2": "^4.3.1",
-=======
-=======
->>>>>>> 655756b (build: yarn add dayjs)
-    "react": "^17.0.2",
->>>>>>> 655756b (build: yarn add dayjs)
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.1.0",
     "react-paginate": "^8.1.3",
@@ -77,14 +63,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "react-spinners": "^0.13.4",
     "shortid": "^2.2.16",
-=======
->>>>>>> 4e0bdc2 (build: yarn add react-slick)
-=======
->>>>>>> 4e0bdc2 (build: yarn add react-slick)
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.29",
     "sweetalert2-react-content": "^5.0.3",
