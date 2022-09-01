@@ -23,8 +23,16 @@ const TotalWrapDiv = styled.div`
 
 const ContentWrapDiv = styled.div`
   padding-bottom: 12rem;
+  height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+    visibility: hidden;
+  }
 `;
 function App() {
   return (
