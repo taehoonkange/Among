@@ -219,18 +219,20 @@ const CommunityPost = ({ post }) => {
         </Comment>
       </LikeAndComment>
       <Line></Line>
-      <MycontentWrapper>
-        <MyComment
-          value={myComment}
-          onChange={onChangeMyComment}
-          placeholder="댓글을 입력하세요."
-        />
-        {myComment ? (
-          <MyContentActiveButton onClick={myCommnetSubmit} src={up} alt="" />
-        ) : (
-          <MyContentButton src={up} alt="" />
-        )}
-      </MycontentWrapper>
+      {comment && (
+        <MycontentWrapper>
+          <MyComment
+            value={myComment}
+            onChange={onChangeMyComment}
+            placeholder="댓글을 입력하세요."
+          />
+          {myComment ? (
+            <MyContentActiveButton onClick={myCommnetSubmit} src={up} alt="" />
+          ) : (
+            <MyContentButton src={up} alt="" />
+          )}
+        </MycontentWrapper>
+      )}
       {comment &&
         post.Comments.length > 1 &&
         post.Comments.map((el, index) => {
