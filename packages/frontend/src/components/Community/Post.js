@@ -56,6 +56,19 @@ const BodyImage = styled.img`
   object-fit: cover;
 `;
 
+const ExtraImage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #8e8e8e;
+  cursor: pointer;
+  width: calc(50% - 10px);
+  & > div:nth-child(1) {
+    font-size: 30px;
+  }
+`;
+
 const Content = styled.div`
   display: flex;
   align-items: center;
@@ -168,6 +181,32 @@ const CommunityPost = ({ post }) => {
     [myComment],
   );
 
+  const ImageRender = (post) => {
+    if (post.Images.length < 2) {
+      return (
+        <ImageWrapper>
+          <BodyImage src={post.Images[0].src} alt="" />
+        </ImageWrapper>
+      );
+    } else if (post.Images.length == 2) {
+      return (
+        <ImageWrapper>
+          {post.Images[0]?.src && <BodyImage src={post.Images[0].src} alt="" />}
+          {post.Images[1]?.src && <BodyImage src={post.Images[1].src} alt="" />}
+        </ImageWrapper>
+      );
+    } else {
+      return (
+        <ImageWrapper>
+          {post.Images[0]?.src && <BodyImage src={post.Images[0].src} alt="" />}
+          <ExtraImage>
+            <div>+</div>
+            <div>{post.Images.length - 1}개의 사진 더보기</div>
+          </ExtraImage>
+        </ImageWrapper>
+      );
+    }
+  };
   return (
     <Layout>
       <Header>
@@ -179,16 +218,7 @@ const CommunityPost = ({ post }) => {
       </Header>
       <Body>
         <Content>{post.content}</Content>
-        {post.Images[0]?.src && (
-          <ImageWrapper>
-            {post.Images[0]?.src && (
-              <BodyImage src={post.Images[0].src} alt="" />
-            )}
-            {post.Images[1]?.src && (
-              <BodyImage src={post.Images[1].src} alt="" />
-            )}
-          </ImageWrapper>
-        )}
+        {post.Images[0]?.src && ImageRender(post)}
       </Body>
       <Line></Line>
       <LikeAndComment>
