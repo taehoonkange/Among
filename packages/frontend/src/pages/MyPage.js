@@ -127,6 +127,7 @@ const MyPage = () => {
 export default MyPage;
 
 const ConnectedContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +145,7 @@ const ConnectedContainer = styled.div`
   & .profileImgLocation {
     display: flex;
     position: absolute;
-    top: 370px;
+    top: 275px;
     left: 50%;
     transform: translate(-50%, -50%);
   }

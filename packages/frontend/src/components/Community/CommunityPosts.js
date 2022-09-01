@@ -5,7 +5,6 @@ import CommunityPostInput from "./CommunityPostInput";
 import Post from "./Post";
 const Layout = styled.div`
   width: 40%;
-  height: 500px;
   padding: 10px;
 `;
 const CommunityPosts = () => {

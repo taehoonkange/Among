@@ -10,7 +10,7 @@ const FooterContainer = styled.div`
   display: flex;
   justify-content: center;
   height: 12rem;
-  /* position: absolute; */
+  position: absolute;
   bottom: 0;
   width: 100%;
   background-color: rgb(24, 25, 29);
