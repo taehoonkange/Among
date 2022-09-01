@@ -26,6 +26,7 @@ const initialState = {
       Comments: [
         {
           User: {
+            id: 1,
             nickname: "nero",
             profileImage:
               "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
@@ -55,6 +56,7 @@ const initialState = {
         {
           User: {
             nickname: "hero",
+            id: 2,
             profileImage:
               "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
           },
@@ -115,8 +117,26 @@ const postSlice = createSlice({
       console.log(state);
       // state
     },
+    addReply: (state, { payload }) => {
+      // console.log(state.mainPosts);
+      // console.log(initialState.mainPosts[0]);
+      // console.log(payload.value);
+      // console.log(payload.index);
+      let OB = {
+        User: {
+          nickname: "김동영",
+          profileImage: "https://avatars.githubusercontent.com/u/62373865?v=4",
+        },
+        id: 3,
+        content: payload.value,
+      };
+      state.mainPosts[0].Comments[payload.index - 1].Refs = [
+        ...state.mainPosts[0].Comments[payload.index - 1].Refs,
+        OB,
+      ];
+    },
   },
 });
 
-export const { addPost, addComment } = postSlice.actions;
+export const { addPost, addComment, addReply } = postSlice.actions;
 export default postSlice.reducer;

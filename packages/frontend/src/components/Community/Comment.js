@@ -3,6 +3,8 @@ import styled from "styled-components";
 import thumbsUp from "../../images/thumbs-up.png";
 import CommentReplyComp from "./CommentReply";
 import up from "../../images/up.png";
+import { useDispatch } from "react-redux";
+import { addReply } from "../../slice/postSlice";
 
 const CommentLayout = styled.div`
   display: flex;
@@ -134,7 +136,8 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
-const Comment = ({ el }) => {
+const Comment = ({ el, id }) => {
+  const dispatcher = useDispatch();
   const [like, setLike] = useState(false);
   const [reply, setReply] = useState(false);
   const [myComment, setMyComment] = useState("");
@@ -152,13 +155,29 @@ const Comment = ({ el }) => {
   }, []);
 
   const myCommnetSubmit = useCallback(() => {
+    dispatcher(addReply({ value: myComment, index: id }));
     setMyComment("");
-  }, []);
+  }, [myComment]);
 
   const checkReply = (el) => {
+    console.log(el);
     if (!reply && el.Refs.length > 0) return true;
     else return false;
   };
+
+  const onKeydownChat = useCallback(
+    (e) => {
+      if (e.key === "Enter" && e.keyCode === 13) {
+        if (!e.shiftKey) {
+          e.preventDefault();
+          if (myComment?.trim() !== "") {
+            myCommnetSubmit(e);
+          }
+        }
+      }
+    },
+    [myComment],
+  );
   return (
     <CommentLayout>
       <CommentProfileText>
@@ -204,6 +223,7 @@ const Comment = ({ el }) => {
           <MyComment
             value={myComment}
             onChange={onChangeMyComment}
+            onKeyDown={onKeydownChat}
             onFocus={() =>
               (activeComment.current.style.background =
                 "linear-gradient(90deg, rgb(254, 224, 255) 0%, rgb(218, 235, 255) 100%)")

@@ -154,6 +154,20 @@ const CommunityPost = ({ post }) => {
     [myComment],
   );
 
+  const onKeydownChat = useCallback(
+    (e) => {
+      if (e.key === "Enter" && e.keyCode === 13) {
+        if (!e.shiftKey) {
+          e.preventDefault();
+          if (myComment?.trim() !== "") {
+            myCommnetSubmit(e);
+          }
+        }
+      }
+    },
+    [myComment],
+  );
+
   return (
     <Layout>
       <Header>
@@ -224,6 +238,7 @@ const CommunityPost = ({ post }) => {
           <MyComment
             value={myComment}
             onChange={onChangeMyComment}
+            onKeyDown={onKeydownChat}
             placeholder="댓글을 입력하세요."
           />
           {myComment ? (
@@ -236,7 +251,9 @@ const CommunityPost = ({ post }) => {
       {comment &&
         post.Comments.length > 1 &&
         post.Comments.map((el, index) => {
-          return <CommentComp key={index} el={el}></CommentComp>;
+          return (
+            <CommentComp key={index} el={el} id={el.User.id}></CommentComp>
+          );
         })}
     </Layout>
   );
