@@ -102,8 +102,21 @@ const postSlice = createSlice({
       state.mainPosts = [dummyPost, ...state.mainPosts];
       dummyPost = { ...dummyPost, id: num };
     },
+    addComment: (state, { payload }) => {
+      let OB = {
+        User: {
+          nickname: "김동영",
+          profileImage: "https://avatars.githubusercontent.com/u/62373865?v=4",
+        },
+        content: payload.value,
+        Refs: [],
+      };
+      state.mainPosts[0].Comments = [...state.mainPosts[0].Comments, OB];
+      console.log(state);
+      // state
+    },
   },
 });
 
-export const { addPost } = postSlice.actions;
+export const { addPost, addComment } = postSlice.actions;
 export default postSlice.reducer;

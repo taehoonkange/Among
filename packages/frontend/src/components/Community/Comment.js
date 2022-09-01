@@ -155,6 +155,10 @@ const Comment = ({ el }) => {
     setMyComment("");
   }, []);
 
+  const checkReply = (el) => {
+    if (!reply && el.Refs.length > 0) return true;
+    else return false;
+  };
   return (
     <CommentLayout>
       <CommentProfileText>
@@ -179,7 +183,7 @@ const Comment = ({ el }) => {
         </div>
         <div onClick={() => setReply(true)}>답글달기</div>
       </CommentLikeReply>
-      {!reply && (
+      {checkReply(el) && (
         <Reply>
           <ReplyIcon></ReplyIcon>
           <div onClick={onChangeReply}>답글 {el.Refs.length}개</div>

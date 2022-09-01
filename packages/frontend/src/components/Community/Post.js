@@ -5,8 +5,9 @@ import "./heart.css";
 import commentImg from "../../images/comment.png";
 import commentActiveImg from "../../images/commentActive.png";
 import up from "../../images/up.png";
-
+import { useDispatch } from "react-redux";
 import CommentComp from "./Comment";
+import { addComment } from "../../slice/postSlice";
 const Layout = styled.div`
   margin-top: 10px;
   padding: 15px;
@@ -128,6 +129,7 @@ const MyContentActiveButton = styled.img`
 `;
 
 const CommunityPost = ({ post }) => {
+  const dispatcher = useDispatch();
   const [heart, setHeart] = useState(false);
   const [comment, setComment] = useState(false);
   const [myComment, setMyComment] = useState("");
@@ -143,9 +145,14 @@ const CommunityPost = ({ post }) => {
     setMyComment(e.target.value);
   }, []);
 
-  const myCommnetSubmit = useCallback(() => {
-    setMyComment("");
-  }, []);
+  const myCommnetSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatcher(addComment({ value: myComment }));
+      setMyComment("");
+    },
+    [myComment],
+  );
 
   return (
     <Layout>
