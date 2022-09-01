@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import thumbsUp from "../../images/thumbs-up.png";
 import CommentReplyComp from "./CommentReply";
+import up from "../../images/up.png";
+
 const CommentLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,10 +97,48 @@ const ReplyIcon = styled.div`
   display: inline-block;
   /* filter: invert(41%) sepia(5%) saturate(326%) hue-rotate(182deg); */
 `;
+
+const MycontentWrapper = styled.div`
+  display: flex;
+  margin-left: 55px;
+  margin-bottom: 10px;
+`;
+const MyComment = styled.input`
+  background-color: #f7f7f8;
+  border-radius: 23px;
+  font-size: 16px;
+  box-sizing: border-box;
+  border: none;
+  flex-grow: 1;
+  min-height: 30px;
+  padding: 6px 18px;
+  caret-color: rgb(95, 60, 250);
+  &:focus {
+    outline: none;
+  }
+`;
+
+const MyContentButton = styled.img`
+  align-self: center;
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+  filter: invert(90%) sepia(27%) saturate(0%) hue-rotate(301deg);
+`;
+
+const MyContentActiveButton = styled.img`
+  align-self: center;
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+  filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
+`;
+
 const Comment = ({ el }) => {
-  console.log(el.Refs);
   const [like, setLike] = useState(false);
   const [reply, setReply] = useState(false);
+  const [myComment, setMyComment] = useState("");
+  const activeComment = useRef(null);
   const onChangeLike = useCallback(() => {
     setLike((prev) => !prev);
   }, []);
@@ -106,11 +146,20 @@ const Comment = ({ el }) => {
   const onChangeReply = useCallback(() => {
     setReply((prev) => !prev);
   }, []);
+
+  const onChangeMyComment = useCallback((e) => {
+    setMyComment(e.target.value);
+  }, []);
+
+  const myCommnetSubmit = useCallback(() => {
+    setMyComment("");
+  }, []);
+
   return (
     <CommentLayout>
       <CommentProfileText>
         <img alt="" src={el.User.profileImage} />
-        <CommentText>
+        <CommentText ref={activeComment}>
           <div>{el.User.nickname}</div>
           <div>{el.content}</div>
           {like && (
@@ -128,7 +177,7 @@ const Comment = ({ el }) => {
         >
           좋아요
         </div>
-        <div>답글달기</div>
+        <div onClick={() => setReply(true)}>답글달기</div>
       </CommentLikeReply>
       {!reply && (
         <Reply>
@@ -146,6 +195,27 @@ const Comment = ({ el }) => {
             ></CommentReplyComp>
           );
         })}
+      {reply && (
+        <MycontentWrapper>
+          <MyComment
+            value={myComment}
+            onChange={onChangeMyComment}
+            onFocus={() =>
+              (activeComment.current.style.background =
+                "linear-gradient(90deg, rgb(254, 224, 255) 0%, rgb(218, 235, 255) 100%)")
+            }
+            onBlur={() => {
+              activeComment.current.style.background = "#f7f7f8";
+            }}
+            placeholder="댓글을 입력하세요."
+          />
+          {myComment ? (
+            <MyContentActiveButton onClick={myCommnetSubmit} src={up} alt="" />
+          ) : (
+            <MyContentButton src={up} alt="" />
+          )}
+        </MycontentWrapper>
+      )}
     </CommentLayout>
   );
 };
