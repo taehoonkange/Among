@@ -31,6 +31,26 @@ const initialState = {
               "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
           },
           content: "우와 개정판이 나왔군요~",
+          Refs: [
+            {
+              User: {
+                nickname: "nero",
+                profileImage:
+                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
+              },
+              id: 3,
+              content: "대댓글입니다.",
+            },
+            {
+              User: {
+                nickname: "nero",
+                profileImage:
+                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
+              },
+              id: 4,
+              content: "도돗글입니다.",
+            },
+          ],
         },
         {
           User: {
@@ -39,6 +59,18 @@ const initialState = {
               "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
           },
           content: "얼른 사고싶어요~",
+          Refs: [
+            {
+              User: {
+                nickname: "kero",
+                profileImage:
+                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
+              },
+              id: 3,
+              content:
+                "대댓글입니당당구리1fjksnkjgnkjdgnkbndknbkjdnkbndgnbdnknbkdnkbndkjnbkjngdbndknbgnkdnknb.",
+            },
+          ],
         },
       ],
     },

@@ -1,10 +1,12 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import thumbsUp from "../../images/thumbs-up.png";
+import CommentReplyComp from "./CommentReply";
 const CommentLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 5px;
 `;
 
 const CommentProfileText = styled.div`
@@ -94,11 +96,16 @@ const ReplyIcon = styled.div`
   /* filter: invert(41%) sepia(5%) saturate(326%) hue-rotate(182deg); */
 `;
 const Comment = ({ el }) => {
+  console.log(el.Refs);
   const [like, setLike] = useState(false);
+  const [reply, setReply] = useState(false);
   const onChangeLike = useCallback(() => {
     setLike((prev) => !prev);
   }, []);
 
+  const onChangeReply = useCallback(() => {
+    setReply((prev) => !prev);
+  }, []);
   return (
     <CommentLayout>
       <CommentProfileText>
@@ -123,10 +130,22 @@ const Comment = ({ el }) => {
         </div>
         <div>답글달기</div>
       </CommentLikeReply>
-      <Reply>
-        <ReplyIcon></ReplyIcon>
-        <div>답글 {2}개</div>
-      </Reply>
+      {!reply && (
+        <Reply>
+          <ReplyIcon></ReplyIcon>
+          <div onClick={onChangeReply}>답글 {el.Refs.length}개</div>
+        </Reply>
+      )}
+
+      {reply &&
+        el.Refs.map((element) => {
+          return (
+            <CommentReplyComp
+              key={element.id}
+              element={element}
+            ></CommentReplyComp>
+          );
+        })}
     </CommentLayout>
   );
 };
