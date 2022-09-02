@@ -7,6 +7,7 @@ import commentActiveImg from "../../images/commentActive.png";
 import up from "../../images/up.png";
 import { useDispatch } from "react-redux";
 import CommentComp from "./Comment";
+import ImageZoom from "./ImagesZoom/index";
 import { addComment } from "../../slice/postSlice";
 const Layout = styled.div`
   margin-top: 10px;
@@ -146,6 +147,7 @@ const CommunityPost = ({ post }) => {
   const [heart, setHeart] = useState(false);
   const [comment, setComment] = useState(false);
   const [myComment, setMyComment] = useState("");
+  const [showImagesZome, setShowImagesZoom] = useState(false);
   const onChangeHeart = useCallback(() => {
     setHeart((prev) => !prev);
   }, []);
@@ -181,28 +183,50 @@ const CommunityPost = ({ post }) => {
     [myComment],
   );
 
+  const onZoom = useCallback(() => {
+    setShowImagesZoom(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setShowImagesZoom(false);
+  }, []);
   const ImageRender = (post) => {
     if (post.Images.length < 2) {
       return (
         <ImageWrapper>
-          <BodyImage src={post.Images[0].src} alt="" />
+          <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+          {showImagesZome && (
+            <ImageZoom images={post.Images} onClose={onClose} />
+          )}
         </ImageWrapper>
       );
     } else if (post.Images.length == 2) {
       return (
         <ImageWrapper>
-          {post.Images[0]?.src && <BodyImage src={post.Images[0].src} alt="" />}
-          {post.Images[1]?.src && <BodyImage src={post.Images[1].src} alt="" />}
+          {post.Images[0]?.src && (
+            <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+          )}
+          {post.Images[1]?.src && (
+            <BodyImage src={post.Images[1].src} alt="" onClick={onZoom} />
+          )}
+          {showImagesZome && (
+            <ImageZoom images={post.Images} onClose={onClose} />
+          )}
         </ImageWrapper>
       );
     } else {
       return (
         <ImageWrapper>
-          {post.Images[0]?.src && <BodyImage src={post.Images[0].src} alt="" />}
-          <ExtraImage>
+          {post.Images[0]?.src && (
+            <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+          )}
+          <ExtraImage onClick={onZoom}>
             <div>+</div>
             <div>{post.Images.length - 1}개의 사진 더보기</div>
           </ExtraImage>
+          {showImagesZome && (
+            <ImageZoom images={post.Images} onClose={onClose} />
+          )}
         </ImageWrapper>
       );
     }

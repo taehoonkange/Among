@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { loadPosts } from "../actions/post";
 const initialState = {
   mainPosts: [
     {
@@ -136,6 +136,16 @@ const postSlice = createSlice({
       ];
     },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(loadPosts.pending, (state) => {
+        console.log("pending");
+      })
+      .addCase(loadPosts.fulfilled, (state, action) => {
+        console.log(action.payload);
+        console.log("fulfilled");
+      })
+      .addCase(loadPosts.rejected, (state, action) => {}),
 });
 
 export const { addPost, addComment, addReply } = postSlice.actions;
