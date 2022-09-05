@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TextArea from "./TextArea";
 import { useSelector, useDispatch } from "react-redux";
 import communityImage from "../../images/communityImage.png";
-import { addPost } from "../../slice/postSlice";
+import { deleteImage } from "../../slice/postSlice";
 import { addPostServer, uploadImages } from "../../actions/post";
 import { useRef } from "react";
 const Layout = styled.div`
@@ -50,8 +50,27 @@ const ImageWrapper = styled.div`
 `;
 
 const BodyImage = styled.img`
-  width: calc(50% - 10px);
+  width: 100%;
   object-fit: cover;
+`;
+
+const BodyImageWrapper = styled.div`
+  position: relative;
+  width: calc(50% - 10px);
+`;
+
+const Delete = styled.div`
+  color: white;
+  display: flex;
+  top: 0px;
+  left: calc(100% - 20px);
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  position: absolute;
 `;
 const CommunityPostInput = () => {
   const imagePaths = useSelector((state) => state.posts.imagePaths);
@@ -90,6 +109,12 @@ const CommunityPostInput = () => {
     dispatcher(uploadImages(imageFormData));
   }, []);
 
+  const deleteImageInput = useCallback(
+    (v) => {
+      dispatcher(deleteImage({ value: v }));
+    },
+    [imagePaths],
+  );
   return (
     <Layout>
       <Form encType="multipart/form-date" onSubmit={onSubmit}>
@@ -117,7 +142,12 @@ const CommunityPostInput = () => {
           <ImageWrapper>
             {imagePaths.map((v) => {
               console.log(v);
-              return <BodyImage src={`http://localhost:3065/${v}`} alt="" />;
+              return (
+                <BodyImageWrapper>
+                  <Delete onClick={() => deleteImageInput(v)}>✕</Delete>
+                  <BodyImage src={`http://localhost:3065/${v}`} alt="" />
+                </BodyImageWrapper>
+              );
             })}
           </ImageWrapper>
         </div>

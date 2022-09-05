@@ -144,7 +144,6 @@ const MyContentActiveButton = styled.img`
 `;
 
 const CommunityPost = ({ post }) => {
-  console.log(post);
   const userName = useSelector((state) => state.userData.userName);
   const dispatcher = useDispatch();
   const [heart, setHeart] = useState(false);
