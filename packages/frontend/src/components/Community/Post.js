@@ -5,10 +5,11 @@ import "./heart.css";
 import commentImg from "../../images/comment.png";
 import commentActiveImg from "../../images/commentActive.png";
 import up from "../../images/up.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommentComp from "./Comment";
 import ImageZoom from "./ImagesZoom/index";
 import { addComment } from "../../slice/postSlice";
+import { addCommentServer } from "../../actions/post";
 const Layout = styled.div`
   margin-top: 10px;
   padding: 15px;
@@ -143,6 +144,8 @@ const MyContentActiveButton = styled.img`
 `;
 
 const CommunityPost = ({ post }) => {
+  console.log(post);
+  const userName = useSelector((state) => state.userData.userName);
   const dispatcher = useDispatch();
   const [heart, setHeart] = useState(false);
   const [comment, setComment] = useState(false);
@@ -163,10 +166,15 @@ const CommunityPost = ({ post }) => {
   const myCommnetSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      dispatcher(addComment({ value: myComment }));
+      // dispatcher(
+      //   addComment({ value: myComment, id: post.id, userName: userName }),
+      // );
+      dispatcher(
+        addCommentServer({ id: post.id, res: { content: myComment } }),
+      );
       setMyComment("");
     },
-    [myComment],
+    [myComment, userName],
   );
 
   const onKeydownChat = useCallback(
@@ -194,7 +202,11 @@ const CommunityPost = ({ post }) => {
     if (post.Images.length < 2) {
       return (
         <ImageWrapper>
-          <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+          <BodyImage
+            src={`http://localhost:3065/${post.Images[0]?.src}`}
+            alt=""
+            onClick={onZoom}
+          />
           {showImagesZome && (
             <ImageZoom images={post.Images} onClose={onClose} />
           )}
@@ -204,10 +216,18 @@ const CommunityPost = ({ post }) => {
       return (
         <ImageWrapper>
           {post.Images[0]?.src && (
-            <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+            <BodyImage
+              src={`http://localhost:3065/${post.Images[0]?.src}`}
+              alt=""
+              onClick={onZoom}
+            />
           )}
           {post.Images[1]?.src && (
-            <BodyImage src={post.Images[1].src} alt="" onClick={onZoom} />
+            <BodyImage
+              src={`http://localhost:3065/${post.Images[1]?.src}`}
+              alt=""
+              onClick={onZoom}
+            />
           )}
           {showImagesZome && (
             <ImageZoom images={post.Images} onClose={onClose} />
@@ -218,7 +238,11 @@ const CommunityPost = ({ post }) => {
       return (
         <ImageWrapper>
           {post.Images[0]?.src && (
-            <BodyImage src={post.Images[0].src} alt="" onClick={onZoom} />
+            <BodyImage
+              src={`http://localhost:3065/${post.Images[0]?.src}`}
+              alt=""
+              onClick={onZoom}
+            />
           )}
           <ExtraImage onClick={onZoom}>
             <div>+</div>
@@ -234,7 +258,11 @@ const CommunityPost = ({ post }) => {
   return (
     <Layout>
       <Header>
-        <img src={post.User.profileImage} alt=""></img>
+        {/* <img src={post.User.profileImage} alt=""></img> */}
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s"
+          alt=""
+        ></img>
         <HeaderNameDate>
           <div>{post.User.nickname}</div>
           <div>{dayjs(post.createdAt).format("YYYY.MM.DD HH:mm")}</div>
@@ -303,10 +331,15 @@ const CommunityPost = ({ post }) => {
         </MycontentWrapper>
       )}
       {comment &&
-        post.Comments.length > 1 &&
+        post.Comments.length >= 1 &&
         post.Comments.map((el, index) => {
           return (
-            <CommentComp key={index} el={el} id={el.User.id}></CommentComp>
+            <CommentComp
+              key={index}
+              postid={post.id}
+              el={el}
+              id={el.User.id}
+            ></CommentComp>
           );
         })}
     </Layout>

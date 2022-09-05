@@ -4,6 +4,7 @@ import TextArea from "./TextArea";
 import { useSelector, useDispatch } from "react-redux";
 import communityImage from "../../images/communityImage.png";
 import { addPost } from "../../slice/postSlice";
+import { addPostServer, uploadImages } from "../../actions/post";
 import { useRef } from "react";
 const Layout = styled.div`
   padding: 15px;
@@ -40,22 +41,55 @@ const TextButton = styled.button`
   cursor: pointer;
   margin-left: calc(95% - 40px);
 `;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 20px;
+`;
+
+const BodyImage = styled.img`
+  width: calc(50% - 10px);
+  object-fit: cover;
+`;
 const CommunityPostInput = () => {
   const imagePaths = useSelector((state) => state.posts.imagePaths);
+  const userName = useSelector((state) => state.userData.userName);
+
   const dispatcher = useDispatch();
   const [value, setValue] = useState("");
   const imageInput = useRef();
   const onChange = useCallback((e) => {
     setValue(e.target.value);
   }, []);
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    dispatcher(addPost());
-    setValue("");
-  }, []);
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      imagePaths.forEach((image) => {
+        formData.append("image", image);
+      });
+      formData.append("content", value);
+      dispatcher(addPostServer(formData));
+      // dispatcher(addPost({ value: value, userName: userName }));
+      setValue("");
+    },
+    [value, userName, imagePaths],
+  );
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
+
+  const onChangeImages = useCallback((e) => {
+    console.log("images", e.target.files);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (image) => {
+      imageFormData.append("image", image);
+    });
+    dispatcher(uploadImages(imageFormData));
+  }, []);
+
   return (
     <Layout>
       <Form encType="multipart/form-date" onSubmit={onSubmit}>
@@ -70,13 +104,22 @@ const CommunityPostInput = () => {
         </TextInputImageWrapper>
 
         <div>
-          <input type="file" multiple hidden ref={imageInput} />
+          <input
+            type="file"
+            multiple
+            hidden
+            ref={imageInput}
+            onChange={onChangeImages}
+          />
           <TextButton htmlFor="submit">완료</TextButton>
         </div>
         <div>
-          {imagePaths.map((v) => {
-            return <img src={v} alt=""></img>;
-          })}
+          <ImageWrapper>
+            {imagePaths.map((v) => {
+              console.log(v);
+              return <BodyImage src={`http://localhost:3065/${v}`} alt="" />;
+            })}
+          </ImageWrapper>
         </div>
       </Form>
     </Layout>

@@ -35,7 +35,11 @@ const CommentText = styled.div`
 const CommentReply = ({ element }) => {
   return (
     <CommentProfileText>
-      <img alt="" src={element.User.profileImage} />
+      {/* <img alt="" src={element.User.profileImage} /> */}
+      <img
+        alt=""
+        src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s"
+      />
       <CommentText>
         <div>{element.User.nickname}</div>
         <div>{element.content}</div>

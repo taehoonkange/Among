@@ -15,12 +15,13 @@ const CommunityPosts = () => {
     return () => {};
   }, []);
 
-  const mainPosts = useSelector((state) => state.posts.mainPosts);
+  const mainPosts = useSelector((state) => state.posts);
+  console.log(mainPosts);
   return (
     <Layout>
       <CommunityPostInput></CommunityPostInput>
-      {mainPosts.map((post) => {
-        return <Post key={post.id} post={post}></Post>;
+      {mainPosts.mainPosts.map((post) => {
+        return <Post key={post.id} post={post.post}></Post>;
       })}
     </Layout>
   );

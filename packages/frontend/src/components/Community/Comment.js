@@ -5,6 +5,7 @@ import CommentReplyComp from "./CommentReply";
 import up from "../../images/up.png";
 import { useDispatch } from "react-redux";
 import { addReply } from "../../slice/postSlice";
+import { addReplyServer } from "../../actions/post";
 
 const CommentLayout = styled.div`
   display: flex;
@@ -136,7 +137,8 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
-const Comment = ({ el, id }) => {
+const Comment = ({ el, id, postid }) => {
+  console.log(id);
   const dispatcher = useDispatch();
   const [like, setLike] = useState(false);
   const [reply, setReply] = useState(false);
@@ -155,12 +157,18 @@ const Comment = ({ el, id }) => {
   }, []);
 
   const myCommnetSubmit = useCallback(() => {
-    dispatcher(addReply({ value: myComment, index: id }));
+    // dispatcher(addReply({ value: myComment, index: id }));
+    dispatcher(
+      addReplyServer({
+        postId: postid,
+        refId: el.id,
+        res: { content: myComment },
+      }),
+    );
     setMyComment("");
   }, [myComment]);
 
   const checkReply = (el) => {
-    console.log(el);
     if (!reply && el.Refs.length > 0) return true;
     else return false;
   };
@@ -181,7 +189,11 @@ const Comment = ({ el, id }) => {
   return (
     <CommentLayout>
       <CommentProfileText>
-        <img alt="" src={el.User.profileImage} />
+        {/* <img alt="" src={el.User.profileImage} /> */}
+        <img
+          alt=""
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s"
+        />
         <CommentText ref={activeComment}>
           <div>{el.User.nickname}</div>
           <div>{el.content}</div>

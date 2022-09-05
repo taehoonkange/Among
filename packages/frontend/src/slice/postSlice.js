@@ -1,97 +1,191 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadPosts } from "../actions/post";
+import {
+  loadPosts,
+  addPostServer,
+  addCommentServer,
+  addReplyServer,
+  uploadImages,
+} from "../actions/post";
+const shortid = require("shortid");
 const initialState = {
   mainPosts: [
     {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "하꼬지할꼬지",
-        profileImage:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s",
+      post: {
+        id: 6,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T11:31:03.000Z",
+        updatedAt: "2022-09-02T11:31:03.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
+        },
+        Images: [],
+        Comments: [],
+        Likers: [],
       },
-      createdAt: "2022-08-31T13:00:25.000Z",
-      content: "첫 번째 게시글",
-      Images: [
-        {
-          src: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
+      like_count: 0,
+    },
+    {
+      post: {
+        id: 5,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T10:17:35.000Z",
+        updatedAt: "2022-09-02T10:17:35.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
         },
-        {
-          src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg",
+        Images: [],
+        Comments: [],
+        Likers: [],
+      },
+      like_count: 0,
+    },
+    {
+      post: {
+        id: 4,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T10:17:34.000Z",
+        updatedAt: "2022-09-02T10:17:34.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
         },
-        {
-          src: "https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg",
+        Images: [],
+        Comments: [],
+        Likers: [],
+      },
+      like_count: 0,
+    },
+    {
+      post: {
+        id: 3,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T10:17:34.000Z",
+        updatedAt: "2022-09-02T10:17:34.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
         },
-      ],
-      Comments: [
-        {
-          User: {
-            id: 1,
-            nickname: "nero",
-            profileImage:
-              "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
-          },
-          content: "우와 개정판이 나왔군요~",
-          Refs: [
-            {
-              User: {
-                nickname: "nero",
-                profileImage:
-                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
-              },
-              id: 3,
-              content: "대댓글입니다.",
-            },
-            {
-              User: {
-                nickname: "nero",
-                profileImage:
-                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
-              },
-              id: 4,
-              content: "도돗글입니다.",
-            },
-          ],
+        Images: [],
+        Comments: [],
+        Likers: [],
+      },
+      like_count: 0,
+    },
+    {
+      post: {
+        id: 2,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T10:17:33.000Z",
+        updatedAt: "2022-09-02T10:17:33.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
         },
-        {
-          User: {
-            nickname: "hero",
+        Images: [],
+        Comments: [],
+        Likers: [],
+      },
+      like_count: 0,
+    },
+    {
+      post: {
+        id: 1,
+        content: "게시물 내용 입력",
+        createdAt: "2022-09-02T10:17:31.000Z",
+        updatedAt: "2022-09-02T10:17:31.000Z",
+        UserId: 1,
+        ImageId: null,
+        User: {
+          id: 1,
+          nickname: "KTH",
+        },
+        Images: [],
+        Comments: [
+          {
             id: 2,
-            profileImage:
-              "https://weverse-phinf.pstatic.net/MjAyMjA4MDRfMTUx/MDAxNjU5NTc1ODMzMzMy.GmmXDzaqn6TjOKbC3iNjvjbA5nn7AZJ2EAnrOIgptpEg.dRkV0DzRqk_kkSfbqkWFoUQ-0dorOh6-8BuGNukOGbMg.PNG/44060680316209887b7ddb13c-89d4-4074-b011-2a4b8a027c75.png?type=s92",
-          },
-          content: "얼른 사고싶어요~",
-          Refs: [
-            {
-              User: {
-                nickname: "kero",
-                profileImage:
-                  "https://weverse-phinf.pstatic.net/MjAyMjA4MjdfMjk5/MDAxNjYxNTU5OTIxODg5.8dfNoVMllOqZeuuzeNYQkm2ibhUXXrTPSVdf2Q3yY_Eg.mQwb_hIlK1Okya0IGOsO39lumxZvaDYHmTvaAk5uOZIg.JPEG/Weverse_fe73e.jpg?type=s72",
-              },
-              id: 3,
-              content:
-                "대댓글입니당당구리1fjksnkjgnkjdgnkbndknbkjdnkbndgnbdnknbkdnkbndkjnbkjngdbndknbgnkdnknb.",
+            content: "any",
+            inherited: true,
+            createdAt: "2022-09-02T11:03:27.000Z",
+            updatedAt: "2022-09-02T11:03:27.000Z",
+            UserId: 1,
+            PostId: 1,
+            User: {
+              id: 1,
+              nickname: "KTH",
             },
-          ],
-        },
-      ],
+            Refs: [],
+          },
+          {
+            id: 1,
+            content: "any",
+            inherited: false,
+            createdAt: "2022-09-02T11:03:05.000Z",
+            updatedAt: "2022-09-02T11:03:05.000Z",
+            UserId: 1,
+            PostId: 1,
+            User: {
+              id: 1,
+              nickname: "KTH",
+            },
+            Refs: [
+              {
+                id: 2,
+                content: "any",
+                inherited: true,
+                createdAt: "2022-09-02T11:03:27.000Z",
+                updatedAt: "2022-09-02T11:03:27.000Z",
+                UserId: 1,
+                PostId: 1,
+                Ref: {
+                  createdAt: "2022-09-02T11:03:27.000Z",
+                  updatedAt: "2022-09-02T11:03:27.000Z",
+                  CommentId: 1,
+                  RefId: 2,
+                },
+                User: {
+                  id: 1,
+                  nickname: "KTH",
+                },
+              },
+            ],
+          },
+        ],
+        Likers: [],
+      },
+      like_count: 0,
     },
   ],
   imagePaths: [],
-  postAdded: false,
 };
-let num = 2;
-let dummyPost = {
-  id: num,
-  content: "더미데이터입니다.",
-  User: {
-    id: 1,
-    nickname: "김동영",
-    profileImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s",
+let dummy = {
+  post: {
+    id: shortid.generate(),
+    content: "테스트 게시물",
+    createdAt: Date(),
+    updatedAt: Date(),
+    UserId: 1,
+    ImageId: null,
+    User: {
+      id: 1,
+      nickname: "KTH",
+    },
+    Images: [],
+    Comments: [],
+    Likers: [],
   },
-  Images: [],
-  Comments: [],
+  like_count: 0,
 };
 
 const postSlice = createSlice({
@@ -100,22 +194,47 @@ const postSlice = createSlice({
   reducers: {
     addPost: (state, { payload }) => {
       console.log("first");
-      num++;
-      state.mainPosts = [dummyPost, ...state.mainPosts];
-      dummyPost = { ...dummyPost, id: num };
+      // num++;
+      let dummyPost = { ...dummy };
+      dummyPost.post = { ...dummyPost.post, content: payload.value };
+      dummyPost.post.User = {
+        ...dummyPost.post.User,
+        nickname: payload.userName,
+      };
+      console.log(payload.userName);
+      state = [dummyPost, ...state];
+      console.log([dummyPost, ...state]);
+      // dummyPost = { ...dummyPost, id: num };
+      return state;
     },
     addComment: (state, { payload }) => {
+      console.log(payload.id);
+      const target = state.findIndex((v) => v.post.id === payload.id);
+      console.log(target);
       let OB = {
-        User: {
-          nickname: "김동영",
-          profileImage: "https://avatars.githubusercontent.com/u/62373865?v=4",
-        },
+        id: shortid.generate(),
         content: payload.value,
+        inherited: true,
+        createdAt: Date(),
+        updatedAt: Date(),
+        UserId: 1,
+        PostId: 1,
+        User: {
+          id: 1,
+          nickname: payload.userName,
+        },
         Refs: [],
       };
-      state.mainPosts[0].Comments = [...state.mainPosts[0].Comments, OB];
-      console.log(state);
-      // state
+      // let OB = {
+      //   User: {
+      //     nickname: "김동영",
+      //     profileImage: "https://avatars.githubusercontent.com/u/62373865?v=4",
+      //   },
+      //   content: payload.value,
+      //   Refs: [],
+      // };
+      state[target].post.Comments = [...state[target].post.Comments, OB];
+      return state;
     },
     addReply: (state, { payload }) => {
       // console.log(state.mainPosts);
@@ -144,8 +263,44 @@ const postSlice = createSlice({
       .addCase(loadPosts.fulfilled, (state, action) => {
         console.log(action.payload);
         console.log("fulfilled");
+        state.mainPosts = action.payload;
+        return state;
       })
-      .addCase(loadPosts.rejected, (state, action) => {}),
+      .addCase(loadPosts.rejected, (state, action) => {})
+      .addCase(addPostServer.pending, (state) => {})
+      .addCase(addPostServer.fulfilled, (state, action) => {
+        state.mainPosts = action.payload;
+        state.imagePaths = [];
+        return state;
+      })
+      .addCase(addPostServer.rejected, (state) => {
+        console.log("rejected");
+      })
+      .addCase(addCommentServer.pending, (state, action) => {
+        console.log("pending");
+      })
+      .addCase(addCommentServer.fulfilled, (state, action) => {
+        state.mainPosts = action.payload;
+        return state;
+      })
+      .addCase(addCommentServer.rejected, (state, action) => {
+        console.log("rejected");
+      })
+      .addCase(addReplyServer.pending, (state, action) => {
+        console.log("pending");
+      })
+      .addCase(addReplyServer.fulfilled, (state, action) => {
+        state.mainPosts = action.payload;
+        return state;
+      })
+      .addCase(addReplyServer.rejected, (state, action) => {})
+      .addCase(uploadImages.pending, (state) => {})
+      .addCase(uploadImages.fulfilled, (state, action) => {
+        // state.uploadImagesLoading = false;
+        // state.uploadImagesDone = true;
+        state.imagePaths = [...state.imagePaths, action.payload];
+      })
+      .addCase(uploadImages.rejected, (state, action) => {}),
 });
 
 export const { addPost, addComment, addReply } = postSlice.actions;
