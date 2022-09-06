@@ -5,6 +5,12 @@ import {
   addCommentServer,
   addReplyServer,
   uploadImages,
+  uploadEditImages,
+  deletePostServer,
+  postLikeServer,
+  postDeleteLikeServer,
+  editPostServer,
+  deleteCommentServer,
 } from "../actions/post";
 const shortid = require("shortid");
 const initialState = {
@@ -25,7 +31,7 @@ const initialState = {
         Comments: [],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
     {
       post: {
@@ -43,7 +49,7 @@ const initialState = {
         Comments: [],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
     {
       post: {
@@ -61,7 +67,7 @@ const initialState = {
         Comments: [],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
     {
       post: {
@@ -79,7 +85,7 @@ const initialState = {
         Comments: [],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
     {
       post: {
@@ -97,7 +103,7 @@ const initialState = {
         Comments: [],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
     {
       post: {
@@ -164,10 +170,11 @@ const initialState = {
         ],
         Likers: [],
       },
-      like_count: 0,
+      likeCount: 0,
     },
   ],
   imagePaths: [],
+  editImagePaths: [],
 };
 let dummy = {
   post: {
@@ -185,7 +192,7 @@ let dummy = {
     Comments: [],
     Likers: [],
   },
-  like_count: 0,
+  likeCount: 0,
 };
 
 const postSlice = createSlice({
@@ -259,6 +266,19 @@ const postSlice = createSlice({
         (image) => image[0] !== payload.value[0],
       );
     },
+    editPostImage: (state, { payload }) => {
+      console.log(payload.value);
+      let res = [];
+      payload.value.map((v) => res.push(v.src));
+      state.editImagePaths = res;
+      console.log(state.editImagePaths);
+      return state;
+    },
+    deleteEditImage: (state, { payload }) => {
+      state.editImagePaths = state.editImagePaths.filter(
+        (image) => image[0] !== payload.value[0],
+      );
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -305,8 +325,90 @@ const postSlice = createSlice({
         // state.uploadImagesDone = true;
         state.imagePaths = [...state.imagePaths, action.payload];
       })
-      .addCase(uploadImages.rejected, (state, action) => {}),
+      .addCase(uploadImages.rejected, (state, action) => {})
+      .addCase(uploadEditImages.pending, (state) => {})
+      .addCase(uploadEditImages.fulfilled, (state, action) => {
+        state.editImagePaths = [...state.editImagePaths, action.payload];
+      })
+      .addCase(uploadEditImages.rejected, (state, action) => {})
+      .addCase(deletePostServer.pending, (state) => {})
+      .addCase(deletePostServer.fulfilled, (state, action) => {
+        // state.mainPosts = action.payload;
+        // console.log(action.payload);
+        // return state;
+      })
+      .addCase(deletePostServer.rejected, (state) => {})
+      .addCase(postLikeServer.pending, (state) => {})
+      .addCase(postLikeServer.fulfilled, (state, action) => {
+        let test = state.mainPosts.map((el) => {
+          console.log(el);
+          if (action.payload.post.id === el.post.id) {
+            return action.payload;
+          }
+          return el;
+        });
+        console.log(test);
+        state.mainPosts = test;
+        console.log(action.payload);
+        console.log(state.mainPosts);
+        return state;
+      })
+      .addCase(postLikeServer.rejected, (state) => {})
+      .addCase(postDeleteLikeServer.pending, (state) => {})
+      .addCase(postDeleteLikeServer.fulfilled, (state, action) => {
+        let test = state.mainPosts.map((el) => {
+          console.log(el);
+          if (action.payload.post.id === el.post.id) {
+            return action.payload;
+          }
+          return el;
+        });
+        console.log(test);
+        state.mainPosts = test;
+        console.log(action.payload);
+        console.log(state.mainPosts);
+        // return state;
+      })
+      .addCase(postDeleteLikeServer.rejected, (state) => {})
+      .addCase(editPostServer.pending, (state) => {})
+      .addCase(editPostServer.fulfilled, (state, action) => {
+        let test = state.mainPosts.map((el) => {
+          console.log(el);
+          if (action.payload.post.id === el.post.id) {
+            return action.payload;
+          }
+          return el;
+        });
+        state.mainPosts = test;
+        state.editImagePaths = [];
+        return state;
+      })
+      .addCase(editPostServer.rejected, (state) => {
+        console.log("rejected");
+      })
+      .addCase(deleteCommentServer.pending, (state) => {})
+      .addCase(deleteCommentServer.fulfilled, (state, action) => {
+        let test = state.mainPosts.map((el) => {
+          console.log(el);
+          if (action.payload.post.id === el.post.id) {
+            return action.payload;
+          }
+          return el;
+        });
+        state.mainPosts = test;
+        return state;
+      })
+      .addCase(deleteCommentServer.rejected, (state) => {
+        console.log("rejected");
+      }),
 });
 
-export const { addPost, addComment, addReply, deleteImage } = postSlice.actions;
+export const {
+  addPost,
+  addComment,
+  addReply,
+  deleteImage,
+  editPostImage,
+  deleteEditImage,
+} = postSlice.actions;
 export default postSlice.reducer;

@@ -6,6 +6,7 @@ const initialState = {
   userData: JSON.parse(localStorage.getItem("userAccount")),
   userName: "",
   userProfile: "",
+  userID: 0,
 };
 
 const userDataSlice = createSlice({
@@ -28,6 +29,9 @@ const userDataSlice = createSlice({
     setUserProfile: (state, { payload }) => {
       state.userProfile = payload.value;
     },
+    setUserID: (state, { payload }) => {
+      state.userID = payload.value;
+    },
   },
 });
 
@@ -37,5 +41,6 @@ export const {
   setIsConnect,
   setUserName,
   setUserProfile,
+  setUserID,
 } = userDataSlice.actions;
 export default userDataSlice.reducer;

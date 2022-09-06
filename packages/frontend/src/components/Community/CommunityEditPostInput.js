@@ -3,15 +3,11 @@ import styled from "styled-components";
 import TextArea from "./TextArea";
 import { useSelector, useDispatch } from "react-redux";
 import communityImage from "../../images/communityImage.png";
-import { deleteImage } from "../../slice/postSlice";
-import { addPostServer, uploadImages } from "../../actions/post";
+import { deleteEditImage } from "../../slice/postSlice";
+import { editPostServer, uploadEditImages } from "../../actions/post";
 import { useRef } from "react";
 const Layout = styled.div`
-  padding: 15px;
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-  border-radius: 6px;
 `;
 const Form = styled.form``;
 const Title = styled.div`
@@ -72,12 +68,12 @@ const Delete = styled.div`
   background-color: black;
   position: absolute;
 `;
-const CommunityPostInput = () => {
-  const imagePaths = useSelector((state) => state.posts.imagePaths);
+const CommunityPostInput = ({ setEdit, postId, image, text }) => {
+  const editImagePaths = useSelector((state) => state.posts.editImagePaths);
   const userName = useSelector((state) => state.userData.userName);
 
   const dispatcher = useDispatch();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(text);
   const imageInput = useRef();
   const onChange = useCallback((e) => {
     setValue(e.target.value);
@@ -86,15 +82,15 @@ const CommunityPostInput = () => {
     (e) => {
       e.preventDefault();
       const formData = new FormData();
-      imagePaths.forEach((image) => {
+      editImagePaths.forEach((image) => {
         formData.append("image", image);
       });
       formData.append("content", value);
-      dispatcher(addPostServer(formData));
-      // dispatcher(addPost({ value: value, userName: userName }));
+      dispatcher(editPostServer({ formData: formData, postId: postId }));
       setValue("");
+      setEdit(false);
     },
-    [value, userName, imagePaths],
+    [value, userName, editImagePaths],
   );
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
@@ -106,20 +102,19 @@ const CommunityPostInput = () => {
     [].forEach.call(e.target.files, (image) => {
       imageFormData.append("image", image);
     });
-    dispatcher(uploadImages(imageFormData));
+    dispatcher(uploadEditImages(imageFormData));
   }, []);
 
   const deleteImageInput = useCallback(
     (v) => {
-      dispatcher(deleteImage({ value: v }));
+      dispatcher(deleteEditImage({ value: v }));
     },
-    [imagePaths],
+    [editImagePaths],
   );
   return (
     <Layout>
       <Form encType="multipart/form-date" onSubmit={onSubmit}>
-        <Title>포스트 쓰기</Title>
-        <TextArea value={value} onChange={onChange}></TextArea>
+        <TextArea Edit value={value} onChange={onChange}></TextArea>
         <TextInputImageWrapper>
           <TextInputImage
             onClick={onClickImageUpload}
@@ -140,7 +135,7 @@ const CommunityPostInput = () => {
         </div>
         <div>
           <ImageWrapper>
-            {imagePaths.map((v) => {
+            {editImagePaths.map((v) => {
               return (
                 <BodyImageWrapper>
                   <Delete onClick={() => deleteImageInput(v)}>✕</Delete>

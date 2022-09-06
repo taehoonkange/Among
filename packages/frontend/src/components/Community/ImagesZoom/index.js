@@ -9,7 +9,6 @@ import {
   Indicator,
 } from "./style";
 const ImagesZoom = ({ images, onClose }) => {
-  console.log(images);
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <Overlay>

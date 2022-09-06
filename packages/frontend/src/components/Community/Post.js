@@ -1,15 +1,27 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import "./heart.css";
 import commentImg from "../../images/comment.png";
+import editImage from "../../images/edit.png";
+import deleteImage from "../../images/delete.png";
 import commentActiveImg from "../../images/commentActive.png";
 import up from "../../images/up.png";
 import { useDispatch, useSelector } from "react-redux";
 import CommentComp from "./Comment";
 import ImageZoom from "./ImagesZoom/index";
-import { addComment } from "../../slice/postSlice";
-import { addCommentServer } from "../../actions/post";
+import { addComment, editPostImage } from "../../slice/postSlice";
+
+import {
+  addCommentServer,
+  deletePostServer,
+  postDeleteLikeServer,
+  postLikeServer,
+} from "../../actions/post";
+import TextArea from "./TextArea";
+import CommunityPostInput from "./CommunityPostInput";
+import CommunityEditPostInput from "./CommunityEditPostInput";
+import ConfirmModal from "../ConfirmModal";
 const Layout = styled.div`
   margin-top: 10px;
   padding: 15px;
@@ -108,6 +120,17 @@ const CommentImg = styled.img`
       : "filter: invert(56%) sepia(0%) saturate(15%) hue-rotate(206deg);"}
 `;
 
+const EditImg = styled.img`
+  width: 14px;
+  cursor: pointer;
+  margin-left: 20px;
+  height: 14px;
+  ${(props) =>
+    props.edit
+      ? null
+      : "filter: invert(56%) sepia(0%) saturate(15%) hue-rotate(206deg);"}
+`;
+
 const MycontentWrapper = styled.div`
   display: flex;
   margin-bottom: 10px;
@@ -143,13 +166,31 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
-const CommunityPost = ({ post }) => {
+const CommunityPost = ({ like, post }) => {
   const userName = useSelector((state) => state.userData.userName);
+  const userID = useSelector((state) => state.userData.userID);
   const dispatcher = useDispatch();
   const [heart, setHeart] = useState(false);
   const [comment, setComment] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
   const [myComment, setMyComment] = useState("");
   const [showImagesZome, setShowImagesZoom] = useState(false);
+  console.log(post);
+  console.log(heart);
+  useEffect(() => {
+    post.Likers.map((el) => {
+      if (el.Like.UserId === userID) {
+        console.log(el.Like.UserId);
+        setHeart(true);
+      }
+    });
+    return () => {};
+  }, [userID]);
+
+  useEffect(() => {
+    console.log("heart 가 언제 바뀌는지 탐색");
+  }, [heart]);
   const onChangeHeart = useCallback(() => {
     setHeart((prev) => !prev);
   }, []);
@@ -267,10 +308,20 @@ const CommunityPost = ({ post }) => {
           <div>{dayjs(post.createdAt).format("YYYY.MM.DD HH:mm")}</div>
         </HeaderNameDate>
       </Header>
-      <Body>
-        <Content>{post.content}</Content>
-        {post.Images[0]?.src && ImageRender(post)}
-      </Body>
+      {edit ? (
+        <CommunityEditPostInput
+          setEdit={setEdit}
+          postId={post.id}
+          image={post.Images}
+          text={post.content}
+        ></CommunityEditPostInput>
+      ) : (
+        <Body>
+          <Content>{post.content}</Content>
+          {post.Images[0]?.src && ImageRender(post)}
+        </Body>
+      )}
+
       <Line></Line>
       <LikeAndComment>
         <Like>
@@ -284,17 +335,36 @@ const CommunityPost = ({ post }) => {
               marginRight: "7px",
             }}
           >
-            <div onClick={onChangeHeart} class="heart"></div>
             <div
-              onClick={onChangeHeart}
-              class={heart ? `animation-heart animation` : `animation-heart`}
+              onClick={() => {
+                onChangeHeart();
+                dispatcher(postLikeServer({ postId: post.id }));
+              }}
+              className="heart"
+            ></div>
+            <div
+              onClick={() => {
+                onChangeHeart();
+                dispatcher(postDeleteLikeServer({ postId: post.id }));
+              }}
+              className={
+                heart ? `animation-heart animation` : `animation-heart`
+              }
             ></div>
           </div>
           <div
-            onClick={onChangeHeart}
+            onClick={() => {
+              onChangeHeart();
+              if (heart) {
+                dispatcher(postDeleteLikeServer({ postId: post.id }));
+              } else {
+                dispatcher(postLikeServer({ postId: post.id }));
+              }
+            }}
             style={{ cursor: "pointer", color: heart && "#ff2727" }}
           >
-            응원하기
+            {like}
+            {/* 응원하기 */}
           </div>
         </Like>
         <Comment>
@@ -312,6 +382,38 @@ const CommunityPost = ({ post }) => {
             댓글
           </div>
         </Comment>
+        <EditImg
+          onClick={() => setEdit((prev) => !prev)}
+          src={editImage}
+          alt=""
+        />
+        <div
+          onClick={() => {
+            setEdit((prev) => !prev);
+            dispatcher(editPostImage({ value: post.Images }));
+          }}
+          style={{ marginLeft: "3px", color: edit && "rgb(95, 60, 250)" }}
+        >
+          수정
+        </div>
+        <EditImg
+          onClick={() => {
+            setDeletePost(true);
+          }}
+          src={deleteImage}
+          alt=""
+        />
+        <div
+          onClick={() => {
+            setDeletePost(true);
+          }}
+          style={{
+            marginLeft: "3px",
+            cursor: "pointer",
+          }}
+        >
+          삭제
+        </div>
       </LikeAndComment>
       <Line></Line>
       {comment && (
@@ -336,11 +438,15 @@ const CommunityPost = ({ post }) => {
             <CommentComp
               key={index}
               postid={post.id}
+              commentId={el.id}
               el={el}
               id={el.User.id}
             ></CommentComp>
           );
         })}
+      {deletePost && (
+        <ConfirmModal setDeletePost={setDeletePost} id={post.id}></ConfirmModal>
+      )}
     </Layout>
   );
 };

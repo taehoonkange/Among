@@ -3,9 +3,9 @@ import styled from "styled-components";
 import thumbsUp from "../../images/thumbs-up.png";
 import CommentReplyComp from "./CommentReply";
 import up from "../../images/up.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addReply } from "../../slice/postSlice";
-import { addReplyServer } from "../../actions/post";
+import { addReplyServer, deleteCommentServer } from "../../actions/post";
 
 const CommentLayout = styled.div`
   display: flex;
@@ -137,8 +137,10 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
-const Comment = ({ el, id, postid }) => {
+const Comment = ({ el, id, postid, commentId }) => {
+  const userID = useSelector((state) => state.userData.userID);
   console.log(id);
+  const dispatch = useDispatch();
   const dispatcher = useDispatch();
   const [like, setLike] = useState(false);
   const [reply, setReply] = useState(false);
@@ -213,6 +215,30 @@ const Comment = ({ el, id, postid }) => {
           좋아요
         </div>
         <div onClick={() => setReply(true)}>답글달기</div>
+        {userID === id && (
+          <>
+            <div
+              onClick={() => {
+                dispatch(
+                  deleteCommentServer({ commentId: commentId, postId: postid }),
+                );
+              }}
+              style={{ marginLeft: "9px" }}
+            >
+              수정
+            </div>
+            <div
+              onClick={() => {
+                dispatch(
+                  deleteCommentServer({ commentId: commentId, postId: postid }),
+                );
+              }}
+              style={{ marginLeft: "9px" }}
+            >
+              삭제
+            </div>
+          </>
+        )}
       </CommentLikeReply>
       {checkReply(el) && (
         <Reply>
@@ -226,6 +252,7 @@ const Comment = ({ el, id, postid }) => {
           return (
             <CommentReplyComp
               key={element.id}
+              postId={postid}
               element={element}
             ></CommentReplyComp>
           );

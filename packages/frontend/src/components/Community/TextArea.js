@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
-const TextArea = ({ value, onChange }) => {
+const TextArea = ({ Edit, value, onChange }) => {
   const ref = useRef(null);
-
   useEffect(() => {
+    ref.current.focus();
+    ref.current.setSelectionRange(value.length, value.length);
     if (ref === null || ref.current === null) {
       return;
     }
@@ -24,8 +25,10 @@ const TextArea = ({ value, onChange }) => {
       <AutoResizeTextArea
         value={value}
         onChange={onChange}
+        onFocus
         rows={1}
-        placeholder="Among에 메세지를 남겨보세요..."
+        style={{ fontSize: Edit && "16px", fontWeight: Edit && "500" }}
+        placeholder={Edit ? null : "Among에 메세지를 남겨보세요..."}
         ref={ref}
         onInput={handleResizeHeight}
       />

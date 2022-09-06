@@ -73,3 +73,101 @@ export const uploadImages = createAsyncThunk(
     }
   },
 );
+
+export const uploadEditImages = createAsyncThunk(
+  "post/uploadEditImages",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("community/images", data); // POST /post/images
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const editPostServer = createAsyncThunk(
+  "patch/editPostServer",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      await axios.patch(`community/post/${data.postId}`, data.formData);
+      // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.id));
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deletePostServer = createAsyncThunk(
+  "delete/deletePostServer",
+  async (data, thunkAPI) => {
+    try {
+      await axios.delete(`/community/${data.id}`);
+      const response2 = await axios.get(`community/posts/${100}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const postLikeServer = createAsyncThunk(
+  "patch/postLikeServer",
+  async (data, thunkAPI) => {
+    try {
+      await axios.patch(`/community/${data.postId}/like`);
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const postDeleteLikeServer = createAsyncThunk(
+  "delete/postDeleteLikeServer",
+  async (data, thunkAPI) => {
+    try {
+      await axios.delete(`/community/${data.postId}/like`);
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteCommentServer = createAsyncThunk(
+  "delete/deleteCommentServer",
+  async (data, thunkAPI) => {
+    try {
+      await axios.delete(`/community/comment/${data.commentId}`);
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteReplyServer = createAsyncThunk(
+  "delete/deleteReplyServer",
+  async (data, thunkAPI) => {
+    try {
+      await axios.delete(`/community/refcomment/${data.refCommentId}`);
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);

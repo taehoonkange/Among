@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const CommentProfileText = styled.div`
@@ -32,7 +33,10 @@ const CommentText = styled.div`
   }
 `;
 
-const CommentReply = ({ element }) => {
+const CommentReply = ({ element, postId }) => {
+  console.log(element);
+  const userID = useSelector((state) => state.userData.userID);
+
   return (
     <CommentProfileText>
       {/* <img alt="" src={element.User.profileImage} /> */}
