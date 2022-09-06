@@ -127,7 +127,7 @@ const EditImg = styled.img`
   height: 14px;
   ${(props) =>
     props.edit
-      ? null
+      ? "filter: invert(20%) sepia(72%) saturate(5364%) hue-rotate(249deg);"
       : "filter: invert(56%) sepia(0%) saturate(15%) hue-rotate(206deg);"}
 `;
 
@@ -384,6 +384,7 @@ const CommunityPost = ({ like, post }) => {
         </Comment>
         <EditImg
           onClick={() => setEdit((prev) => !prev)}
+          edit={edit}
           src={editImage}
           alt=""
         />
