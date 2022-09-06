@@ -11,6 +11,7 @@ import {
   postDeleteLikeServer,
   editPostServer,
   deleteCommentServer,
+  deleteReplyServer,
 } from "../actions/post";
 const shortid = require("shortid");
 const initialState = {
@@ -399,6 +400,21 @@ const postSlice = createSlice({
         return state;
       })
       .addCase(deleteCommentServer.rejected, (state) => {
+        console.log("rejected");
+      })
+      .addCase(deleteReplyServer.pending, (state) => {})
+      .addCase(deleteReplyServer.fulfilled, (state, action) => {
+        let test = state.mainPosts.map((el) => {
+          console.log(el);
+          if (action.payload.post.id === el.post.id) {
+            return action.payload;
+          }
+          return el;
+        });
+        state.mainPosts = test;
+        return state;
+      })
+      .addCase(deleteReplyServer.rejected, (state) => {
         console.log("rejected");
       }),
 });
