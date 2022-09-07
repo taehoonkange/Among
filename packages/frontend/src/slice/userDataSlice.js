@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { getUserDataServer } from "../actions/user";
+
 const initialState = {
   account: "",
   isConnect: false,
@@ -7,6 +9,8 @@ const initialState = {
   userName: "",
   userProfile: "",
   userID: 0,
+  userType: "NORMAL",
+  communityId: 0,
 };
 
 const userDataSlice = createSlice({
@@ -33,6 +37,16 @@ const userDataSlice = createSlice({
       state.userID = payload.value;
     },
   },
+  extraReducers: (builder) =>
+    builder
+      .addCase(getUserDataServer.pending, (state) => {})
+      .addCase(getUserDataServer.fulfilled, (state, { payload }) => {
+        state.userID = payload.id;
+        state.userType = payload.userType;
+        state.userName = payload.nickname;
+        state.communityId = payload.communityId;
+      })
+      .addCase(getUserDataServer.rejected, (state, action) => {}),
 });
 
 export const {

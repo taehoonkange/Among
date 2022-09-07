@@ -56,7 +56,6 @@ const EditForm = styled.input`
 `;
 
 const CommentReply = ({ element, commentId, postId }) => {
-  console.log(element);
   const userID = useSelector((state) => state.userData.userID);
   const dispatch = useDispatch();
   const [content, setContent] = useState(element.content);

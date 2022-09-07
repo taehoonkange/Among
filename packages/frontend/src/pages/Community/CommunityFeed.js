@@ -6,6 +6,7 @@ import "./test.css";
 import { useDispatch, useSelector } from "react-redux";
 import { testLoadPosts } from "../../actions/post";
 import { resetHasMorePosts } from "../../slice/postSlice";
+import GetUserData from "../../hooks/GetUserData";
 const Layout = styled.div`
   display: flex;
   justify-content: center;
@@ -39,8 +40,9 @@ const Community = () => {
     };
   }, []);
 
+  GetUserData();
   return (
-    <Layout style={{}} onScroll={handleScroll}>
+    <Layout onScroll={handleScroll}>
       <CommunityCategory></CommunityCategory>
       <CommunityPost></CommunityPost>
     </Layout>
