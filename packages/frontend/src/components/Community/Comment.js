@@ -5,7 +5,11 @@ import CommentReplyComp from "./CommentReply";
 import up from "../../images/up.png";
 import { useDispatch, useSelector } from "react-redux";
 import { addReply } from "../../slice/postSlice";
-import { addReplyServer, deleteCommentServer } from "../../actions/post";
+import {
+  addReplyServer,
+  deleteCommentServer,
+  editCommentServer,
+} from "../../actions/post";
 
 const CommentLayout = styled.div`
   display: flex;
@@ -137,15 +141,27 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
+const EditForm = styled.input`
+  border: none;
+  font-size: 16px;
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+`;
 const Comment = ({ el, id, postid, commentId }) => {
   const userID = useSelector((state) => state.userData.userID);
   console.log(id);
+  console.log(commentId);
   const dispatch = useDispatch();
   const dispatcher = useDispatch();
   const [like, setLike] = useState(false);
   const [reply, setReply] = useState(false);
+  const [content, setContent] = useState(el.content);
+  const [edit, setEdit] = useState(false);
   const [myComment, setMyComment] = useState("");
   const activeComment = useRef(null);
+  const editRef = useRef(null);
   const onChangeLike = useCallback(() => {
     setLike((prev) => !prev);
   }, []);
@@ -188,6 +204,31 @@ const Comment = ({ el, id, postid, commentId }) => {
     },
     [myComment],
   );
+
+  const onKeydownEdit = useCallback(
+    (e) => {
+      if (e.key === "Enter" && e.keyCode === 13) {
+        if (!e.shiftKey) {
+          e.preventDefault();
+          if (content?.trim() !== "") {
+            dispatch(
+              editCommentServer({
+                CommentId: commentId,
+                postId: postid,
+                res: { content: content },
+              }),
+            );
+            setEdit(false);
+          }
+        }
+      }
+    },
+    [content, commentId, postid],
+  );
+
+  const onChangeEditContent = useCallback((e) => {
+    setContent(e.target.value);
+  }, []);
   return (
     <CommentLayout>
       <CommentProfileText>
@@ -198,7 +239,16 @@ const Comment = ({ el, id, postid, commentId }) => {
         />
         <CommentText ref={activeComment}>
           <div>{el.User.nickname}</div>
-          <div>{el.content}</div>
+          {edit ? (
+            <EditForm
+              ref={editRef}
+              onKeyDown={onKeydownEdit}
+              value={content}
+              onChange={onChangeEditContent}
+            />
+          ) : (
+            <div>{el.content}</div>
+          )}
           {like && (
             <ThumbsUp>
               <img src={thumbsUp} alt="" />
@@ -217,26 +267,69 @@ const Comment = ({ el, id, postid, commentId }) => {
         <div onClick={() => setReply(true)}>답글달기</div>
         {userID === id && (
           <>
-            <div
-              onClick={() => {
-                dispatch(
-                  deleteCommentServer({ commentId: commentId, postId: postid }),
-                );
-              }}
-              style={{ marginLeft: "9px" }}
-            >
-              수정
-            </div>
-            <div
-              onClick={() => {
-                dispatch(
-                  deleteCommentServer({ commentId: commentId, postId: postid }),
-                );
-              }}
-              style={{ marginLeft: "9px" }}
-            >
-              삭제
-            </div>
+            {edit ? (
+              <div
+                onClick={() => {
+                  setEdit((prev) => !prev);
+                  setContent(el.content);
+                }}
+                style={{ cursor: "pointer", marginLeft: "9px", color: "red" }}
+              >
+                취소
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  setEdit((prev) => !prev);
+                  setTimeout(() => {
+                    editRef.current.focus();
+                  }, 300);
+                }}
+                style={{ marginLeft: "9px" }}
+              >
+                수정
+              </div>
+            )}
+            {edit ? (
+              <>
+                <div
+                  onClick={() => {
+                    if (content.length === 0) {
+                      window.alert("댓글을 입력해주세요.");
+                    } else {
+                      dispatch(
+                        editCommentServer({
+                          CommentId: commentId,
+                          postId: postid,
+                          res: { content: content },
+                        }),
+                      );
+                      setEdit(false);
+                    }
+                  }}
+                  style={{ marginLeft: "9px", color: "rgb(95, 60, 250)" }}
+                >
+                  수정완료
+                </div>
+                <div style={{ cursor: "initial", marginLeft: "4px" }}>
+                  또는 Enter를 눌러주세요.
+                </div>
+              </>
+            ) : (
+              <div
+                onClick={() => {
+                  dispatch(
+                    deleteCommentServer({
+                      commentId: commentId,
+                      postId: postid,
+                    }),
+                  );
+                }}
+                style={{ marginLeft: "9px" }}
+              >
+                삭제
+              </div>
+            )}
           </>
         )}
       </CommentLikeReply>

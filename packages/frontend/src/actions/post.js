@@ -233,3 +233,18 @@ export const generateDummyPost = (number) =>
       },
       likeCount: 0,
     }));
+
+export const editCommentServer = createAsyncThunk(
+  "patch/editCommentServer",
+  async (data, thunkAPI) => {
+    try {
+      console.log("sibal");
+      await axios.patch(`/community/comment/${data.CommentId}`, data.res);
+      const response2 = await axios.get(`/community/post/${data.postId}`);
+      return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
