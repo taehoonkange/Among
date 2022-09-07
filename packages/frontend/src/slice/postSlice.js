@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import faker from "faker";
 import {
   loadPosts,
   addPostServer,
@@ -12,6 +13,7 @@ import {
   editPostServer,
   deleteCommentServer,
   deleteReplyServer,
+  testLoadPosts,
 } from "../actions/post";
 const shortid = require("shortid");
 const initialState = {
@@ -176,7 +178,51 @@ const initialState = {
   ],
   imagePaths: [],
   editImagePaths: [],
+  hasMorePost: true,
+  testLoadPostsLoading: false,
 };
+
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill()
+    .map((v, i) => ({
+      post: {
+        id: shortid.generate(),
+        User: {
+          id: shortid.generate(),
+          nickname: faker.name.findName(),
+        },
+        content: faker.lorem.paragraph,
+        createdAt: "2022-09-02T11:31:03.000Z",
+        updatedAt: "2022-09-02T11:31:03.000Z",
+        UserId: 1,
+        ImageId: null,
+        Images: [
+          {
+            // src: faker.image(),
+          },
+        ],
+        Comments: [
+          {
+            id: 2,
+            content: faker.lorem.sentence(),
+            inherited: true,
+            createdAt: "2022-09-02T11:03:27.000Z",
+            updatedAt: "2022-09-02T11:03:27.000Z",
+            UserId: 1,
+            PostId: 1,
+            User: {
+              id: shortid.generate(),
+              nickname: faker.name.findName(),
+            },
+            Refs: [],
+          },
+        ],
+        Likers: [],
+      },
+      likeCount: 0,
+    })),
+);
 let dummy = {
   post: {
     id: shortid.generate(),
@@ -283,6 +329,67 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) =>
     builder
+      .addCase(testLoadPosts.pending, (state) => {})
+      .addCase(testLoadPosts.fulfilled, (state, action) => {
+        state.hasMorePost = state.mainPosts.length < 30;
+        state.testLoadPostsLoading = false;
+        if (state.hasMorePost) {
+          state.mainPosts = state.mainPosts.concat(
+            Array(10)
+              .fill()
+              .map((v, i) => ({
+                post: {
+                  id: shortid.generate(),
+                  User: {
+                    id: shortid.generate(),
+                    nickname: faker.name.findName(),
+                  },
+                  content: faker.lorem.paragraph(),
+                  createdAt: "2022-09-02T11:31:03.000Z",
+                  updatedAt: "2022-09-02T11:31:03.000Z",
+                  UserId: 1,
+                  ImageId: null,
+                  Images: [
+                    {
+                      id: 13,
+                      src: "quality_1662442834830.png",
+                    },
+                    {
+                      id: 14,
+                      src: "up-arrow_1662442844825.png",
+                    },
+                    {
+                      id: 15,
+                      src: "adad_1662442848028.png",
+                    },
+                  ],
+                  Comments: [
+                    {
+                      id: 2,
+                      content: faker.lorem.sentence(),
+                      inherited: true,
+                      createdAt: "2022-09-02T11:03:27.000Z",
+                      updatedAt: "2022-09-02T11:03:27.000Z",
+                      UserId: 1,
+                      PostId: 1,
+                      User: {
+                        id: shortid.generate(),
+                        nickname: faker.name.findName(),
+                      },
+                      Refs: [],
+                    },
+                  ],
+                  Likers: [],
+                },
+                likeCount: 0,
+              })),
+          );
+        }
+        return state;
+      })
+      .addCase(testLoadPosts.rejected, (state, action) => {
+        state.testLoadPostsLoading = false;
+      })
       .addCase(loadPosts.pending, (state) => {
         console.log("pending");
       })
@@ -290,6 +397,7 @@ const postSlice = createSlice({
         console.log(action.payload);
         console.log("fulfilled");
         state.mainPosts = action.payload;
+
         return state;
       })
       .addCase(loadPosts.rejected, (state, action) => {})

@@ -1,10 +1,22 @@
 import axios from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import faker from "faker";
+const shortid = require("shortid");
+
 // import { backendUrl } from "../config/config";
 // import userSlice from "../reducers/user";
 
 // axios.defaults.baseURL = backendUrl;
 axios.defaults.withCredentials = true; // front, backend 간 쿠키공유
+
+export const testLoadPosts = createAsyncThunk(
+  "post/testLoadPosts",
+  async (data, thunkAPI) => {
+    setTimeout(() => {}, 1000);
+    return;
+  },
+);
+
 export const loadPosts = createAsyncThunk(
   "post/loadPosts",
   async (data, thunkAPI) => {
@@ -171,3 +183,53 @@ export const deleteReplyServer = createAsyncThunk(
     }
   },
 );
+
+export const generateDummyPost = (number) =>
+  Array(20)
+    .fill()
+    .map((v, i) => ({
+      post: {
+        id: shortid.generate(),
+        User: {
+          id: shortid.generate(),
+          nickname: faker.name.findName(),
+        },
+        content: faker.lorem.paragraph(),
+        createdAt: "2022-09-02T11:31:03.000Z",
+        updatedAt: "2022-09-02T11:31:03.000Z",
+        UserId: 1,
+        ImageId: null,
+        Images: [
+          {
+            id: 13,
+            src: "quality_1662442834830.png",
+          },
+          {
+            id: 14,
+            src: "up-arrow_1662442844825.png",
+          },
+          {
+            id: 15,
+            src: "adad_1662442848028.png",
+          },
+        ],
+        Comments: [
+          {
+            id: 2,
+            content: faker.lorem.sentence(),
+            inherited: true,
+            createdAt: "2022-09-02T11:03:27.000Z",
+            updatedAt: "2022-09-02T11:03:27.000Z",
+            UserId: 1,
+            PostId: 1,
+            User: {
+              id: shortid.generate(),
+              nickname: faker.name.findName(),
+            },
+            Refs: [],
+          },
+        ],
+        Likers: [],
+      },
+      likeCount: 0,
+    }));
