@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getUserDataServer } from "../actions/user";
+import {
+  getUserDataServer,
+  influencerRegister,
+  uploadInfluencerImages,
+} from "../actions/user";
 
 const initialState = {
   account: "",
@@ -11,6 +15,7 @@ const initialState = {
   userID: 0,
   userType: "NORMAL",
   communityId: 0,
+  imagePaths: [],
 };
 
 const userDataSlice = createSlice({
@@ -45,8 +50,24 @@ const userDataSlice = createSlice({
         state.userType = payload.userType;
         state.userName = payload.nickname;
         state.communityId = payload.communityId;
+        return state;
       })
-      .addCase(getUserDataServer.rejected, (state, action) => {}),
+      .addCase(getUserDataServer.rejected, (state, action) => {})
+      .addCase(uploadInfluencerImages.pending, (state) => {})
+      .addCase(uploadInfluencerImages.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.imagePaths = [...state.imagePaths, ...payload];
+        console.log(state.imagePaths);
+        return state;
+      })
+      .addCase(uploadInfluencerImages.rejected, (state, action) => {})
+      .addCase(influencerRegister.pending, (state) => {})
+      .addCase(influencerRegister.fulfilled, (state, { payload }) => {
+        state.userType = payload;
+        console.log(state.userType);
+        return state;
+      })
+      .addCase(influencerRegister.rejected, (state, action) => {}),
 });
 
 export const {

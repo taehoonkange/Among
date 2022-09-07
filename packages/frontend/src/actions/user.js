@@ -18,3 +18,37 @@ export const getUserDataServer = createAsyncThunk(
     }
   },
 );
+
+export const uploadInfluencerImages = createAsyncThunk(
+  "post/uploadInfluencerImages",
+  async (data, { rejectWithValue }) => {
+    try {
+      console.log(data);
+      // const response = await axios.post("community/images", data); // POST /post/images
+      await setTimeout(() => {}, 1000);
+      let response = {
+        data: ["delete_1662548637059.png"],
+      };
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const influencerRegister = createAsyncThunk(
+  "patch/influencerRegister",
+  async (data, { rejectWithValue }) => {
+    try {
+      console.log(data);
+      // const response = await axios.post("community/images", data); // POST /post/images
+      await setTimeout(() => {}, 1000);
+      let response = {
+        data: "Influencer",
+      };
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);

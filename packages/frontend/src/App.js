@@ -15,6 +15,7 @@ import MyPage from "./pages/MyPage";
 import TicketReSell from "./pages/TicketReSell";
 import ShowDetail from "./pages/ShowDetail";
 import ShowPublish from "./pages/ShowPublic/ShowPublish";
+import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
 
 const TotalWrapDiv = styled.div`
   position: relative;
@@ -55,6 +56,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
+          <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>
       </ContentWrapDiv>
       <Footer></Footer>
