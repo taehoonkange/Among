@@ -346,6 +346,7 @@ const Comment = ({ el, id, postid, commentId }) => {
             <CommentReplyComp
               key={element.id}
               postId={postid}
+              commentId={commentId}
               element={element}
             ></CommentReplyComp>
           );
