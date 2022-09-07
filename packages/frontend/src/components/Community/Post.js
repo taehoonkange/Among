@@ -176,21 +176,15 @@ const CommunityPost = ({ like, post }) => {
   const [deletePost, setDeletePost] = useState(false);
   const [myComment, setMyComment] = useState("");
   const [showImagesZome, setShowImagesZoom] = useState(false);
-  console.log(post);
-  console.log(heart);
   useEffect(() => {
     post.Likers.map((el) => {
       if (el.Like.UserId === userID) {
-        console.log(el.Like.UserId);
         setHeart(true);
       }
     });
     return () => {};
   }, [userID]);
 
-  useEffect(() => {
-    console.log("heart 가 언제 바뀌는지 탐색");
-  }, [heart]);
   const onChangeHeart = useCallback(() => {
     setHeart((prev) => !prev);
   }, []);

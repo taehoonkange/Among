@@ -151,8 +151,7 @@ const EditForm = styled.input`
 `;
 const Comment = ({ el, id, postid, commentId }) => {
   const userID = useSelector((state) => state.userData.userID);
-  console.log(id);
-  console.log(commentId);
+
   const dispatch = useDispatch();
   const dispatcher = useDispatch();
   const [like, setLike] = useState(false);

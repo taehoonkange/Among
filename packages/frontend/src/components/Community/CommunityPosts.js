@@ -24,10 +24,6 @@ const CommunityPosts = () => {
 
   const mainPosts = useSelector((state) => state.posts);
 
-  useEffect(() => {
-    console.log("mainPosts 바뀌었다.");
-    console.log(mainPosts);
-  }, [mainPosts]);
   return (
     <Layout>
       <CommunityPostInput></CommunityPostInput>

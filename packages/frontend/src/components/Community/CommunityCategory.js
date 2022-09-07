@@ -57,7 +57,6 @@ const Influencer = styled(Link)`
 `;
 const CommunityCategory = () => {
   const path = useRef(useLocation().pathname);
-  console.log(path.current);
   return (
     <Layout>
       <InfluenceName>PONY</InfluenceName>
