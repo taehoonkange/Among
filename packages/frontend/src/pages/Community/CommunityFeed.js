@@ -5,6 +5,7 @@ import CommunityPost from "../../components/Community/CommunityPosts";
 import "./test.css";
 import { useDispatch, useSelector } from "react-redux";
 import { testLoadPosts } from "../../actions/post";
+import { resetHasMorePosts } from "../../slice/postSlice";
 const Layout = styled.div`
   display: flex;
   justify-content: center;
@@ -30,6 +31,13 @@ const Community = () => {
       if (hasMorePost && !testLoadPostsLoading) dispatch(testLoadPosts());
     }
   };
+
+  useEffect(() => {
+    return () => {
+      console.log("화면이탈");
+      dispatch(resetHasMorePosts());
+    };
+  }, []);
 
   return (
     <Layout style={{}} onScroll={handleScroll}>

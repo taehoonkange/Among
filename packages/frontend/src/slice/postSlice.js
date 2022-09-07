@@ -326,6 +326,9 @@ const postSlice = createSlice({
         (image) => image[0] !== payload.value[0],
       );
     },
+    resetHasMorePosts: (state, { payload }) => {
+      state.hasMorePost = true;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -534,5 +537,6 @@ export const {
   deleteImage,
   editPostImage,
   deleteEditImage,
+  resetHasMorePosts,
 } = postSlice.actions;
 export default postSlice.reducer;
