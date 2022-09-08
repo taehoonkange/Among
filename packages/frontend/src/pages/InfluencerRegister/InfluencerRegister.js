@@ -42,10 +42,8 @@ const InfluencerRegister = () => {
     (e) => {
       e.preventDefault();
       const formData = new FormData();
-      imagePaths.forEach((image) => {
-        formData.append("image", image);
-      });
-      formData.append("desc", desc);
+      formData.append("image", imagePaths[0]);
+      formData.append("description", desc);
       formData.append("name", name);
       dispatch(influencerRegister(formData));
       setName("");

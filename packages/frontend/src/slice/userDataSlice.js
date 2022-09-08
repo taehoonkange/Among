@@ -56,15 +56,16 @@ const userDataSlice = createSlice({
       .addCase(uploadInfluencerImages.pending, (state) => {})
       .addCase(uploadInfluencerImages.fulfilled, (state, { payload }) => {
         console.log(payload);
-        state.imagePaths = [...state.imagePaths, ...payload];
+        state.imagePaths = [...state.imagePaths, payload];
         console.log(state.imagePaths);
         return state;
       })
       .addCase(uploadInfluencerImages.rejected, (state, action) => {})
       .addCase(influencerRegister.pending, (state) => {})
       .addCase(influencerRegister.fulfilled, (state, { payload }) => {
-        state.userType = payload;
-        console.log(state.userType);
+        state.userType = payload.userType;
+        console.log(payload);
+        window.localStorage.setItem("userType", payload.userType);
         return state;
       })
       .addCase(influencerRegister.rejected, (state, action) => {}),

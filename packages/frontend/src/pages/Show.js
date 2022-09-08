@@ -41,7 +41,7 @@ const ShowListArea = styled.div`
 `;
 
 const Show = () => {
-  const [showList, SetShowList] = useState([1, 2, 3, 4, 5]);
+  const [showList, SetShowList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   return (
     <TotalWidthSetting>

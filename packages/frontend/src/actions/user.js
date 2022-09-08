@@ -24,11 +24,7 @@ export const uploadInfluencerImages = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       console.log(data);
-      // const response = await axios.post("community/images", data); // POST /post/images
-      await setTimeout(() => {}, 1000);
-      let response = {
-        data: ["delete_1662548637059.png"],
-      };
+      const response = await axios.post("influencer/image", data); // POST /post/images
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -37,15 +33,11 @@ export const uploadInfluencerImages = createAsyncThunk(
 );
 
 export const influencerRegister = createAsyncThunk(
-  "patch/influencerRegister",
+  "post/influencerRegister",
   async (data, { rejectWithValue }) => {
     try {
-      console.log(data);
-      // const response = await axios.post("community/images", data); // POST /post/images
-      await setTimeout(() => {}, 1000);
-      let response = {
-        data: "Influencer",
-      };
+      const response = await axios.post("influencer/register", data); // POST /post/images
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

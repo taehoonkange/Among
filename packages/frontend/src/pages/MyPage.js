@@ -75,7 +75,7 @@ const MyPage = () => {
               {window.ethereum.selectedAddress}
             </div>
           </div>
-          {userType === "NORMAL" ? (
+          {window.localStorage.getItem("userType") !== "INFLUENCER" ? (
             <ShowRegister to="/InfluencerRegister">
               인플루언서 등록
             </ShowRegister>
