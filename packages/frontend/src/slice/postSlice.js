@@ -184,7 +184,7 @@ const initialState = {
   hasMorePost: true,
   testLoadPostsLoading: false,
   influencerList: [],
-  CommunityState: "NORMAL",
+  CommunityState: "VIP",
   NowCommunityId: window.localStorage.getItem("NowCommuityId"),
 };
 

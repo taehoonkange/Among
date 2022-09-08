@@ -49,15 +49,26 @@ const Feed = styled(Link)`
       : "black"};
 `;
 
+const VIPFeed = styled(Link)`
+  margin-left: 30px;
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: ${(props) =>
+    props.path === `/Influencer/CommunityVIPFeed/${props.id}`
+      ? "rgb(95, 60, 250)"
+      : "black"};
+`;
+
 const Influencer = styled(Link)`
   margin-left: 30px;
   margin-top: 10px;
   font-size: 18px;
   font-weight: 700;
   color: ${(props) =>
-    props.path === `/Influencer/CommunityFeed/${props.id}`
-      ? "black"
-      : "rgb(95, 60, 250)"};
+    props.path === `/Influencer/CommunityInfluencer/${props.id}`
+      ? "rgb(95, 60, 250)"
+      : "black"};
 `;
 const CommunityCategory = () => {
   const path = useRef(useLocation().pathname);
@@ -78,6 +89,13 @@ const CommunityCategory = () => {
       <Feed path={path.current} id={id} to={`/Influencer/CommunityFeed/${id}`}>
         Feed
       </Feed>
+      <VIPFeed
+        path={path.current}
+        id={id}
+        to={`/Influencer/CommunityVIPFeed/${id}`}
+      >
+        VIP Feed
+      </VIPFeed>
       <Influencer
         path={path.current}
         id={id}

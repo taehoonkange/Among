@@ -8,6 +8,8 @@ import Influencer from "./pages/Influencer";
 import Show from "./pages/Show";
 import CommunityFeed from "./pages/Community/CommunityFeed";
 import CommunityInfluencer from "./pages/Community/CommunityInfluencer";
+import CommunityVIPFeed from "./pages/Community/CommunityVIPFeed";
+
 import TicketBook from "./pages/TicketBook";
 import Guide from "./pages/Guide";
 import Login from "./pages/Login";
@@ -48,6 +50,10 @@ function App() {
           <Route
             path="/Influencer/CommunityFeed/:id"
             element={<CommunityFeed />}
+          />
+          <Route
+            path="/Influencer/CommunityVIPFeed/:id"
+            element={<CommunityVIPFeed />}
           />
           <Route
             path="/Influencer/CommunityInfluencer/:id"

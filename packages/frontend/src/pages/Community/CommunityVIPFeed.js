@@ -1,27 +1,34 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
 import CommunityCategory from "../../components/Community/CommunityCategory";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import CommunityPost from "../../components/Community/CommunityPosts";
+import { useDispatch, useSelector } from "react-redux";
+import { loadPosts, testLoadPosts } from "../../actions/post";
+import { resetHasMorePosts } from "../../slice/postSlice";
 import GetUserData from "../../hooks/GetUserData";
 import GetUserStatus from "../../hooks/GetUserStatus";
-import { resetHasMorePosts } from "../../slice/postSlice";
-import { loadPosts, testLoadPosts } from "../../actions/post";
-
 const Layout = styled.div`
   display: flex;
   justify-content: center;
+  overflow: scroll;
+  width: 100%;
+  height: 100%;
 `;
 
 const Community = () => {
   const [id, setID] = useState();
+  const navigate = useNavigate();
   const path = useRef(useLocation().pathname);
   const dispatch = useDispatch();
+
   const testLoadPostsLoading = useSelector(
     (state) => state.posts.testLoadPostsLoading,
   );
   const hasMorePost = useSelector((state) => state.posts.hasMorePost);
+  const userRank = useSelector((state) => state.posts.CommunityState);
+  const influencerID = useSelector((state) => state.posts.NowCommunityId);
+
   const handleScroll = (event) => {
     console.log("scrollTop: ", event.currentTarget.scrollTop);
     console.log("clientHeight: ", event.currentTarget.clientHeight);
@@ -39,6 +46,8 @@ const Community = () => {
     var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
     setID(result);
   }, []);
+  GetUserData();
+  GetUserStatus(id);
 
   useEffect(() => {
     return () => {
@@ -47,10 +56,14 @@ const Community = () => {
     };
   }, []);
 
-  GetUserData();
-  GetUserStatus(id);
+  useEffect(() => {
+    if (userRank !== "VIP") {
+      window.alert("VIP만 확인 가능한 피드입니다.");
+      navigate(`/Influencer/CommunityFeed/${influencerID}`);
+    }
+  }, [userRank]);
   return (
-    <Layout>
+    <Layout onScroll={handleScroll}>
       <CommunityCategory></CommunityCategory>
       <CommunityPost></CommunityPost>
     </Layout>
