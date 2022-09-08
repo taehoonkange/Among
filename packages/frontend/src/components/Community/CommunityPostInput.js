@@ -90,6 +90,7 @@ const CommunityPostInput = () => {
         formData.append("image", image);
       });
       formData.append("content", value);
+      formData.append("limitedReader", "NORMAL");
       dispatcher(addPostServer(formData));
       // dispatcher(addPost({ value: value, userName: userName }));
       setValue("");

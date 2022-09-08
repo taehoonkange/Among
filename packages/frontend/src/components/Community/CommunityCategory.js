@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Kdy from "../../images/kdy.jpeg";
@@ -44,7 +44,9 @@ const Feed = styled(Link)`
   font-size: 18px;
   font-weight: 700;
   color: ${(props) =>
-    props.path === "/CommunityFeed" ? "rgb(95, 60, 250)" : "black"};
+    props.path === `/Influencer/CommunityFeed/${props.id}`
+      ? "rgb(95, 60, 250)"
+      : "black"};
 `;
 
 const Influencer = styled(Link)`
@@ -53,19 +55,34 @@ const Influencer = styled(Link)`
   font-size: 18px;
   font-weight: 700;
   color: ${(props) =>
-    props.path === "/CommunityFeed" ? "black" : "rgb(95, 60, 250)"};
+    props.path === `/Influencer/CommunityFeed/${props.id}`
+      ? "black"
+      : "rgb(95, 60, 250)"};
 `;
 const CommunityCategory = () => {
   const path = useRef(useLocation().pathname);
+  const [id, setID] = useState();
+  console.log("path");
+  console.log(path.current);
+  useEffect(() => {
+    var regex = /[^0-9]/g; // 숫자가 아닌 문자열을 선택하는 정규식
+    var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
+    console.log(result); // 결과 출력
+    setID(result);
+  }, []);
   return (
     <Layout>
       <InfluenceName>PONY</InfluenceName>
       <Follower>193,027 Follower</Follower>
       <Profile src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrdjtR1sgogr2JkoOOTybl4feZyZbdIZDb9JoT-wgH&s"></Profile>
-      <Feed path={path.current} to="/CommunityFeed">
+      <Feed path={path.current} id={id} to={`/Influencer/CommunityFeed/${id}`}>
         Feed
       </Feed>
-      <Influencer path={path.current} to="/CommunityInfluencer">
+      <Influencer
+        path={path.current}
+        id={id}
+        to={`/Influencer/CommunityInfluencer/${id}`}
+      >
         Influencer
       </Influencer>
     </Layout>

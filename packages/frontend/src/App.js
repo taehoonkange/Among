@@ -16,7 +16,7 @@ import TicketReSell from "./pages/TicketReSell";
 import ShowDetail from "./pages/ShowDetail";
 import ShowPublish from "./pages/ShowPublic/ShowPublish";
 import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
-
+import CommunityMain from "./pages/Community/CommunityMain";
 const TotalWrapDiv = styled.div`
   position: relative;
   min-height: 120vh;
@@ -42,14 +42,18 @@ function App() {
         <Navbar></Navbar>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Influencer" element={<Influencer />} />
+          <Route path="/Influencer" element={<CommunityMain />} />
           <Route path="/Show" element={<Show />} />
           <Route path="/Show/:idx" element={<ShowDetail />} />
-          <Route path="/CommunityFeed" element={<CommunityFeed />} />
           <Route
-            path="/CommunityInfluencer"
+            path="/Influencer/CommunityFeed/:id"
+            element={<CommunityFeed />}
+          />
+          <Route
+            path="/Influencer/CommunityInfluencer/:id"
             element={<CommunityInfluencer />}
           />
+
           <Route path="/TicketBook" element={<TicketBook />} />
           <Route path="/TicketReSell" element={<TicketReSell />} />
           <Route path="/Guide" element={<Guide />} />

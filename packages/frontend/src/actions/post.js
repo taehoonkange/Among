@@ -1,6 +1,7 @@
 import axios from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import faker from "faker";
+import { requests } from "../util/requests";
 const shortid = require("shortid");
 
 // import { backendUrl } from "../config/config";
@@ -18,9 +19,11 @@ export const testLoadPosts = createAsyncThunk(
 );
 
 export const loadPosts = createAsyncThunk(
-  "post/loadPosts",
+  "get/loadPosts",
   async (data, thunkAPI) => {
-    const response = await axios.get(`community/posts/${100}`);
+    const state = thunkAPI.getState();
+    const response = await axios.get(requests(state).getPosts);
+    console.log(response.data);
     return response.data;
   },
 );
@@ -28,10 +31,11 @@ export const loadPosts = createAsyncThunk(
 export const addPostServer = createAsyncThunk(
   "post/addPostServer",
   async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
     try {
-      const response1 = await axios.post("community/post", data);
+      await axios.post(requests(state).setPost, data);
       // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.id));
-      const response2 = await axios.get(`community/posts/${100}`);
+      const response2 = await axios.get(requests(state).getPosts);
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -43,12 +47,10 @@ export const addPostServer = createAsyncThunk(
 export const addCommentServer = createAsyncThunk(
   "post/addCommentServer",
   async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
     try {
-      const response = await axios.post(
-        `/community/${data.id}/comment`,
-        data.res,
-      );
-      const response2 = await axios.get(`community/posts/${100}`);
+      await axios.post(requests(undefined, data).setComment, data.res);
+      const response2 = await axios.get(requests(state).getPosts);
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -60,12 +62,10 @@ export const addCommentServer = createAsyncThunk(
 export const addReplyServer = createAsyncThunk(
   "post/addReplyServer",
   async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
     try {
-      await axios.post(
-        `/community/${data.refId}/${data.postId}/refcomment`,
-        data.res,
-      );
-      const response = await axios.get(`community/posts/${100}`);
+      await axios.post(requests(state, data).setReply, data.res);
+      const response = await axios.get(requests(state).getPosts);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -105,7 +105,9 @@ export const editPostServer = createAsyncThunk(
       console.log(data);
       await axios.patch(`community/post/${data.postId}`, data.formData);
       // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.id));
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -117,9 +119,10 @@ export const editPostServer = createAsyncThunk(
 export const deletePostServer = createAsyncThunk(
   "delete/deletePostServer",
   async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
     try {
       await axios.delete(`/community/${data.id}`);
-      const response2 = await axios.get(`community/posts/${100}`);
+      const response2 = await axios.get(requests(state).getPosts);
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -133,7 +136,9 @@ export const postLikeServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       await axios.patch(`/community/${data.postId}/like`);
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -147,7 +152,9 @@ export const postDeleteLikeServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       await axios.delete(`/community/${data.postId}/like`);
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -161,7 +168,9 @@ export const deleteCommentServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       await axios.delete(`/community/comment/${data.commentId}`);
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -174,8 +183,10 @@ export const deleteReplyServer = createAsyncThunk(
   "delete/deleteReplyServer",
   async (data, thunkAPI) => {
     try {
-      await axios.delete(`/community/refcomment/${data.refCommentId}`);
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      await axios.delete(`/community/comment/${data.refCommentId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
     } catch (error) {
       console.log(error);
@@ -239,8 +250,39 @@ export const editCommentServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       await axios.patch(`/community/comment/${data.CommentId}`, data.res);
-      const response2 = await axios.get(`/community/post/${data.postId}`);
+      const response2 = await axios.get(
+        requests(undefined, data).getPostDetail,
+      );
       return response2.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const InfluencerSearch = createAsyncThunk(
+  "get/InfluencerSearch ",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.get(`/influencer/search`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const CommnunityCheckStatus = createAsyncThunk(
+  "get/CommnunityCheckStatus ",
+  async (data, thunkAPI) => {
+    console.log(data);
+    try {
+      const response = await axios.get(
+        `/community/${data.communityId}/checkStatus`,
+      );
+      return response.data;
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);

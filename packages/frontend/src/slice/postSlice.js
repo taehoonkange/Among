@@ -15,6 +15,8 @@ import {
   deleteReplyServer,
   testLoadPosts,
   editCommentServer,
+  InfluencerSearch,
+  CommnunityCheckStatus,
 } from "../actions/post";
 const shortid = require("shortid");
 const initialState = {
@@ -181,49 +183,52 @@ const initialState = {
   editImagePaths: [],
   hasMorePost: true,
   testLoadPostsLoading: false,
+  influencerList: [],
+  CommunityState: "NORMAL",
+  NowCommunityId: window.localStorage.getItem("NowCommuityId"),
 };
 
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20)
-    .fill()
-    .map((v, i) => ({
-      post: {
-        id: shortid.generate(),
-        User: {
-          id: shortid.generate(),
-          nickname: faker.name.findName(),
-        },
-        content: faker.lorem.paragraph,
-        createdAt: "2022-09-02T11:31:03.000Z",
-        updatedAt: "2022-09-02T11:31:03.000Z",
-        UserId: 1,
-        ImageId: null,
-        Images: [
-          {
-            // src: faker.image(),
-          },
-        ],
-        Comments: [
-          {
-            id: 2,
-            content: faker.lorem.sentence(),
-            inherited: true,
-            createdAt: "2022-09-02T11:03:27.000Z",
-            updatedAt: "2022-09-02T11:03:27.000Z",
-            UserId: 1,
-            PostId: 1,
-            User: {
-              id: shortid.generate(),
-              nickname: faker.name.findName(),
-            },
-            Refs: [],
-          },
-        ],
-        Likers: [],
-      },
-      likeCount: 0,
-    })),
-);
+// initialState.mainPosts = initialState.mainPosts.concat(
+//   Array(20)
+//     .fill()
+//     .map((v, i) => ({
+//       post: {
+//         id: shortid.generate(),
+//         User: {
+//           id: shortid.generate(),
+//           nickname: faker.name.findName(),
+//         },
+//         content: faker.lorem.paragraph,
+//         createdAt: "2022-09-02T11:31:03.000Z",
+//         updatedAt: "2022-09-02T11:31:03.000Z",
+//         UserId: 1,
+//         ImageId: null,
+//         Images: [
+//           {
+//             // src: faker.image(),
+//           },
+//         ],
+//         Comments: [
+//           {
+//             id: 2,
+//             content: faker.lorem.sentence(),
+//             inherited: true,
+//             createdAt: "2022-09-02T11:03:27.000Z",
+//             updatedAt: "2022-09-02T11:03:27.000Z",
+//             UserId: 1,
+//             PostId: 1,
+//             User: {
+//               id: shortid.generate(),
+//               nickname: faker.name.findName(),
+//             },
+//             Refs: [],
+//           },
+//         ],
+//         Likers: [],
+//       },
+//       likeCount: 0,
+//     })),
+// );
 let dummy = {
   post: {
     id: shortid.generate(),
@@ -399,7 +404,6 @@ const postSlice = createSlice({
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
         console.log(action.payload);
-        console.log("fulfilled");
         state.mainPosts = action.payload;
 
         return state;
@@ -542,6 +546,26 @@ const postSlice = createSlice({
         return state;
       })
       .addCase(editCommentServer.rejected, (state) => {
+        console.log("rejected");
+      })
+      .addCase(InfluencerSearch.pending, (state) => {})
+      .addCase(InfluencerSearch.fulfilled, (state, { payload }) => {
+        state.influencerList = payload;
+        return state;
+      })
+      .addCase(InfluencerSearch.rejected, (state) => {
+        console.log("rejected");
+      })
+      .addCase(CommnunityCheckStatus.pending, (state) => {})
+      .addCase(CommnunityCheckStatus.fulfilled, (state, { payload }) => {
+        console.log("맘스터치");
+        console.log(payload);
+        state.CommunityState = payload.status;
+        state.NowCommunityId = payload.CommunityId;
+        window.localStorage.setItem("NowCommuityId", `${payload.CommunityId}`);
+        return state;
+      })
+      .addCase(CommnunityCheckStatus.rejected, (state) => {
         console.log("rejected");
       }),
 });
