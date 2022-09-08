@@ -10,8 +10,13 @@ db.User = require(`./user`)(sequelize,Sequelize)
 db.Seat = require(`./seat`)(sequelize,Sequelize)
 db.Ticket = require(`./ticket`)(sequelize,Sequelize)
 db.Comment = require(`./comment`)(sequelize,Sequelize)
-db.Board = require(`./board`)(sequelize,Sequelize)
-
+db.Hashtag = require(`./hashtag`)(sequelize,Sequelize)
+db.Post = require(`./post`)(sequelize,Sequelize)
+db.Image = require(`./image`)(sequelize,Sequelize)
+db.Community = require(`./community`)(sequelize,Sequelize)
+db.Communitystatus = require(`./communitystatus`)(sequelize,Sequelize)
+db.Influencer = require(`./influencer`)(sequelize,Sequelize)
+db.Limiteduser = require(`./limiteduser`)(sequelize,Sequelize)
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
