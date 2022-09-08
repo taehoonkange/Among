@@ -4,34 +4,28 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false
         },
-        // buyer:{
-        //     type: DataTypes.ARRAY(DataTypes.STRING(50)),
-        //     allowNull: true
-        // },
         status: {
             type: DataTypes.ENUM({
-                    values: [`SALE`, `RESALE`, `NONE`]
+                    values: [`SALE`, `OWNED`, `USED`]
                 }
             ),
             defaultValue: `SALE`,
             allowNull: false
         },
-        allow_resale : {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
         description: {
             type: DataTypes.TEXT,
             allowNull: true
         },
-        img_src: {
-            type: DataTypes.STRING(200),
-            allowNull: true
-        },
-        number: {
+        price: {
             type: DataTypes.STRING(7),
             allowNull: true
+        },
+        coordinate: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
+
+        // 꾸며졌다는 boolean 추가 예정
     }, {
         modelName: 'Ticket',
         tableName: 'tickets',
@@ -39,8 +33,12 @@ module.exports = (sequelize, DataTypes) => {
         collate: `utf8mb4_general_ci`
     });
     Ticket.associate = (db) => {
-        db.Ticket.belongsTo(db.User)
-        db.Ticket.belongsTo(db.Performance)
+        db.Ticket.hasMany(db.User,{  foreignKey: `recordId`,as: 'Records'}) // 소유자 기록
+        db.Ticket.hasOne(db.User, { as : `Creater`}) // 생성자
+        db.Ticket.belongsTo(db.User) // 소유자가 어떤 티켓을 소지하는지
+        db.Ticket.belongsTo(db.Performance) // 어떤 공연의 티켓인지
+        db.Ticket.hasOne(db.Image) // 티켓 이미지
+        db.Ticket.hasOne(db.Seat) // 티켓 좌석
 
     }
 
