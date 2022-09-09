@@ -5,10 +5,23 @@ import CommunityPostInput from "./CommunityPostInput";
 import Post from "./Post";
 import { loadPosts } from "../../actions/post";
 import { setUserID } from "../../slice/userDataSlice";
+import moza2 from "../../images/moza2.png";
+import moza1 from "../../images/moza1.png";
+import moza from "../../images/moza.png";
 import axios from "../../api";
+import { ImagePixelated } from "react-pixelate";
+
 const Layout = styled.div`
   width: 40%;
   padding: 10px;
+`;
+
+const MozaLayout = styled.div`
+  margin-top: 10px;
+  padding: 15px;
+  background-color: white;
+  border: 2px solid #f8f8f8;
+  border-radius: 6px;
 `;
 const CommunityPosts = ({ CatergoryType }) => {
   console.log(CatergoryType);
@@ -35,8 +48,23 @@ const CommunityPosts = ({ CatergoryType }) => {
           <Post key={post.id} like={post.likeCount} post={post.post}></Post>
         );
       })}
+      <Test
+        width={576}
+        height={300}
+        src={moza}
+        pixelSize={3}
+        fillTransparencyColor={"white"}
+      />
+      <MozaLayout>
+        <img style={{ width: "100%" }} src={moza1} alt="" />
+      </MozaLayout>
+      <MozaLayout>
+        <img style={{ width: "100%" }} src={moza2} alt="" />
+      </MozaLayout>
     </Layout>
   );
 };
 
 export default CommunityPosts;
+
+const Test = styled(ImagePixelated)``;
