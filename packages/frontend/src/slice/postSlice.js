@@ -184,7 +184,8 @@ const initialState = {
   hasMorePost: true,
   testLoadPostsLoading: false,
   influencerList: [],
-  CommunityState: "VIP",
+  CommunityState: "",
+  communityCategory: "",
   NowCommunityId: window.localStorage.getItem("NowCommuityId"),
 };
 
@@ -334,6 +335,9 @@ const postSlice = createSlice({
     },
     resetHasMorePosts: (state, { payload }) => {
       state.hasMorePost = true;
+    },
+    setCommunityCategory: (state, { payload }) => {
+      state.communityCategory = payload.value;
     },
   },
   extraReducers: (builder) =>
@@ -578,5 +582,6 @@ export const {
   editPostImage,
   deleteEditImage,
   resetHasMorePosts,
+  setCommunityCategory,
 } = postSlice.actions;
 export default postSlice.reducer;

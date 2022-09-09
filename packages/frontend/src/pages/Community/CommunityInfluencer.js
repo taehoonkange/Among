@@ -6,7 +6,7 @@ import styled from "styled-components";
 import CommunityPost from "../../components/Community/CommunityPosts";
 import GetUserData from "../../hooks/GetUserData";
 import GetUserStatus from "../../hooks/GetUserStatus";
-import { resetHasMorePosts } from "../../slice/postSlice";
+import { resetHasMorePosts, setCommunityCategory } from "../../slice/postSlice";
 import { loadPosts, testLoadPosts } from "../../actions/post";
 
 const Layout = styled.div`
@@ -38,6 +38,7 @@ const Community = () => {
     var regex = /[^0-9]/g; // 숫자가 아닌 문자열을 선택하는 정규식
     var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
     setID(result);
+    dispatch(setCommunityCategory({ value: "INFLUENCER" }));
   }, []);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Community = () => {
   return (
     <Layout>
       <CommunityCategory></CommunityCategory>
-      <CommunityPost></CommunityPost>
+      <CommunityPost CatergoryType="INFLUENCER"></CommunityPost>
     </Layout>
   );
 };

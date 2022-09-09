@@ -10,7 +10,10 @@ const Layout = styled.div`
   width: 40%;
   padding: 10px;
 `;
-const CommunityPosts = () => {
+const CommunityPosts = ({ CatergoryType }) => {
+  console.log(CatergoryType);
+  const CommunityState = useSelector((state) => state.posts.CommunityState);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadPosts());
@@ -26,7 +29,7 @@ const CommunityPosts = () => {
 
   return (
     <Layout>
-      <CommunityPostInput></CommunityPostInput>
+      <CommunityPostInput CatergoryType={CatergoryType}></CommunityPostInput>
       {mainPosts.mainPosts.map((post) => {
         return (
           <Post key={post.id} like={post.likeCount} post={post.post}></Post>

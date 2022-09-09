@@ -42,6 +42,7 @@ const AutoResizeTextArea = styled.textarea`
   overflow: hidden;
   font-family: "AppleSDGothicNeo", "Noto Sans KR", sans-serif;
   font-weight: 600;
+  font-size: 16px;
   /* padding: 12px; */
   padding-top: 12px;
   display: block;

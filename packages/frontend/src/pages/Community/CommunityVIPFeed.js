@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CommunityPost from "../../components/Community/CommunityPosts";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPosts, testLoadPosts } from "../../actions/post";
-import { resetHasMorePosts } from "../../slice/postSlice";
+import { resetHasMorePosts, setCommunityCategory } from "../../slice/postSlice";
 import GetUserData from "../../hooks/GetUserData";
 import GetUserStatus from "../../hooks/GetUserStatus";
 const Layout = styled.div`
@@ -45,6 +45,7 @@ const Community = () => {
     var regex = /[^0-9]/g; // 숫자가 아닌 문자열을 선택하는 정규식
     var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
     setID(result);
+    dispatch(setCommunityCategory({ value: "VIP" }));
   }, []);
   GetUserData();
   GetUserStatus(id);
@@ -57,7 +58,7 @@ const Community = () => {
   }, []);
 
   useEffect(() => {
-    if (userRank !== "VIP") {
+    if (userRank === "NORMAL") {
       window.alert("VIP만 확인 가능한 피드입니다.");
       navigate(`/Influencer/CommunityFeed/${influencerID}`);
     }
@@ -65,7 +66,7 @@ const Community = () => {
   return (
     <Layout onScroll={handleScroll}>
       <CommunityCategory></CommunityCategory>
-      <CommunityPost></CommunityPost>
+      <CommunityPost CatergoryType="VIP"></CommunityPost>
     </Layout>
   );
 };

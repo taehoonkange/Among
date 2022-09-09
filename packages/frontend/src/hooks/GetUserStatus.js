@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { CommnunityCheckStatus } from "../actions/post";
+import { CommnunityCheckStatus, loadPosts } from "../actions/post";
 
 const GetUserStatus = (communityId) => {
   const dispatch = useDispatch();
@@ -9,8 +9,11 @@ const GetUserStatus = (communityId) => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
-      dispatch(CommnunityCheckStatus({ communityId: communityId }));
-      // dispatch(loadPosts());
+      async function fetch() {
+        await dispatch(CommnunityCheckStatus({ communityId: communityId }));
+        await dispatch(loadPosts());
+      }
+      fetch();
     }
     // dispatch(getUserDataServer());
   }, [communityId]);

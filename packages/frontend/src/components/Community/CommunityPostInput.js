@@ -6,6 +6,7 @@ import communityImage from "../../images/communityImage.png";
 import { deleteImage } from "../../slice/postSlice";
 import { addPostServer, uploadImages } from "../../actions/post";
 import { useRef } from "react";
+import CheckBox from "./CheckBox";
 const Layout = styled.div`
   padding: 15px;
   background-color: white;
@@ -72,10 +73,11 @@ const Delete = styled.div`
   background-color: black;
   position: absolute;
 `;
-const CommunityPostInput = () => {
+const CommunityPostInput = ({ CatergoryType }) => {
   const imagePaths = useSelector((state) => state.posts.imagePaths);
   const userName = useSelector((state) => state.userData.userName);
-
+  const CommunityState = useSelector((state) => state.posts.CommunityState);
+  const [check, setCheck] = useState("");
   const dispatcher = useDispatch();
   const [value, setValue] = useState("");
   const imageInput = useRef();
@@ -90,7 +92,19 @@ const CommunityPostInput = () => {
         formData.append("image", image);
       });
       formData.append("content", value);
-      formData.append("limitedReader", "NORMAL");
+      switch (CatergoryType) {
+        case "NORMAL":
+          formData.append("limitedReader", "NORMAL");
+          break;
+        case "VIP":
+          formData.append("limitedReader", "VIP");
+          break;
+        case "INFLUENCER":
+          formData.append("limitedReader", check);
+          break;
+        default:
+          formData.append("limitedReader", "NORMAL");
+      }
       dispatcher(addPostServer(formData));
       // dispatcher(addPost({ value: value, userName: userName }));
       setValue("");
@@ -116,6 +130,10 @@ const CommunityPostInput = () => {
     },
     [imagePaths],
   );
+  if (CatergoryType === "INFLUENCER" && CommunityState !== "INFLUENCER") {
+    return null;
+  }
+
   return (
     <Layout>
       <Form encType="multipart/form-date" onSubmit={onSubmit}>
@@ -130,6 +148,10 @@ const CommunityPostInput = () => {
         </TextInputImageWrapper>
 
         <div>
+          {CommunityState === "INFLUENCER" &&
+            CatergoryType === "INFLUENCER" && (
+              <CheckBox check={check} setCheck={setCheck}></CheckBox>
+            )}
           <input
             type="file"
             multiple
