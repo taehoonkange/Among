@@ -74,7 +74,6 @@ const Show = () => {
   };
 
   useEffect(() => {
-    console.log("햄버거");
     console.log(currentItems);
   }, [currentItems]);
   return (
@@ -153,6 +152,10 @@ const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
   a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     color: #777;
   }
   & > .page-item {
@@ -176,5 +179,9 @@ const ReactPaginateBox = styled(ReactPaginate)`
   }
   & > .active a {
     color: white;
+  }
+
+  & > a.page-link {
+    width: 100%;
   }
 `;

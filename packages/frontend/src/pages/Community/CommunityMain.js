@@ -7,6 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import ShowItem from "../../components/Community/ShowItem";
 import { useDispatch, useSelector } from "react-redux";
 import { InfluencerSearch } from "../../actions/post";
+import ReactPaginate from "react-paginate";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -42,6 +43,41 @@ const ShowListArea = styled.div`
   margin-top: 20px;
 `;
 
+const ReactPaginateWrapper = styled.div`
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+`;
+const ReactPaginateBox = styled(ReactPaginate)`
+  display: flex;
+  cursor: pointer;
+  a {
+    color: #777;
+  }
+  & > .page-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4em;
+    background: #eef2f6;
+
+    line-height: 28px;
+    margin: 0 5px;
+    min-width: 28px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  & > .page-item.active {
+    color: white;
+  }
+  & > .active {
+    background-color: #545c65;
+  }
+  & > .active a {
+    color: white;
+  }
+`;
+
 const CommunityMain = () => {
   const dispatch = useDispatch();
   const showList = useSelector((state) => state.posts.influencerList);
@@ -51,8 +87,32 @@ const CommunityMain = () => {
     return () => {};
   }, []);
 
-  //   const [showList, SetShowList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
 
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + 3;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    setCurrentItems(showList.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(showList.length / 3));
+  }, [itemOffset]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 3) % showList.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`,
+    );
+    setItemOffset(newOffset);
+  };
+
+  useEffect(() => {
+    console.log(currentItems);
+  }, [currentItems]);
   return (
     <TotalWidthSetting>
       <UpperTitleArea>
@@ -88,7 +148,7 @@ const CommunityMain = () => {
         </SearchBarCategoryArea>
         <ShowListArea>
           <Grid container spacing={7} rowSpacing={6}>
-            {showList.map((show, idx) => (
+            {currentItems?.map((show, idx) => (
               <Grid style={{ paddingTop: "0px" }} item xs={4} key={idx}>
                 <ShowItem data={show} idx={idx} />
               </Grid>
@@ -96,6 +156,29 @@ const CommunityMain = () => {
           </Grid>
         </ShowListArea>
       </TotalWrapJustifyCenter>
+      <ReactPaginateWrapper>
+        <ReactPaginateBox
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={0}
+          pageCount={pageCount}
+          previousLabel="<"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel=""
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+          className="hey"
+        />
+      </ReactPaginateWrapper>
     </TotalWidthSetting>
   );
 };
