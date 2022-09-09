@@ -89,7 +89,7 @@ const CommunityMain = () => {
         <ShowListArea>
           <Grid container spacing={7} rowSpacing={6}>
             {showList.map((show, idx) => (
-              <Grid item xs={4} key={idx}>
+              <Grid style={{ paddingTop: "0px" }} item xs={4} key={idx}>
                 <ShowItem data={show} idx={idx} />
               </Grid>
             ))}

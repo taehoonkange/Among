@@ -14,9 +14,9 @@
   list-style: none;
   cursor: pointer;
 }
-
+/* 
 .pagination a {
-  padding: 10px;
+  padding: 6px;
   border-radius: 5px;
   border: 1px solid rgb(95, 60, 250);
   color: rgb(95, 60, 250);
@@ -35,3 +35,8 @@
   color: rgb(198, 197, 202);
   border: 1px solid rgb(198, 197, 202);
 }
+
+.page-item.active {
+  background-color: red;
+  border-radius: 5px;
+} */

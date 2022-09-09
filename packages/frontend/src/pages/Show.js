@@ -43,7 +43,7 @@ const ShowListArea = styled.div`
 `;
 
 const ReactPaginateWrapper = styled.div`
-  margin-top: 50px;
+  margin-top: 70px;
   display: flex;
   justify-content: center;
 `;
@@ -121,11 +121,11 @@ const Show = () => {
         </ShowListArea>
       </TotalWrapJustifyCenter>
       <ReactPaginateWrapper>
-        <ReactPaginate
+        <ReactPaginateBox
           nextLabel=">"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={0}
           pageCount={pageCount}
           previousLabel="<"
           pageClassName="page-item"
@@ -134,12 +134,13 @@ const Show = () => {
           previousLinkClassName="page-link"
           nextClassName="page-item"
           nextLinkClassName="page-link"
-          breakLabel="..."
+          breakLabel=""
           breakClassName="page-item"
           breakLinkClassName="page-link"
           containerClassName="pagination"
           activeClassName="active"
           renderOnZeroPageCount={null}
+          className="hey"
         />
       </ReactPaginateWrapper>
     </TotalWidthSetting>
@@ -147,3 +148,33 @@ const Show = () => {
 };
 
 export default Show;
+
+const ReactPaginateBox = styled(ReactPaginate)`
+  display: flex;
+  cursor: pointer;
+  a {
+    color: #777;
+  }
+  & > .page-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4em;
+    background: #eef2f6;
+
+    line-height: 28px;
+    margin: 0 5px;
+    min-width: 28px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  & > .page-item.active {
+    color: white;
+  }
+  & > .active {
+    background-color: #545c65;
+  }
+  & > .active a {
+    color: white;
+  }
+`;

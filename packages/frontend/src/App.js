@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../src/pages/Home";
 import Navbar from "./components/Navbar/Navbar";
@@ -38,8 +39,8 @@ const ContentWrapDiv = styled.div`
     visibility: hidden;
   }
 `;
-GetUserData();
 function App() {
+  GetUserData();
   return (
     <TotalWrapDiv>
       <ContentWrapDiv>

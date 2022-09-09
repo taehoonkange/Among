@@ -8,7 +8,6 @@ const GetUserData = () => {
     console.log("hooks Test");
     dispatch(getUserDataServer());
   }, []);
-  return <div>GetUserData</div>;
 };
 
 export default GetUserData;
