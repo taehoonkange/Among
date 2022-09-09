@@ -17,6 +17,7 @@ import {
   editCommentServer,
   InfluencerSearch,
   CommnunityCheckStatus,
+  influencerLoadPosts,
 } from "../actions/post";
 const shortid = require("shortid");
 const initialState = {
@@ -403,6 +404,16 @@ const postSlice = createSlice({
       .addCase(testLoadPosts.rejected, (state, action) => {
         state.testLoadPostsLoading = false;
       })
+      .addCase(influencerLoadPosts.pending, (state) => {
+        console.log("pending");
+      })
+      .addCase(influencerLoadPosts.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.mainPosts = action.payload;
+
+        return state;
+      })
+      .addCase(influencerLoadPosts.rejected, (state, action) => {})
       .addCase(loadPosts.pending, (state) => {
         console.log("pending");
       })

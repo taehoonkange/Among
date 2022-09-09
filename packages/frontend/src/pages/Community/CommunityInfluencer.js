@@ -5,7 +5,7 @@ import CommunityCategory from "../../components/Community/CommunityCategory";
 import styled from "styled-components";
 import CommunityPost from "../../components/Community/CommunityPosts";
 import GetUserData from "../../hooks/GetUserData";
-import GetUserStatus from "../../hooks/GetUserStatus";
+import GetUserStatus2 from "../../hooks/GetUserStatus2";
 import { resetHasMorePosts, setCommunityCategory } from "../../slice/postSlice";
 import { loadPosts, testLoadPosts } from "../../actions/post";
 
@@ -49,7 +49,7 @@ const Community = () => {
   }, []);
 
   GetUserData();
-  GetUserStatus(id);
+  GetUserStatus2(id);
   return (
     <Layout>
       <CommunityCategory></CommunityCategory>

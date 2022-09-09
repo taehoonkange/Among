@@ -18,6 +18,16 @@ export const testLoadPosts = createAsyncThunk(
   },
 );
 
+export const influencerLoadPosts = createAsyncThunk(
+  "get/influencerLoadPosts",
+  async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const response = await axios.get(requests(state).getInfluencerPosts);
+    console.log(response.data);
+    return response.data;
+  },
+);
+
 export const loadPosts = createAsyncThunk(
   "get/loadPosts",
   async (data, thunkAPI) => {

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CommentComp from "./Comment";
 import ImageZoom from "./ImagesZoom/index";
 import { addComment, editPostImage } from "../../slice/postSlice";
+import moza1 from "../../images/moza1.png";
 
 import {
   addCommentServer,
@@ -23,6 +24,7 @@ import CommunityPostInput from "./CommunityPostInput";
 import CommunityEditPostInput from "./CommunityEditPostInput";
 import ConfirmModal from "../ConfirmModal";
 const Layout = styled.div`
+  position: relative;
   margin-top: 10px;
   padding: 15px;
   background-color: white;
@@ -166,9 +168,30 @@ const MyContentActiveButton = styled.img`
   filter: invert(21%) sepia(66%) saturate(5240%) hue-rotate(249deg);
 `;
 
-const CommunityPost = ({ like, post }) => {
+const Alert = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  top: calc(50% - 50px);
+  left: calc(50% - 150px);
+  border-radius: 10px;
+  width: 300px;
+  height: 50px;
+  background: linear-gradient(
+    90deg,
+    rgb(254, 224, 255) 0%,
+    rgb(218, 235, 255) 100%
+  );
+`;
+
+const CommunityPost = ({ CatergoryType, like, post }) => {
+  console.log(post);
   const userName = useSelector((state) => state.userData.userName);
   const userID = useSelector((state) => state.userData.userID);
+  const CommunityState = useSelector((state) => state.posts.CommunityState);
+
   const dispatcher = useDispatch();
   const [heart, setHeart] = useState(false);
   const [comment, setComment] = useState(false);
@@ -289,6 +312,17 @@ const CommunityPost = ({ like, post }) => {
       );
     }
   };
+  if (
+    CatergoryType === "INFLUENCER" &&
+    post.Limiteduser?.status === "VIP" &&
+    CommunityState === "NORMAL"
+  )
+    return (
+      <Layout>
+        <img style={{ width: "100%" }} src={moza1} alt="" />
+        <Alert>VIP회원만 열람할 수 있는 글입니다.</Alert>
+      </Layout>
+    );
   return (
     <Layout>
       <Header>

@@ -45,26 +45,16 @@ const CommunityPosts = ({ CatergoryType }) => {
       <CommunityPostInput CatergoryType={CatergoryType}></CommunityPostInput>
       {mainPosts.mainPosts.map((post) => {
         return (
-          <Post key={post.id} like={post.likeCount} post={post.post}></Post>
+          <Post
+            CatergoryType={CatergoryType}
+            key={post.id}
+            like={post.likeCount}
+            post={post.post}
+          ></Post>
         );
       })}
-      <Test
-        width={576}
-        height={300}
-        src={moza}
-        pixelSize={3}
-        fillTransparencyColor={"white"}
-      />
-      <MozaLayout>
-        <img style={{ width: "100%" }} src={moza1} alt="" />
-      </MozaLayout>
-      <MozaLayout>
-        <img style={{ width: "100%" }} src={moza2} alt="" />
-      </MozaLayout>
     </Layout>
   );
 };
 
 export default CommunityPosts;
-
-const Test = styled(ImagePixelated)``;
