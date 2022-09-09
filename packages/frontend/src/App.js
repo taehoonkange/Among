@@ -19,6 +19,7 @@ import ShowDetail from "./pages/ShowDetail";
 import ShowPublish from "./pages/ShowPublic/ShowPublish";
 import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
 import CommunityMain from "./pages/Community/CommunityMain";
+import GetUserData from "./hooks/GetUserData";
 const TotalWrapDiv = styled.div`
   position: relative;
   min-height: 120vh;
@@ -37,6 +38,7 @@ const ContentWrapDiv = styled.div`
     visibility: hidden;
   }
 `;
+GetUserData();
 function App() {
   return (
     <TotalWrapDiv>

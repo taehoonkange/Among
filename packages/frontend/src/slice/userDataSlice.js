@@ -48,6 +48,7 @@ const userDataSlice = createSlice({
       .addCase(getUserDataServer.fulfilled, (state, { payload }) => {
         state.userID = payload.id;
         state.userType = payload.userType;
+        window.localStorage.setItem("userType", `${payload.userType}`);
         state.userName = payload.nickname;
         state.communityId = payload.communityId;
         return state;
