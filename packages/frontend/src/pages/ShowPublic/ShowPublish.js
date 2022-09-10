@@ -15,7 +15,7 @@ import Alert from "@mui/material/Alert";
 import { addDays, getYear, getMonth } from "date-fns";
 import { ko } from "date-fns/esm/locale";
 
-import "./ShowPublic.module.css";
+import "./ShowPublic.css";
 import InputEditor from "../../components/ShowPublish/InputEditor";
 import InputList from "../../components/ShowPublish/InputList";
 const ShowPublish = () => {
