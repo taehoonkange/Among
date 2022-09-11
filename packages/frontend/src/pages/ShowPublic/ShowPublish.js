@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import needImg from "../../images/needImg.png";
 import backLeft from "../../images/dateLeftArrow.png";
 import backRight from "../../images/dateRightArrow.png";
-
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -18,7 +18,13 @@ import { ko } from "date-fns/esm/locale";
 import "./ShowPublic.css";
 import InputEditor from "../../components/ShowPublish/InputEditor";
 import InputList from "../../components/ShowPublish/InputList";
+import { useDispatch } from "react-redux";
+import { performanceUploadImages } from "../../actions/performance";
+import dayjs from "dayjs";
+import SeatInfomation from "../../components/ShowPublish/SeatInfomation";
 const ShowPublish = () => {
+  const dispatch = useDispatch();
+  const imageInput = useRef();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [img, setImg] = useState("");
@@ -38,10 +44,13 @@ const ShowPublish = () => {
   };
 
   const captureFile = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
     const file = e.target.files[0];
     setImg(file);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (image) => {
+      imageFormData.append("image", image);
+    });
+    dispatch(performanceUploadImages(imageFormData));
   };
 
   const onCreate = (grade, price, seats) => {
@@ -50,6 +59,16 @@ const ShowPublish = () => {
     console.log(newItem);
     setSeatData([newItem, ...seatData]);
   };
+
+  const onClickImageUpload = useCallback(() => {
+    imageInput.current.click();
+  }, [imageInput]);
+
+  useEffect(() => {
+    console.log(startDate);
+    console.log(dayjs(startDate).format("YYYY-MM-DD HH:mm:ss"));
+    return () => {};
+  }, [startDate]);
 
   return (
     <div className="ShowPublic">
@@ -76,6 +95,7 @@ const ShowPublish = () => {
             <UnderTitle>
               <PosterArea>
                 <Poster
+                  onClick={onClickImageUpload}
                   src={img ? URL.createObjectURL(img) : needImg}
                   alt="등록 버튼을 눌러주세요."
                 ></Poster>
@@ -165,10 +185,11 @@ const ShowPublish = () => {
                       >
                         파일 선택
                         <input
+                          ref={imageInput}
                           type="file"
-                          accept="image/*"
-                          onChange={captureFile}
+                          multiple
                           hidden
+                          onChange={captureFile}
                         />
                       </Button>
                     </div>
@@ -296,7 +317,7 @@ const ShowPublish = () => {
             <ColorHr style={{ marginTop: "20px" }}></ColorHr>
           </CoverBox>
           <SideBtnWrap>
-            <SideBtn>공연 등록</SideBtn>
+            <SideBtn to="/SeatInfo">좌석 등록</SideBtn>
           </SideBtnWrap>
         </TopRightCss>
       </TopCss>
@@ -352,6 +373,7 @@ const Poster = styled.img`
   margin-top: 2px;
   border-radius: 12px;
   margin-right: 20px;
+  cursor: pointer;
 `;
 
 const SubmitButtonArea = styled.div`
@@ -445,7 +467,7 @@ const SideBtnWrap = styled.div`
   width: 380px;
 `;
 
-const SideBtn = styled.div`
+const SideBtn = styled(Link)`
   display: flex;
   width: 100%;
   justify-content: center;

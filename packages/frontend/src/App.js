@@ -18,6 +18,7 @@ import MyPage from "./pages/MyPage";
 import TicketReSell from "./pages/TicketReSell";
 import ShowDetail from "./pages/ShowDetail";
 import ShowPublish from "./pages/ShowPublic/ShowPublish";
+import SeatInfo from "./pages/SeatInfo";
 import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
 import CommunityMain from "./pages/Community/CommunityMain";
 import GetUserData from "./hooks/GetUserData";
@@ -69,6 +70,7 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
+          <Route path="/SeatInfo" element={<SeatInfo />} />
           <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>
       </ContentWrapDiv>
