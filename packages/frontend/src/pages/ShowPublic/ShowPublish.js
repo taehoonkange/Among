@@ -23,6 +23,7 @@ import { performanceUploadImages } from "../../actions/performance";
 import dayjs from "dayjs";
 import SeatInfomation from "../../components/ShowPublish/SeatInfomation";
 const ShowPublish = () => {
+  const [nextPage, setNextPage] = useState(false);
   const dispatch = useDispatch();
   const imageInput = useRef();
   const [startDate, setStartDate] = useState(new Date());
@@ -72,63 +73,65 @@ const ShowPublish = () => {
 
   return (
     <div className="ShowPublic">
-      <TopCss>
-        <TopLeft>
-          <TopLeftCss>
-            <UpperTitleArea>공연 등록</UpperTitleArea>
-            <TicketTitle>
-              <StyledTextField
-                name="name"
-                type="text"
-                label="공연 제목"
-                placeholder="공연 제목을 적어주세요"
-                variant="standard"
-                value={apiData.name}
-                onChange={handleApiChange}
-                style={{ width: 600 }}
-                inputProps={{
-                  style: { fontSize: 24, fontWeight: "bold" },
-                }} // font size of input text
-                InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
-              />
-            </TicketTitle>
-            <UnderTitle>
-              <PosterArea>
-                <Poster
-                  onClick={onClickImageUpload}
-                  src={img ? URL.createObjectURL(img) : needImg}
-                  alt="등록 버튼을 눌러주세요."
-                ></Poster>
-              </PosterArea>
-              <InfoWrapper>
-                <div>
-                  <InfoDiv>
-                    <span>장소</span>
-                    <StyledTextField
-                      name="stageName"
-                      type="text"
-                      label="장소"
-                      variant="standard"
-                      value={apiData.stageName}
-                      onChange={handleApiChange}
-                    />
-                  </InfoDiv>
-
-                  <InfoDiv>
-                    <span>공연 시간</span>
-                    {!isNaN(apiData.runningTime) ? (
+      {nextPage ? (
+        <TopCss>
+          <TopLeft>
+            <TopLeftCss>
+              <UpperTitleArea>공연 등록</UpperTitleArea>
+              <SeatInfomation></SeatInfomation>
+              <SideBtnWrap2>
+                <SideBtn2>공연 등록</SideBtn2>
+              </SideBtnWrap2>
+            </TopLeftCss>
+          </TopLeft>
+        </TopCss>
+      ) : (
+        <TopCss>
+          <TopLeft>
+            <TopLeftCss>
+              <UpperTitleArea>공연 등록</UpperTitleArea>
+              <TicketTitle>
+                <StyledTextField
+                  name="name"
+                  type="text"
+                  label="공연 제목"
+                  placeholder="공연 제목을 적어주세요"
+                  variant="standard"
+                  value={apiData.name}
+                  onChange={handleApiChange}
+                  style={{ width: 600 }}
+                  inputProps={{
+                    style: { fontSize: 24, fontWeight: "bold" },
+                  }} // font size of input text
+                  InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
+                />
+              </TicketTitle>
+              <UnderTitle>
+                <PosterArea>
+                  <Poster
+                    onClick={onClickImageUpload}
+                    src={img ? URL.createObjectURL(img) : needImg}
+                    alt="등록 버튼을 눌러주세요."
+                  ></Poster>
+                </PosterArea>
+                <InfoWrapper>
+                  <div>
+                    <InfoDiv>
+                      <span>장소</span>
                       <StyledTextField
-                        name="runningTime"
+                        name="stageName"
                         type="text"
-                        label="공연시간(분)"
+                        label="장소"
                         variant="standard"
-                        value={apiData.runningTime}
+                        value={apiData.stageName}
                         onChange={handleApiChange}
                       />
-                    ) : (
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <TextField
-                          error
+                    </InfoDiv>
+
+                    <InfoDiv>
+                      <span>공연 시간</span>
+                      {!isNaN(apiData.runningTime) ? (
+                        <StyledTextField
                           name="runningTime"
                           type="text"
                           label="공연시간(분)"
@@ -136,25 +139,27 @@ const ShowPublish = () => {
                           value={apiData.runningTime}
                           onChange={handleApiChange}
                         />
-                        <Alert severity="error">숫자를 입력해주세요.</Alert>
-                      </div>
-                    )}
-                  </InfoDiv>
-                  <InfoDiv>
-                    <span>관람 연령</span>
-                    {!isNaN(apiData.ageLimit) ? (
-                      <StyledTextField
-                        name="ageLimit"
-                        type="text"
-                        label="관람연령"
-                        variant="standard"
-                        value={apiData.ageLimit}
-                        onChange={handleApiChange}
-                      />
-                    ) : (
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <TextField
-                          error
+                      ) : (
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <TextField
+                            error
+                            name="runningTime"
+                            type="text"
+                            label="공연시간(분)"
+                            variant="standard"
+                            value={apiData.runningTime}
+                            onChange={handleApiChange}
+                          />
+                          <Alert severity="error">숫자를 입력해주세요.</Alert>
+                        </div>
+                      )}
+                    </InfoDiv>
+                    <InfoDiv>
+                      <span>관람 연령</span>
+                      {!isNaN(apiData.ageLimit) ? (
+                        <StyledTextField
                           name="ageLimit"
                           type="text"
                           label="관람연령"
@@ -162,165 +167,183 @@ const ShowPublish = () => {
                           value={apiData.ageLimit}
                           onChange={handleApiChange}
                         />
-                        <Alert severity="error">숫자를 입력해주세요.</Alert>
+                      ) : (
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <TextField
+                            error
+                            name="ageLimit"
+                            type="text"
+                            label="관람연령"
+                            variant="standard"
+                            value={apiData.ageLimit}
+                            onChange={handleApiChange}
+                          />
+                          <Alert severity="error">숫자를 입력해주세요.</Alert>
+                        </div>
+                      )}
+                    </InfoDiv>
+                    <SubmitButtonArea>
+                      <div>
+                        <Button
+                          sx={{
+                            color: "white",
+                            borderColor: "rgb(95, 60, 250)",
+                            backgroundColor: "rgb(95, 60, 250)",
+                            borderRadius: 3,
+                            py: 0.5,
+                            mr: 2,
+                            "&:hover": {
+                              backgroundColor: "rgb(53, 15, 224)",
+                            },
+                          }}
+                          variant="outlined"
+                          component="label" // 이거 안해주면 작동을 안하네요..
+                        >
+                          파일 선택
+                          <input
+                            ref={imageInput}
+                            type="file"
+                            multiple
+                            hidden
+                            onChange={captureFile}
+                          />
+                        </Button>
                       </div>
-                    )}
-                  </InfoDiv>
-                  <SubmitButtonArea>
-                    <div>
-                      <Button
-                        sx={{
-                          color: "white",
-                          borderColor: "rgb(95, 60, 250)",
-                          backgroundColor: "rgb(95, 60, 250)",
-                          borderRadius: 3,
-                          py: 0.5,
-                          mr: 2,
-                          "&:hover": {
-                            backgroundColor: "rgb(53, 15, 224)",
-                          },
+                    </SubmitButtonArea>
+                  </div>
+                </InfoWrapper>
+              </UnderTitle>
+            </TopLeftCss>
+            <TicketTitle2>상세 정보</TicketTitle2>
+            <StyledTextField
+              name="description"
+              type="text"
+              label="공연 정보"
+              rows={4}
+              multiline
+              value={apiData.description}
+              sx={{ width: "600px" }}
+              onChange={handleApiChange}
+            ></StyledTextField>
+          </TopLeft>
+          <TopRightCss>
+            <CoverBox>
+              <SmallTitleCss style={{ marginTop: "20px", paddingTop: "4px" }}>
+                판매 기간 선택
+              </SmallTitleCss>
+              <DatePickerBox>
+                <MyDatePickerStart
+                  renderCustomHeader={({
+                    date,
+                    decreaseMonth,
+                    increaseMonth,
+                    prevMonthButtonDisabled,
+                    nextMonthButtonDisabled,
+                  }) => {
+                    let month = (getMonth(date) + 1)
+                      .toString()
+                      .padStart(2, "0");
+                    return (
+                      <div
+                        style={{
+                          margin: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                          fontWeight: 700,
+                          fontSize: "20px",
                         }}
-                        variant="outlined"
-                        component="label" // 이거 안해주면 작동을 안하네요..
                       >
-                        파일 선택
-                        <input
-                          ref={imageInput}
-                          type="file"
-                          multiple
-                          hidden
-                          onChange={captureFile}
-                        />
-                      </Button>
-                    </div>
-                  </SubmitButtonArea>
-                </div>
-              </InfoWrapper>
-            </UnderTitle>
-          </TopLeftCss>
-          <TicketTitle2>상세 정보</TicketTitle2>
-          <StyledTextField
-            name="description"
-            type="text"
-            label="공연 정보"
-            rows={4}
-            multiline
-            value={apiData.description}
-            sx={{ width: "600px" }}
-            onChange={handleApiChange}
-          ></StyledTextField>
-        </TopLeft>
-        <TopRightCss>
-          <CoverBox>
-            <SmallTitleCss style={{ marginTop: "20px", paddingTop: "4px" }}>
-              판매 기간 선택
-            </SmallTitleCss>
-            <DatePickerBox>
-              <MyDatePickerStart
-                renderCustomHeader={({
-                  date,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => {
-                  let month = (getMonth(date) + 1).toString().padStart(2, "0");
-                  return (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                        fontWeight: 700,
-                        fontSize: "20px",
-                      }}
-                    >
-                      <div
-                        onClick={decreaseMonth}
-                        disabled={prevMonthButtonDisabled}
-                      >
-                        <img className="back" src={backLeft} alt="" />
+                        <div
+                          onClick={decreaseMonth}
+                          disabled={prevMonthButtonDisabled}
+                        >
+                          <img className="back" src={backLeft} alt="" />
+                        </div>
+                        {getYear(date)}. {month}
+                        <div
+                          onClick={increaseMonth}
+                          disabled={nextMonthButtonDisabled}
+                        >
+                          <img className="back" src={backRight} alt="" />
+                        </div>
                       </div>
-                      {getYear(date)}. {month}
+                    );
+                  }}
+                  selected={startDate}
+                  locale={ko}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect // 시간 나오게 하기
+                  timeFormat="HH:mm" //시간 포맷
+                  timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                  timeCaption="time"
+                  dateFormat="yyyy-MM-dd h:mm aa"
+                  minDate={addDays(new Date(), 1)}
+                />
+                <p style={{ paddingLeft: "2px" }}>~</p>
+                <MyDatePickerFinish
+                  renderCustomHeader={({
+                    date,
+                    decreaseMonth,
+                    increaseMonth,
+                    prevMonthButtonDisabled,
+                    nextMonthButtonDisabled,
+                  }) => {
+                    let month = (getMonth(date) + 1)
+                      .toString()
+                      .padStart(2, "0");
+                    return (
                       <div
-                        onClick={increaseMonth}
-                        disabled={nextMonthButtonDisabled}
+                        style={{
+                          margin: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                          fontWeight: 700,
+                          fontSize: "20px",
+                        }}
                       >
-                        <img className="back" src={backRight} alt="" />
+                        <div
+                          onClick={decreaseMonth}
+                          disabled={prevMonthButtonDisabled}
+                        >
+                          <img className="back" src={backLeft} alt="" />
+                        </div>
+                        {getYear(date)}. {month}
+                        <div
+                          onClick={increaseMonth}
+                          disabled={nextMonthButtonDisabled}
+                        >
+                          <img className="back" src={backRight} alt="" />
+                        </div>
                       </div>
-                    </div>
-                  );
-                }}
-                selected={startDate}
-                locale={ko}
-                onChange={(date) => setStartDate(date)}
-                showTimeSelect // 시간 나오게 하기
-                timeFormat="HH:mm" //시간 포맷
-                timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
-                timeCaption="time"
-                dateFormat="yyyy-MM-dd h:mm aa"
-                minDate={addDays(new Date(), 1)}
-              />
-              <p style={{ paddingLeft: "2px" }}>~</p>
-              <MyDatePickerFinish
-                renderCustomHeader={({
-                  date,
-                  decreaseMonth,
-                  increaseMonth,
-                  prevMonthButtonDisabled,
-                  nextMonthButtonDisabled,
-                }) => {
-                  let month = (getMonth(date) + 1).toString().padStart(2, "0");
-                  return (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                        fontWeight: 700,
-                        fontSize: "20px",
-                      }}
-                    >
-                      <div
-                        onClick={decreaseMonth}
-                        disabled={prevMonthButtonDisabled}
-                      >
-                        <img className="back" src={backLeft} alt="" />
-                      </div>
-                      {getYear(date)}. {month}
-                      <div
-                        onClick={increaseMonth}
-                        disabled={nextMonthButtonDisabled}
-                      >
-                        <img className="back" src={backRight} alt="" />
-                      </div>
-                    </div>
-                  );
-                }}
-                selected={endDate}
-                locale={ko}
-                onChange={(date) => setEndDate(date)}
-                showTimeSelect // 시간 나오게 하기
-                timeFormat="HH:mm" //시간 포맷
-                timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
-                timeCaption="time"
-                dateFormat="yyyy-MM-dd h:mm aa"
-                minDate={startDate}
-              />
-            </DatePickerBox>
-            <ColorHr></ColorHr>
-            <SmallTitleCss>좌석</SmallTitleCss>
-            <div>
-              <InputEditor onCreate={onCreate} />
-              <InputList inputList={seatData} />
-            </div>
-            <ColorHr style={{ marginTop: "20px" }}></ColorHr>
-          </CoverBox>
-          <SideBtnWrap>
-            <SideBtn to="/SeatInfo">좌석 등록</SideBtn>
-          </SideBtnWrap>
-        </TopRightCss>
-      </TopCss>
+                    );
+                  }}
+                  selected={endDate}
+                  locale={ko}
+                  onChange={(date) => setEndDate(date)}
+                  showTimeSelect // 시간 나오게 하기
+                  timeFormat="HH:mm" //시간 포맷
+                  timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                  timeCaption="time"
+                  dateFormat="yyyy-MM-dd h:mm aa"
+                  minDate={startDate}
+                />
+              </DatePickerBox>
+              <ColorHr></ColorHr>
+              <SmallTitleCss>좌석</SmallTitleCss>
+              <div>
+                <InputEditor onCreate={onCreate} />
+                <InputList inputList={seatData} />
+              </div>
+              <ColorHr style={{ marginTop: "20px" }}></ColorHr>
+            </CoverBox>
+            <SideBtnWrap>
+              <SideBtn onClick={() => setNextPage(true)}>좌석 등록</SideBtn>
+            </SideBtnWrap>
+          </TopRightCss>
+        </TopCss>
+      )}
     </div>
   );
 };
@@ -467,7 +490,7 @@ const SideBtnWrap = styled.div`
   width: 380px;
 `;
 
-const SideBtn = styled(Link)`
+const SideBtn = styled.button`
   display: flex;
   width: 100%;
   justify-content: center;
@@ -494,4 +517,29 @@ const InfoDiv = styled.div`
     width: 80px;
     font-weight: 700;
   }
+`;
+
+const SideBtnWrap2 = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+`;
+
+const SideBtn2 = styled.button`
+  display: flex;
+  width: 170px;
+  height: 55px;
+  justify-content: center;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(95, 60, 250);
+  border: 0.1rem solid rgb(95, 60, 250);
+  border-radius: 1rem;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
 `;

@@ -70,7 +70,6 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
-          <Route path="/SeatInfo" element={<SeatInfo />} />
           <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>
       </ContentWrapDiv>

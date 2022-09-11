@@ -15,6 +15,8 @@ seatsImage.src =
 const Layout = styled.div`
   display: flex;
   background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
 `;
 const RestSeatWrapper = styled.div`
   width: 120px;
@@ -103,7 +105,10 @@ const SeatInfomation = () => {
 
   return (
     <Layout>
-      <canvas ref={canvasRef} />
+      <canvas
+        style={{ borderBottomLeftRadius: "10px", borderTopLeftRadius: "10px" }}
+        ref={canvasRef}
+      />
       <RestSeatWrapper>
         <RestSeatTitle>잔여석</RestSeatTitle>
         <RestSeatInfo>
