@@ -78,7 +78,10 @@ const ShowPublish = () => {
           <TopLeft>
             <TopLeftCss>
               <UpperTitleArea>공연 등록</UpperTitleArea>
-              <SeatInfomation></SeatInfomation>
+              <SeatInfomation
+                setSeatData={setSeatData}
+                seatData={seatData}
+              ></SeatInfomation>
               <SideBtnWrap2>
                 <SideBtn2>공연 등록</SideBtn2>
               </SideBtnWrap2>

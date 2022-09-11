@@ -1,6 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
-import { data } from "./data";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
+import { resetSeatsData, setSeatsData } from "../../slice/performanceSlice";
+import { useDispatch, useSelector } from "react-redux";
+const seatColor = ["#FA58F4", "#6495ED", "#01DF3A"];
 const sold = "#D8D8D8";
 const unsold = "#01DF3A";
 const clicked = "#FA58F4";
@@ -19,7 +21,7 @@ const Layout = styled.div`
   border-radius: 10px;
 `;
 const RestSeatWrapper = styled.div`
-  width: 120px;
+  width: 140px;
   display: flex;
   flex-direction: column;
 `;
@@ -31,13 +33,25 @@ const RestSeatTitle = styled.div`
 `;
 
 const RestSeatInfo = styled.div`
+  cursor: pointer;
   padding: 10px;
   display: flex;
-  background: "red";
+  background: ${(props) =>
+    props.index === props.seatColorIndex &&
+    "linear-gradient(90deg,rgb(254, 224, 255) 0%,rgb(218, 235, 255) 100%);"};
+  &:hover {
+    background: linear-gradient(
+      90deg,
+      rgb(254, 224, 255) 0%,
+      rgb(218, 235, 255) 100%
+    );
+  }
 `;
 
-const SeatInfomation = () => {
-  const [seats, setSeats] = useState(data);
+const SeatInfomation = ({ setSeatData, seatData }) => {
+  const dispatch = useDispatch();
+  const [seatColorIndex, setSeatColorIndex] = useState(-1);
+  const seats = useSelector((state) => state.performance.seats);
   const canvasRef = useRef();
   const ctx = useRef(null);
   const draw = () => {
@@ -51,43 +65,81 @@ const SeatInfomation = () => {
     });
   };
 
-  const mouseUp = (e) => {
-    e.stopPropagation();
+  const mouseUp = useCallback(
+    (e) => {
+      e.stopPropagation();
 
-    const arr = seats;
-    const length = seats.length;
-    let seat;
-    let row = 0;
-    let col = 0;
-    for (let i = 0; i < length; i += 1) {
-      console.log("X", e.offsetX);
-      console.log("Y", e.offsetY);
+      const arr = seats;
+      const length = seats.length;
+      let seat;
+      let row = 0;
+      let col = 0;
 
-      seat = seats[i];
-      if (i % 10 === 0) {
-        row = 0;
-        if (i !== 0) {
-          col++;
+      for (let i = 0; i < length; i += 1) {
+        // console.log("X", e.offsetX);
+        // console.log("Y", e.offsetY);
+        if (seatColorIndex === -1) {
+          window.alert("좌석색깔을 선택해주세요.");
+          return;
         }
-      }
-      if (
-        e.offsetX > seat.point.x * scale + 40 + 15 * row &&
-        e.offsetX < seat.point.x * scale + 55 + 15 * row &&
-        e.offsetY > seat.point.y * scale + 50 + 20 * col &&
-        e.offsetY < seat.point.y * scale + 70 + 20 * col
-      ) {
-        console.log(i);
-        if (seat.status === "sold") {
-          let target = { ...seats[i], color: clicked, status: "unsold" };
-          setSeats([...seats.slice(0, i), target, ...seats.slice(i + 1)]);
-        } else {
-          let target = { ...seats[i], color: sold, status: "sold" };
-          setSeats([...seats.slice(0, i), target, ...seats.slice(i + 1)]);
+
+        seat = seats[i];
+        if (i % 10 === 0) {
+          row = 0;
+          if (i !== 0) {
+            col++;
+          }
         }
+        if (
+          e.offsetX > seat.point.x * scale + 40 + 15 * row &&
+          e.offsetX < seat.point.x * scale + 55 + 15 * row &&
+          e.offsetY > seat.point.y * scale + 50 + 20 * col &&
+          e.offsetY < seat.point.y * scale + 70 + 20 * col
+        ) {
+          if (seat.status === "none") {
+            if (seatData[seatColorIndex].seats === 0) {
+              window.alert("더 이상 좌석을 선택할 수 없습니다.");
+              return;
+            }
+            let temp = {
+              grade: seatData[seatColorIndex].grade,
+              price: seatData[seatColorIndex].price,
+              seats: seatData[seatColorIndex].seats - 1,
+              id: seatData[seatColorIndex].id,
+            };
+            setSeatData([
+              ...seatData.slice(0, seatColorIndex),
+              temp,
+              ...seatData.slice(seatColorIndex + 1),
+            ]);
+
+            let target = {
+              ...seats[i],
+              color: seatColor[seatColorIndex],
+              status: "select",
+            };
+            dispatch(setSeatsData({ i: i, value: target }));
+          } else {
+            let temp = {
+              grade: seatData[seatColorIndex].grade,
+              price: seatData[seatColorIndex].price,
+              seats: seatData[seatColorIndex].seats + 1,
+              id: seatData[seatColorIndex].id,
+            };
+            setSeatData([
+              ...seatData.slice(0, seatColorIndex),
+              temp,
+              ...seatData.slice(seatColorIndex + 1),
+            ]);
+            let target = { ...seats[i], color: "#D8D8D8", status: "none" };
+            dispatch(setSeatsData({ i: i, value: target }));
+          }
+        }
+        row++;
       }
-      row++;
-    }
-  };
+    },
+    [seatColorIndex, setSeatsData, seatData],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -101,8 +153,11 @@ const SeatInfomation = () => {
     return () => {
       canvas.removeEventListener("mouseup", mouseUp);
     };
-  }, [seats]);
+  }, [seats, seatColorIndex]);
 
+  useEffect(() => {
+    return () => dispatch(resetSeatsData());
+  }, []);
   return (
     <Layout>
       <canvas
@@ -111,34 +166,44 @@ const SeatInfomation = () => {
       />
       <RestSeatWrapper>
         <RestSeatTitle>잔여석</RestSeatTitle>
-        <RestSeatInfo>
-          <div
-            style={{
-              width: "10px",
-              height: "10px",
-              backgroundColor: "#FA58F4",
-              alignSelf: "center",
-              marginRight: "10px",
-            }}
-          ></div>
-          <div
-            style={{
-              fontWeight: "600",
-            }}
-          >
-            VIP석
-          </div>
-          <div
-            style={{
-              color: "#808080",
-              fontSize: "14px",
-              marginLeft: "10px",
-              alignSelf: "flex-end",
-            }}
-          >
-            10석
-          </div>
-        </RestSeatInfo>
+        {seatData.map((seat, index) => {
+          return (
+            <RestSeatInfo
+              index={index}
+              seatColorIndex={seatColorIndex}
+              onClick={() => {
+                setSeatColorIndex(index);
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: seatColor[index],
+                  alignSelf: "center",
+                  marginRight: "10px",
+                }}
+              ></div>
+              <div
+                style={{
+                  fontWeight: "600",
+                }}
+              >
+                {seat.grade}석
+              </div>
+              <div
+                style={{
+                  color: "#808080",
+                  fontSize: "14px",
+                  marginLeft: "10px",
+                  alignSelf: "flex-end",
+                }}
+              >
+                {seat.seats}석
+              </div>
+            </RestSeatInfo>
+          );
+        })}
       </RestSeatWrapper>
     </Layout>
   );

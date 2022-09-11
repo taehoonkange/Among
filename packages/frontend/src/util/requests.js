@@ -1,4 +1,4 @@
-export const requests = (state, data = undefined) => {
+export const requests = (state = undefined, data = undefined) => {
   const requests1 = {
     getPosts: `community/${state?.posts.NowCommunityId}/${
       state?.posts.communityCategory
@@ -8,6 +8,7 @@ export const requests = (state, data = undefined) => {
     setComment: `/community/${data?.id}/comment`,
     setReply: `/community/${data?.refId}/refcomment`,
     getPostDetail: `/community/${data?.postId}/post`,
+    performanceImage: `/performance/image`,
   };
 
   return requests1;
