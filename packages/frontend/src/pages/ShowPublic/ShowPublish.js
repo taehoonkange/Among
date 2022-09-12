@@ -26,6 +26,8 @@ const ShowPublish = () => {
   const [nextPage, setNextPage] = useState(false);
   const dispatch = useDispatch();
   const imageInput = useRef();
+  const [termStartDate, setTermStartDate] = useState(new Date());
+  const [termEndDate, setTermEndDate] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [img, setImg] = useState("");
@@ -66,11 +68,8 @@ const ShowPublish = () => {
   }, [imageInput]);
 
   useEffect(() => {
-    console.log(startDate);
-    console.log(dayjs(startDate).format("YYYY-MM-DD HH:mm:ss"));
-    return () => {};
-  }, [startDate]);
-
+    console.log(apiData);
+  }, [apiData]);
   return (
     <div className="ShowPublic">
       {nextPage ? (
@@ -274,9 +273,9 @@ const ShowPublish = () => {
                       </div>
                     );
                   }}
-                  selected={startDate}
+                  selected={termStartDate}
                   locale={ko}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => setTermStartDate(date)}
                   showTimeSelect // 시간 나오게 하기
                   timeFormat="HH:mm" //시간 포맷
                   timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
@@ -322,15 +321,41 @@ const ShowPublish = () => {
                       </div>
                     );
                   }}
-                  selected={endDate}
+                  selected={termEndDate}
                   locale={ko}
-                  onChange={(date) => setEndDate(date)}
+                  onChange={(date) => setTermEndDate(date)}
                   showTimeSelect // 시간 나오게 하기
                   timeFormat="HH:mm" //시간 포맷
                   timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
                   timeCaption="time"
                   dateFormat="yyyy-MM-dd h:mm aa"
-                  minDate={startDate}
+                  minDate={termStartDate}
+                />
+              </DatePickerBox>
+              <ColorHr></ColorHr>
+              <SmallTitleCss style={{ marginTop: "20px", paddingTop: "4px" }}>
+                공연 시간 선택
+              </SmallTitleCss>
+              <DatePickerBox>
+                <MyDatePickerStart
+                  locale={ko}
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={30}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                />
+                <MyDatePickerFinish
+                  locale={ko}
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={30}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
                 />
               </DatePickerBox>
               <ColorHr></ColorHr>
