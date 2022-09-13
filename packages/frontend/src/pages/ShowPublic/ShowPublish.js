@@ -3,7 +3,7 @@ import styled from "styled-components";
 import needImg from "../../images/needImg.png";
 import backLeft from "../../images/dateLeftArrow.png";
 import backRight from "../../images/dateRightArrow.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -18,11 +18,21 @@ import { ko } from "date-fns/esm/locale";
 import "./ShowPublic.css";
 import InputEditor from "../../components/ShowPublish/InputEditor";
 import InputList from "../../components/ShowPublish/InputList";
-import { useDispatch } from "react-redux";
-import { performanceUploadImages } from "../../actions/performance";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  performanceResgister,
+  performanceSeats,
+  performanceUploadImages,
+} from "../../actions/performance";
 import dayjs from "dayjs";
 import SeatInfomation from "../../components/ShowPublish/SeatInfomation";
+
 const ShowPublish = () => {
+  const navigate = useNavigate();
+
+  const imagePaths = useSelector((state) => state.performance.imagePaths);
+  const seats = useSelector((state) => state.performance.seats);
+  const ticketSeats = useSelector((state) => state.performance.ticketSeats);
   const [nextPage, setNextPage] = useState(false);
   const dispatch = useDispatch();
   const imageInput = useRef();
@@ -69,7 +79,42 @@ const ShowPublish = () => {
 
   useEffect(() => {
     console.log(apiData);
-  }, [apiData]);
+    console.log(termStartDate);
+    console.log(termEndDate);
+    console.log(startDate);
+    console.log(endDate);
+  }, [apiData, termStartDate, termEndDate, startDate, endDate]);
+
+  const register = useCallback(async () => {
+    let data = {
+      title: apiData.name,
+      place: apiData.stageName,
+      time: apiData.runningTime,
+      limitedAge: apiData.ageLimit,
+      term_start_at: termStartDate,
+      term_end_at: termEndDate,
+      start_at: startDate,
+      end_at: endDate,
+      description: apiData.description,
+      tickets: ticketSeats,
+      image: imagePaths[0],
+    };
+    try {
+      await dispatch(performanceResgister(data));
+      window.alert("등록이 완료되었습니다.");
+      navigate("/Show");
+    } catch {
+      window.alert("등록이 실패했습니다. 다시 시도해주세요.");
+      navigate("/ShowPublish");
+    }
+  }, [apiData, termStartDate, termEndDate, startDate, endDate, ticketSeats]);
+
+  // const test = useCallback(() => {
+  //   let data = {
+  //     seats: seats,
+  //   };
+  //   dispatch(performanceSeats(data));
+  // }, []);
   return (
     <div className="ShowPublic">
       {nextPage ? (
@@ -82,7 +127,7 @@ const ShowPublish = () => {
                 seatData={seatData}
               ></SeatInfomation>
               <SideBtnWrap2>
-                <SideBtn2>공연 등록</SideBtn2>
+                <SideBtn2 onClick={register}>공연 등록</SideBtn2>
               </SideBtnWrap2>
             </TopLeftCss>
           </TopLeft>
@@ -233,7 +278,7 @@ const ShowPublish = () => {
           <TopRightCss>
             <CoverBox>
               <SmallTitleCss style={{ marginTop: "20px", paddingTop: "4px" }}>
-                판매 기간 선택
+                공연 기간 선택
               </SmallTitleCss>
               <DatePickerBox>
                 <MyDatePickerStart
@@ -276,11 +321,12 @@ const ShowPublish = () => {
                   selected={termStartDate}
                   locale={ko}
                   onChange={(date) => setTermStartDate(date)}
-                  showTimeSelect // 시간 나오게 하기
-                  timeFormat="HH:mm" //시간 포맷
-                  timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                  // showTimeSelect // 시간 나오게 하기
+                  // timeFormat="HH:mm" //시간 포맷
+                  // timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
                   timeCaption="time"
-                  dateFormat="yyyy-MM-dd h:mm aa"
+                  // dateFormat="yyyy-MM-dd h:mm aa"
+                  dateFormat="yyyy-MM-dd"
                   minDate={addDays(new Date(), 1)}
                 />
                 <p style={{ paddingLeft: "2px" }}>~</p>
@@ -324,11 +370,12 @@ const ShowPublish = () => {
                   selected={termEndDate}
                   locale={ko}
                   onChange={(date) => setTermEndDate(date)}
-                  showTimeSelect // 시간 나오게 하기
-                  timeFormat="HH:mm" //시간 포맷
-                  timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
+                  // showTimeSelect // 시간 나오게 하기
+                  // timeFormat="HH:mm" //시간 포맷
+                  // timeIntervals={30} // 30분 단위로 선택 가능한 box가 나옴
                   timeCaption="time"
-                  dateFormat="yyyy-MM-dd h:mm aa"
+                  // dateFormat="yyyy-MM-dd h:mm aa"
+                  dateFormat="yyyy-MM-dd"
                   minDate={termStartDate}
                 />
               </DatePickerBox>
@@ -372,6 +419,8 @@ const ShowPublish = () => {
           </TopRightCss>
         </TopCss>
       )}
+      {/* <button>테스트 버튼</button>
+      <button onClick={test}>테스트 버튼2</button> */}
     </div>
   );
 };

@@ -1,6 +1,12 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
-import { resetSeatsData, setSeatsData } from "../../slice/performanceSlice";
+import {
+  resetSeatsData,
+  setTicketSeatsMinus,
+  setSeatsData,
+  setTicketSeats,
+  resetTicketSeats,
+} from "../../slice/performanceSlice";
 import { useDispatch, useSelector } from "react-redux";
 const seatColor = ["#FA58F4", "#6495ED", "#01DF3A"];
 const sold = "#D8D8D8";
@@ -58,9 +64,9 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
     const canvas = canvasRef.current;
     ctx.current.clearRect(0, 0, canvas.width / 1, canvas.height / 1);
     ctx.current.drawImage(seatsImage, 0, 0, canvas.width, canvas.height);
-    seats.forEach(function (x) {
-      ctx.current.fillStyle = x.color;
-      ctx.current.fillRect(x.point.x, x.point.y, 10, 10);
+    seats.forEach(function (seat) {
+      ctx.current.fillStyle = seat.color;
+      ctx.current.fillRect(seat.x, seat.y, 10, 10);
       // ctx.fillRect(100, 100, 10, 10);
     });
   };
@@ -91,16 +97,27 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
           }
         }
         if (
-          e.offsetX > seat.point.x * scale + 40 + 15 * row &&
-          e.offsetX < seat.point.x * scale + 55 + 15 * row &&
-          e.offsetY > seat.point.y * scale + 50 + 20 * col &&
-          e.offsetY < seat.point.y * scale + 70 + 20 * col
+          e.offsetX > seat.x * scale + 40 + 15 * row &&
+          e.offsetX < seat.x * scale + 55 + 15 * row &&
+          e.offsetY > seat.y * scale + 50 + 20 * col &&
+          e.offsetY < seat.y * scale + 70 + 20 * col
         ) {
           if (seat.status === "none") {
             if (seatData[seatColorIndex].seats === 0) {
               window.alert("더 이상 좌석을 선택할 수 없습니다.");
               return;
             }
+            let ticket = {
+              class: seatData[seatColorIndex].grade,
+              price: seatData[seatColorIndex].price,
+              number: i,
+              x: seat.x,
+              y: seat.y,
+              status: "select",
+              color: seatColor[seatColorIndex],
+            };
+            dispatch(setTicketSeats({ value: ticket }));
+
             let temp = {
               grade: seatData[seatColorIndex].grade,
               price: seatData[seatColorIndex].price,
@@ -120,6 +137,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
             };
             dispatch(setSeatsData({ i: i, value: target }));
           } else {
+            dispatch(setTicketSeatsMinus({ value: i }));
             let temp = {
               grade: seatData[seatColorIndex].grade,
               price: seatData[seatColorIndex].price,
@@ -156,7 +174,11 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
   }, [seats, seatColorIndex]);
 
   useEffect(() => {
-    return () => dispatch(resetSeatsData());
+    return () => {
+      dispatch(resetSeatsData());
+      dispatch(resetTicketSeats());
+      console.log("이게 왜 실행되냐");
+    };
   }, []);
   return (
     <Layout>

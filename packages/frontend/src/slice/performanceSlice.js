@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { performanceUploadImages } from "../actions/performance";
+import {
+  performanceUploadImages,
+  uploadImages,
+  performanceResgister,
+  performanceSeats,
+} from "../actions/performance";
 import { data } from "./data";
+
 const initialState = {
   imagePaths: [],
   seats: data,
+  ticketSeats: [],
 };
 
 const performanceSlice = createSlice({
@@ -23,6 +30,17 @@ const performanceSlice = createSlice({
     resetSeatsData: (state) => {
       state.seats = data;
     },
+    setTicketSeats: (state, { payload }) => {
+      state.ticketSeats = [...state.ticketSeats, payload.value];
+    },
+    resetTicketSeats: (state, { payload }) => {
+      state.ticketSeats = [];
+    },
+    setTicketSeatsMinus: (state, { payload }) => {
+      state.ticketSeats = state.ticketSeats.filter(
+        (seat) => seat.number !== payload.i,
+      );
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -31,8 +49,29 @@ const performanceSlice = createSlice({
         state.imagePaths = [...state.imagePaths, action.payload];
         console.log(state.imagePaths);
       })
-      .addCase(performanceUploadImages.rejected, (state, action) => {}),
+      .addCase(performanceUploadImages.rejected, (state, action) => {})
+      .addCase(uploadImages.pending, (state) => {})
+      .addCase(uploadImages.fulfilled, (state, action) => {
+        // state.uploadImagesLoading = false;
+        // state.uploadImagesDone = true;
+        state.imagePaths = [...state.imagePaths, action.payload];
+      })
+      .addCase(uploadImages.rejected, (state, action) => {})
+      .addCase(performanceResgister.pending, (state) => {})
+      .addCase(performanceResgister.fulfilled, (state, action) => {})
+      .addCase(performanceResgister.rejected, (state, action) => {
+        throw new Error("기분나쁜일이 생겼어요");
+      })
+      .addCase(performanceSeats.pending, (state) => {})
+      .addCase(performanceSeats.fulfilled, (state, action) => {})
+      .addCase(performanceSeats.rejected, (state, action) => {}),
 });
 
-export const { setSeatsData, resetSeatsData } = performanceSlice.actions;
+export const {
+  setSeatsData,
+  resetSeatsData,
+  setTicketSeats,
+  setTicketSeatsMinus,
+  resetTicketSeats,
+} = performanceSlice.actions;
 export default performanceSlice.reducer;

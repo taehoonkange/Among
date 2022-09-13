@@ -16,10 +16,8 @@ for (let i = 0; i < 40; i++) {
   }
   let ob = {
     id: i + 1,
-    point: {
-      x: 50 + 20 * row,
-      y: 50 + 20 * col,
-    },
+    x: 50 + 20 * row,
+    y: 50 + 20 * col,
     status: "none",
     color: "#D8D8D8",
   };

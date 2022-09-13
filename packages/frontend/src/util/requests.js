@@ -9,6 +9,8 @@ export const requests = (state = undefined, data = undefined) => {
     setReply: `/community/${data?.refId}/refcomment`,
     getPostDetail: `/community/${data?.postId}/post`,
     performanceImage: `/performance/image`,
+    performance: `/performance`,
+    performanceSeats: `/performance/1/seatgui`,
   };
 
   return requests1;

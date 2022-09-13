@@ -26,7 +26,7 @@ const ShowDetail = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <TopCss>
         <TopLeftCss>
           <TopLeft></TopLeft>
@@ -44,7 +44,7 @@ const ShowDetail = () => {
         <Middle></Middle>
         <MiddleRightCss></MiddleRightCss>
       </MiddleCss>
-    </div>
+    </>
   );
 };
 
@@ -58,7 +58,6 @@ const TopCss = styled.div`
 `;
 
 const TopLeftCss = styled.div`
-  overflow: scroll;
   width: 830px;
   height: 630px;
 `;
