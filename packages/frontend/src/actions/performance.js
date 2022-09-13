@@ -30,16 +30,30 @@ export const uploadImages = createAsyncThunk(
   },
 );
 
-export const performanceResgister = createAsyncThunk(
-  "post/performanceResgister",
+export const getPerformance = createAsyncThunk(
+  "get/performance",
   async (data, { rejectWithValue }) => {
     try {
+      const response = await axios.get(requests().getPerformance);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const performanceResgister = createAsyncThunk(
+  "post/performanceResgister",
+  async (data, thunkAPI) => {
+    try {
       console.log(data);
-      const response = await axios.post(requests().performance, data); // POST /post/images
+      axios.post(requests().performance, data); // POST /post/images
+      const response = thunkAPI.dispatch(getPerformance());
       return response.data;
     } catch (error) {
       console.log(error.response.data);
-      return rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   },
 );
@@ -53,19 +67,6 @@ export const performanceSeats = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error.response.data);
-      return rejectWithValue(error.response.data);
-    }
-  },
-);
-
-export const getPerformance = createAsyncThunk(
-  "get/performance",
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(requests().getPerformance);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
       return rejectWithValue(error.response.data);
     }
   },

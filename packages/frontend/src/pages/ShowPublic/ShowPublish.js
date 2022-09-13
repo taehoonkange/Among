@@ -26,6 +26,7 @@ import {
 } from "../../actions/performance";
 import dayjs from "dayjs";
 import SeatInfomation from "../../components/ShowPublish/SeatInfomation";
+import { resetImagePaths } from "../../slice/performanceSlice";
 
 const ShowPublish = () => {
   const navigate = useNavigate();
@@ -109,12 +110,11 @@ const ShowPublish = () => {
     }
   }, [apiData, termStartDate, termEndDate, startDate, endDate, ticketSeats]);
 
-  // const test = useCallback(() => {
-  //   let data = {
-  //     seats: seats,
-  //   };
-  //   dispatch(performanceSeats(data));
-  // }, []);
+  useEffect(() => {
+    return () => {
+      dispatch(resetImagePaths());
+    };
+  }, []);
   return (
     <div className="ShowPublic">
       {nextPage ? (

@@ -20,6 +20,9 @@ const performanceSlice = createSlice({
   name: "performance",
   initialState,
   reducers: {
+    resetImagePaths: (state, { payload }) => {
+      state.imagePaths = [];
+    },
     setSeatsData: (state, { payload }) => {
       state.seats = [
         ...state.seats.slice(0, payload.i),
@@ -60,7 +63,10 @@ const performanceSlice = createSlice({
       })
       .addCase(uploadImages.rejected, (state, action) => {})
       .addCase(performanceResgister.pending, (state) => {})
-      .addCase(performanceResgister.fulfilled, (state, action) => {})
+      .addCase(performanceResgister.fulfilled, (state, action) => {
+        state.performance = action.payload;
+        return state;
+      })
       .addCase(performanceResgister.rejected, (state, action) => {
         throw new Error("기분나쁜일이 생겼어요");
       })
@@ -80,5 +86,6 @@ export const {
   setTicketSeats,
   setTicketSeatsMinus,
   resetTicketSeats,
+  resetImagePaths,
 } = performanceSlice.actions;
 export default performanceSlice.reducer;
