@@ -14,6 +14,7 @@ const FooterContainer = styled.div`
   bottom: 0;
   width: 100%;
   background-color: rgb(24, 25, 29);
+  z-index: 100;
 `;
 
 // Left
