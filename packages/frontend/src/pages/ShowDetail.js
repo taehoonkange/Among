@@ -7,23 +7,26 @@ import TopRight from "../components/ShowDetail/TopRight";
 const ShowDetail = () => {
   const detectScroll = useRef();
   const listener = () => {
-    if (window.pageYOffset + 1300 > document.body.scrollHeight)
-      detectScroll.current.style.top = "0px";
-    else {
-      detectScroll.current.style.top = "150px";
-    }
+    // if (window.pageYOffset + 1300 > document.body.scrollHeight)
+    //   detectScroll.current.style.top = "0px";
+    // else {
+    // detectScroll.current.style.top = "150px";
+    // }
   };
 
   useEffect(() => {
-    console.log(document.body.scrollHeight);
-    window.addEventListener("scroll", listener);
-    return () => {
-      window.removeEventListener("scroll", listener);
-    };
+    console.log("dada");
+    // console.log(document.body.scrollHeight);
+    // console.log(window.pageYOffset);
+    // detectScroll.current.style.top = "150px";
+    // window.addEventListener("scroll", listener);
+    // return () => {
+    //   window.removeEventListener("scroll", listener);
+    // };
   }, []);
 
   return (
-    <>
+    <div>
       <TopCss>
         <TopLeftCss>
           <TopLeft></TopLeft>
@@ -41,7 +44,7 @@ const ShowDetail = () => {
         <Middle></Middle>
         <MiddleRightCss></MiddleRightCss>
       </MiddleCss>
-    </>
+    </div>
   );
 };
 
@@ -55,6 +58,7 @@ const TopCss = styled.div`
 `;
 
 const TopLeftCss = styled.div`
+  overflow: scroll;
   width: 830px;
   height: 630px;
 `;
@@ -72,7 +76,7 @@ const TopRightCss = styled.div`
 const TopRightFixed = styled.div`
   width: 370px;
   height: 630px;
-  position: fixed;
+  /* position: fixed; */
   top: 0px;
   margin-left: 50px;
   background-color: white;

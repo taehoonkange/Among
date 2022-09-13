@@ -116,6 +116,6 @@ const SideTimeTable = styled.div`
     color: rgb(95, 60, 250);
     border-color: rgb(95, 60, 250);
     margin-left: 5px;
-    margin-bottom: 2px;
+    /* margin-bottom: 2px; */
   }
 `;
