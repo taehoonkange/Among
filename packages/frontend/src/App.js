@@ -23,6 +23,7 @@ import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
 import CommunityMain from "./pages/Community/CommunityMain";
 import GetUserData from "./hooks/GetUserData";
 import Decorate from "./pages/Decorate";
+import MyTicket from "./pages/MyTicket";
 const TotalWrapDiv = styled.div`
   position: relative;
   min-height: 120vh;
@@ -70,6 +71,7 @@ function App() {
           <Route path="/Guide" element={<Guide />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
+          <Route path="/MyTicket" element={<MyTicket />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
           <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>
