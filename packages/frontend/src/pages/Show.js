@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import ShowItem from "../components/Show/ShowItem";
 import ReactPaginate from "react-paginate";
 import "./pagination.css";
+import { getPerformance } from "../actions/performance";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -48,6 +50,8 @@ const ReactPaginateWrapper = styled.div`
   justify-content: center;
 `;
 const Show = () => {
+  const dispatch = useDispatch();
+  const performanceData = useSelector((state) => state.performance.performance);
   const items = [...Array(50).keys()];
   const [showList, SetShowList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const [currentItems, setCurrentItems] = useState(null);
@@ -60,13 +64,13 @@ const Show = () => {
     // Fetch items from another resources.
     const endOffset = itemOffset + 3;
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setCurrentItems(items.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(items.length / 3));
+    setCurrentItems(performanceData.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(performanceData.length / 3));
   }, [itemOffset]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * 3) % items.length;
+    const newOffset = (event.selected * 3) % performanceData.length;
     console.log(
       `User requested page number ${event.selected}, which is offset ${newOffset}`,
     );
@@ -76,6 +80,10 @@ const Show = () => {
   useEffect(() => {
     console.log(currentItems);
   }, [currentItems]);
+
+  useEffect(() => {
+    dispatch(getPerformance());
+  }, []);
   return (
     <TotalWidthSetting>
       <UpperTitleArea>
@@ -113,7 +121,7 @@ const Show = () => {
           <Grid container spacing={7} rowSpacing={6}>
             {currentItems?.map((show, idx) => (
               <Grid style={{ paddingTop: "0px" }} item xs={4} key={idx}>
-                <ShowItem idx={idx} />
+                <ShowItem data={show} idx={idx} />
               </Grid>
             ))}
           </Grid>

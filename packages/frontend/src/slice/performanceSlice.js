@@ -5,6 +5,7 @@ import {
   uploadImages,
   performanceResgister,
   performanceSeats,
+  getPerformance,
 } from "../actions/performance";
 import { data } from "./data";
 
@@ -12,6 +13,7 @@ const initialState = {
   imagePaths: [],
   seats: data,
   ticketSeats: [],
+  performance: [],
 };
 
 const performanceSlice = createSlice({
@@ -64,7 +66,12 @@ const performanceSlice = createSlice({
       })
       .addCase(performanceSeats.pending, (state) => {})
       .addCase(performanceSeats.fulfilled, (state, action) => {})
-      .addCase(performanceSeats.rejected, (state, action) => {}),
+      .addCase(performanceSeats.rejected, (state, action) => {})
+      .addCase(getPerformance.pending, (state) => {})
+      .addCase(getPerformance.fulfilled, (state, action) => {
+        state.performance = action.payload;
+      })
+      .addCase(getPerformance.rejected, (state, action) => {}),
 });
 
 export const {
