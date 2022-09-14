@@ -26,6 +26,16 @@
   border-radius: 100%;
 }
 
+.react-datepicker__day--selected {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+}
+
 .DatePick .react-datepicker__day--keyboard-selected:hover {
   background-color: rgb(95, 60, 250);
   border-radius: 100%;

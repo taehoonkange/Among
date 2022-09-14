@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import DatePick from "./DatePick/DatePick";
-
+import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 const TopRight = () => {
+  const performanceDetail = useSelector(
+    (state) => state.performance.performanceDetail,
+  );
   return (
     <>
       <CoverBox>
@@ -19,7 +23,9 @@ const TopRight = () => {
                 <ul>
                   <li>
                     <span>1회</span>
-                    <span>13:00</span>
+                    <span>
+                      {dayjs(performanceDetail?.start_at).format("HH:mm")}
+                    </span>
                   </li>
                 </ul>
               </SideTimeTable>

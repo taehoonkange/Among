@@ -1,19 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import dayjs from "dayjs";
 import {
   performanceUploadImages,
   uploadImages,
   performanceResgister,
   performanceSeats,
   getPerformance,
+  getPerformanceDetail,
+  getSeatsData,
 } from "../actions/performance";
 import { data } from "./data";
-
 const initialState = {
   imagePaths: [],
   seats: data,
   ticketSeats: [],
   performance: [],
+  performanceId: 0,
+  performanceDetail: [],
+  seatsData: [],
+  daySeatsData: {},
+  userSelectDay: "",
+  seatDataRemain: {},
 };
 
 const performanceSlice = createSlice({
@@ -46,6 +53,13 @@ const performanceSlice = createSlice({
         (seat) => seat.number !== payload.i,
       );
     },
+    setPerformanceId: (state, { payload }) => {
+      state.performanceId = payload.value;
+    },
+    resetPerformanceId: (state, { payload }) => {},
+    setUserSelectDay: (state, { payload }) => {
+      state.userSelectDay = payload.value;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -77,7 +91,56 @@ const performanceSlice = createSlice({
       .addCase(getPerformance.fulfilled, (state, action) => {
         state.performance = action.payload;
       })
-      .addCase(getPerformance.rejected, (state, action) => {}),
+      .addCase(getPerformance.rejected, (state, action) => {})
+      .addCase(getPerformanceDetail.pending, (state) => {})
+      .addCase(getPerformanceDetail.fulfilled, (state, action) => {
+        state.performanceDetail = action.payload;
+      })
+      .addCase(getPerformanceDetail.rejected, (state, action) => {})
+      .addCase(getSeatsData.pending, (state) => {})
+      .addCase(getSeatsData.fulfilled, (state, action) => {
+        state.seatsData = action.payload;
+        let sections = {};
+        let seatDataRemaining = {};
+        state.seatsData.forEach((el) => {
+          const monthDate = dayjs(el.day).format("YYYY-MM-DD");
+          if (Array.isArray(sections[monthDate])) {
+            sections[monthDate].push(el);
+          } else {
+            sections[monthDate] = [el];
+          }
+        });
+        state.daySeatsData = sections;
+        for (let key in sections) {
+          let reportId = {};
+          let color = {};
+          const targetDate = sections[key];
+          for (let i = 0; i < targetDate.length; i++) {
+            if (reportId.hasOwnProperty(targetDate[i].status)) {
+              reportId[targetDate[i].status] += 1;
+            } else {
+              reportId[targetDate[i].status] = 1;
+            }
+
+            if (!color.hasOwnProperty(targetDate[i].status)) {
+              color[targetDate[i].status] = targetDate[i].color;
+            }
+          }
+          let tempArr = [];
+          for (let seatClass in reportId) {
+            let temp = {};
+            temp["status"] = seatClass;
+            temp["count"] = reportId[seatClass];
+            temp["color"] = color[seatClass];
+            tempArr.push(temp);
+          }
+          seatDataRemaining[key] = tempArr;
+        }
+        console.log(seatDataRemaining);
+        state.seatDataRemain = seatDataRemaining;
+        // return state;
+      })
+      .addCase(getSeatsData.rejected, (state, action) => {}),
 });
 
 export const {
@@ -87,5 +150,8 @@ export const {
   setTicketSeatsMinus,
   resetTicketSeats,
   resetImagePaths,
+  setPerformanceId,
+  resetPerformanceId,
+  setUserSelectDay,
 } = performanceSlice.actions;
 export default performanceSlice.reducer;

@@ -54,7 +54,13 @@ const RestSeatInfo = styled.div`
   }
 `;
 
-const SeatInfomation = ({ setSeatData, seatData }) => {
+const SelectSeatInfo = ({ setSeatData, seatData }) => {
+  const daySeatsData = useSelector((state) => state.performance.daySeatsData);
+  const userSelectDay = useSelector((state) => state.performance.userSelectDay);
+  const seatDataRemain = useSelector(
+    (state) => state.performance.seatDataRemain,
+  );
+
   const dispatch = useDispatch();
   const [seatColorIndex, setSeatColorIndex] = useState(-1);
   const seats = useSelector((state) => state.performance.seats);
@@ -65,6 +71,16 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
     ctx.current.clearRect(0, 0, canvas.width / 1, canvas.height / 1);
     ctx.current.drawImage(seatsImage, 0, 0, canvas.width, canvas.height);
     seats.forEach(function (seat) {
+      ctx.current.fillStyle = seat.color;
+      ctx.current.fillRect(seat.x, seat.y, 10, 10);
+      // ctx.fillRect(100, 100, 10, 10);
+    });
+  };
+  const drawSelectSeat = () => {
+    // const canvas = canvasRef.current;
+    // ctx.current.drawImage(seatsImage, 0, 0, canvas.width, canvas.height);
+
+    daySeatsData[userSelectDay]?.forEach(function (seat) {
       ctx.current.fillStyle = seat.color;
       ctx.current.fillRect(seat.x, seat.y, 10, 10);
       // ctx.fillRect(100, 100, 10, 10);
@@ -84,10 +100,10 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
       for (let i = 0; i < length; i += 1) {
         // console.log("X", e.offsetX);
         // console.log("Y", e.offsetY);
-        if (seatColorIndex === -1) {
-          window.alert("좌석색깔을 선택해주세요.");
-          return;
-        }
+        // if (seatColorIndex === -1) {
+        //   window.alert("좌석색깔을 선택해주세요.");
+        //   return;
+        // }
 
         seat = seats[i];
         if (i % 10 === 0) {
@@ -102,56 +118,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
           e.offsetY > seat.y * scale + 50 + 20 * col &&
           e.offsetY < seat.y * scale + 70 + 20 * col
         ) {
-          if (seat.status === "none") {
-            if (seatData[seatColorIndex].seats === 0) {
-              window.alert("더 이상 좌석을 선택할 수 없습니다.");
-              return;
-            }
-            let ticket = {
-              class: seatData[seatColorIndex].grade,
-              price: seatData[seatColorIndex].price,
-              number: i,
-              x: seat.x,
-              y: seat.y,
-              status: seatData[seatColorIndex].grade,
-              color: seatColor[seatColorIndex],
-            };
-            dispatch(setTicketSeats({ value: ticket }));
-
-            let temp = {
-              grade: seatData[seatColorIndex].grade,
-              price: seatData[seatColorIndex].price,
-              seats: seatData[seatColorIndex].seats - 1,
-              id: seatData[seatColorIndex].id,
-            };
-            setSeatData([
-              ...seatData.slice(0, seatColorIndex),
-              temp,
-              ...seatData.slice(seatColorIndex + 1),
-            ]);
-
-            let target = {
-              ...seats[i],
-              color: seatColor[seatColorIndex],
-              status: "select",
-            };
-            dispatch(setSeatsData({ i: i, value: target }));
-          } else {
-            dispatch(setTicketSeatsMinus({ value: i }));
-            let temp = {
-              grade: seatData[seatColorIndex].grade,
-              price: seatData[seatColorIndex].price,
-              seats: seatData[seatColorIndex].seats + 1,
-              id: seatData[seatColorIndex].id,
-            };
-            setSeatData([
-              ...seatData.slice(0, seatColorIndex),
-              temp,
-              ...seatData.slice(seatColorIndex + 1),
-            ]);
-            let target = { ...seats[i], color: "#D8D8D8", status: "none" };
-            dispatch(setSeatsData({ i: i, value: target }));
-          }
+          console.log(i);
         }
         row++;
       }
@@ -165,6 +132,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
     canvas.style.height = "300px";
     ctx.current = canvas.getContext("2d");
     draw();
+    drawSelectSeat();
     // clickEvent();
     // socket.emit("joinRoom", "A");
     canvas.addEventListener("mouseup", mouseUp);
@@ -188,7 +156,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
       />
       <RestSeatWrapper>
         <RestSeatTitle>잔여석</RestSeatTitle>
-        {seatData?.map((seat, index) => {
+        {seatDataRemain[userSelectDay]?.map((seat, index) => {
           return (
             <RestSeatInfo
               index={index}
@@ -201,7 +169,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
                 style={{
                   width: "10px",
                   height: "10px",
-                  backgroundColor: seatColor[index],
+                  backgroundColor: seat.color,
                   alignSelf: "center",
                   marginRight: "10px",
                 }}
@@ -211,7 +179,7 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
                   fontWeight: "600",
                 }}
               >
-                {seat.grade}석
+                {seat.status}석
               </div>
               <div
                 style={{
@@ -221,7 +189,48 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
                   alignSelf: "flex-end",
                 }}
               >
-                {seat.seats}석
+                {seat.count}석
+              </div>
+            </RestSeatInfo>
+          );
+        })}
+      </RestSeatWrapper>
+      <RestSeatWrapper>
+        <RestSeatTitle>선택좌석</RestSeatTitle>
+        {seatDataRemain[userSelectDay]?.map((seat, index) => {
+          return (
+            <RestSeatInfo
+              index={index}
+              seatColorIndex={seatColorIndex}
+              onClick={() => {
+                setSeatColorIndex(index);
+              }}
+            >
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: seat.color,
+                  alignSelf: "center",
+                  marginRight: "10px",
+                }}
+              ></div>
+              <div
+                style={{
+                  fontWeight: "600",
+                }}
+              >
+                {seat.status}석
+              </div>
+              <div
+                style={{
+                  color: "#808080",
+                  fontSize: "14px",
+                  marginLeft: "10px",
+                  alignSelf: "flex-end",
+                }}
+              >
+                {seat.count}석
               </div>
             </RestSeatInfo>
           );
@@ -231,4 +240,4 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
   );
 };
 
-export default SeatInfomation;
+export default SelectSeatInfo;

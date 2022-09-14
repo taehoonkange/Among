@@ -1,11 +1,20 @@
 import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { getPerformanceDetail, getSeatsData } from "../actions/performance";
 import Middle from "../components/ShowDetail/Middle";
 import TopLeft from "../components/ShowDetail/TopLeft";
 import TopRight from "../components/ShowDetail/TopRight";
-
+import { setPerformanceId } from "../slice/performanceSlice";
+import { Link } from "react-router-dom";
 const ShowDetail = () => {
+  const dispatch = useDispatch();
+  const performanceId = useSelector((state) => state.performance.performanceId);
+
   const detectScroll = useRef();
+  const path = useLocation().pathname;
+  const mounted = useRef(false);
   const listener = () => {
     // if (window.pageYOffset + 1300 > document.body.scrollHeight)
     //   detectScroll.current.style.top = "0px";
@@ -15,16 +24,20 @@ const ShowDetail = () => {
   };
 
   useEffect(() => {
-    console.log("dada");
-    // console.log(document.body.scrollHeight);
-    // console.log(window.pageYOffset);
-    // detectScroll.current.style.top = "150px";
-    // window.addEventListener("scroll", listener);
-    // return () => {
-    //   window.removeEventListener("scroll", listener);
-    // };
-  }, []);
+    const regex = /[^0-9]/g;
+    const result = path.replace(regex, "");
+    const number = parseInt(result);
+    dispatch(setPerformanceId({ value: number }));
+  }, [path]);
 
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      dispatch(getPerformanceDetail(performanceId));
+      dispatch(getSeatsData(performanceId));
+    }
+  }, [performanceId]);
   return (
     <>
       <TopCss>
@@ -35,7 +48,7 @@ const ShowDetail = () => {
           <TopRightFixed ref={detectScroll}>
             <TopRight></TopRight>
             <SideBtnWrap>
-              <SideBtn>예매하기</SideBtn>
+              <SideBtn to="/Show/SelectSeat">예매하기</SideBtn>
             </SideBtnWrap>
           </TopRightFixed>
         </TopRightCss>
@@ -85,7 +98,8 @@ const SideBtnWrap = styled.div`
   margin-top: 20px;
 `;
 
-const SideBtn = styled.div`
+const SideBtn = styled(Link)`
+  cursor: pointer;
   display: flex;
   width: 100%;
   justify-content: center;

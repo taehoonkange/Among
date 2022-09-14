@@ -41,7 +41,7 @@ const ShowItem = ({ data, idx }) => {
   console.log(data);
   return (
     <PerformContainer>
-      <Link to={`/Show/${data.idx}`}>
+      <Link to={`/Show/${data.id}`}>
         <PosterImgContainer
           src={`http://localhost:3065/${data.Image.src}`}
           onError={handleError}
