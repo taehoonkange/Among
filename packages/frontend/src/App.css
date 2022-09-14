@@ -25,13 +25,13 @@ a {
 }
 
 .upper-canvas {
-  width: 300px !important;
-  height: 300px !important;
+  min-width: 300px !important;
+  min-height: 300px !important;
 }
 
 .lower-canvas {
-  width: 300px !important;
-  height: 300px !important;
+  min-width: 300px !important;
+  min-height: 300px !important;
 }
 
 .tui-image-editor-canvas-container {
