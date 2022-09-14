@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 const TopLeft = () => {
   const performanceDetail = useSelector(
@@ -43,12 +44,9 @@ const TopLeft = () => {
               <div>0.01ETH</div>
             </li>
           </ul>
-          <Button back="rgb(95, 60, 250)" ma>
-            꾸미기
-          </Button>
-          <Button back="#ef3f43" margin>
-            리셀하기
-          </Button>
+          {/* <Link to="/Decorate">dd</Link> */}
+          <DecoButton to="/Decorate">꾸미기</DecoButton>
+          <ResellButton>리셀하기</ResellButton>
         </TicketInfoArea>
       </UnderTitle>
     </>
@@ -98,25 +96,26 @@ const TicketInfoArea = styled.div`
   }
 `;
 
-const Button = styled.div`
+const buttonCss = css`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 240px;
   height: 50px;
   border-radius: 10px;
-  background-color: ${(props) => props.back};
   color: white;
+`;
 
-  ${(props) =>
-    props.margin &&
-    css`
-      margin-top: 5px;
-    `}
+const DecoButton = styled(Link)`
+  ${buttonCss}
+  margin-top: 100px;
+  background-color: rgb(95, 60, 250);
+  ${(props) => props.margin && css``}
+`;
 
-  ${(props) =>
-    props.ma &&
-    css`
-      margin-top: 100px;
-    `}
+const ResellButton = styled.div`
+  ${buttonCss}
+  background-color: #ef3f43;
+  margin-top: 5px;
+  cursor: pointer;
 `;
