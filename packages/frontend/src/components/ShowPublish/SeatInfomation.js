@@ -8,7 +8,7 @@ import {
   resetTicketSeats,
 } from "../../slice/performanceSlice";
 import { useDispatch, useSelector } from "react-redux";
-const seatColor = ["#FA58F4", "#6495ED", "#01DF3A"];
+const seatColor = ["#FA58F4", "#FFD400", "#01DF3A"];
 const sold = "#D8D8D8";
 const unsold = "#01DF3A";
 const clicked = "#FA58F4";

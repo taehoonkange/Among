@@ -21,6 +21,7 @@ const initialState = {
   daySeatsData: {},
   userSelectDay: "",
   seatDataRemain: {},
+  test11: {},
 };
 
 const performanceSlice = createSlice({
@@ -59,6 +60,77 @@ const performanceSlice = createSlice({
     resetPerformanceId: (state, { payload }) => {},
     setUserSelectDay: (state, { payload }) => {
       state.userSelectDay = payload.value;
+    },
+    setDaySeatsData: (state, { payload }) => {
+      let temp = {};
+      state.daySeatsData[payload.day].map((el) => {
+        if (el.seatNumber === payload.i) {
+          temp = el;
+        }
+      });
+      let target = {
+        ...temp,
+        originalColor: temp.color,
+        color: "rgb(95, 60, 250)",
+      };
+      state.daySeatsData[payload.day] = state.daySeatsData[payload.day].map(
+        (el) => {
+          if (el.seatNumber === payload.i) {
+            return target;
+          } else return el;
+        },
+      );
+    },
+    setDaySeatsDataOriginColor: (state, { payload }) => {
+      let temp = {};
+      state.daySeatsData[payload.day].map((el) => {
+        if (el.seatNumber === payload.i) {
+          temp = el;
+        }
+      });
+      let target = {
+        ...temp,
+        color: temp.originalColor,
+        originalColor: temp.color,
+      };
+      state.daySeatsData[payload.day] = state.daySeatsData[payload.day].map(
+        (el) => {
+          if (el.seatNumber === payload.i) {
+            return target;
+          } else return el;
+        },
+      );
+    },
+    setSeatDataRemain: (state, { payload }) => {
+      if (payload.type === "minus") {
+        state.seatDataRemain[payload.day] = state.seatDataRemain[
+          payload.day
+        ].map((el) => {
+          if (el.status === payload.status) {
+            let temp = {
+              ...el,
+              count: el.count - 1,
+            };
+            return temp;
+          } else {
+            return el;
+          }
+        });
+      } else {
+        state.seatDataRemain[payload.day] = state.seatDataRemain[
+          payload.day
+        ].map((el) => {
+          if (el.status === payload.status) {
+            let temp = {
+              ...el,
+              count: el.count + 1,
+            };
+            return temp;
+          } else {
+            return el;
+          }
+        });
+      }
     },
   },
   extraReducers: (builder) =>
@@ -153,5 +225,8 @@ export const {
   setPerformanceId,
   resetPerformanceId,
   setUserSelectDay,
+  setDaySeatsData,
+  setDaySeatsDataOriginColor,
+  setSeatDataRemain,
 } = performanceSlice.actions;
 export default performanceSlice.reducer;

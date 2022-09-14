@@ -6,6 +6,9 @@ import {
   setSeatsData,
   setTicketSeats,
   resetTicketSeats,
+  setDaySeatsData,
+  setDaySeatsDataOriginColor,
+  setSeatDataRemain,
 } from "../../slice/performanceSlice";
 import { useDispatch, useSelector } from "react-redux";
 const seatColor = ["#FA58F4", "#6495ED", "#01DF3A"];
@@ -62,6 +65,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
   );
 
   const dispatch = useDispatch();
+  const [selectSeatNumber, setSelcetSeatNumber] = useState({});
   const [seatColorIndex, setSeatColorIndex] = useState(-1);
   const seats = useSelector((state) => state.performance.seats);
   const canvasRef = useRef();
@@ -118,12 +122,42 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
           e.offsetY > seat.y * scale + 50 + 20 * col &&
           e.offsetY < seat.y * scale + 70 + 20 * col
         ) {
-          console.log(i);
+          daySeatsData[userSelectDay].map((el) => {
+            if (i === el.seatNumber && el.color === "rgb(95, 60, 250)") {
+              dispatch(
+                setDaySeatsDataOriginColor({ i: i, day: userSelectDay }),
+              );
+              dispatch(
+                setSeatDataRemain({
+                  type: "plus",
+                  day: userSelectDay,
+                  status: el.status,
+                }),
+              );
+              let temp = selectSeatNumber[el.status];
+              temp = { ...temp, count: temp.count - 1 };
+              setSelcetSeatNumber({ ...selectSeatNumber, [el.status]: temp });
+            } else if (i === el.seatNumber) {
+              console.log(el);
+              dispatch(
+                setSeatDataRemain({
+                  type: "minus",
+                  day: userSelectDay,
+                  status: el.status,
+                }),
+              );
+              dispatch(setDaySeatsData({ i: i, day: userSelectDay }));
+              let temp = selectSeatNumber[el.status];
+              console.log(temp);
+              temp = { ...temp, count: temp.count + 1 };
+              setSelcetSeatNumber({ ...selectSeatNumber, [el.status]: temp });
+            }
+          });
         }
         row++;
       }
     },
-    [seatColorIndex, setSeatsData, seatData],
+    [selectSeatNumber, daySeatsData, seatColorIndex, setSeatsData, seatData],
   );
 
   useEffect(() => {
@@ -139,7 +173,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
     return () => {
       canvas.removeEventListener("mouseup", mouseUp);
     };
-  }, [seats, seatColorIndex]);
+  }, [selectSeatNumber, daySeatsData, seats, seatColorIndex]);
 
   useEffect(() => {
     return () => {
@@ -148,6 +182,60 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
       console.log("이게 왜 실행되냐");
     };
   }, []);
+
+  useEffect(() => {
+    let ans = {};
+    seatDataRemain[userSelectDay]?.map((seat) => {
+      let temp = { count: 0, color: seat.color };
+      ans[seat.status] = temp;
+    });
+    console.log(ans);
+    for (let key in ans) {
+      const value = ans[key];
+      console.log(value);
+    }
+    setSelcetSeatNumber(ans);
+  }, []);
+
+  const SeatCount = useCallback(() => {
+    let test = [];
+    for (let key in selectSeatNumber) {
+      const value = selectSeatNumber[key];
+      if (value.count > 0) {
+        test.push(
+          <RestSeatInfo index={key} seatColorIndex={seatColorIndex}>
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                backgroundColor: value.color,
+                alignSelf: "center",
+                marginRight: "10px",
+              }}
+            ></div>
+            <div
+              style={{
+                fontWeight: "600",
+              }}
+            >
+              {key}석
+            </div>
+            <div
+              style={{
+                color: "#808080",
+                fontSize: "14px",
+                marginLeft: "10px",
+                alignSelf: "flex-end",
+              }}
+            >
+              {value.count}석
+            </div>
+          </RestSeatInfo>,
+        );
+      }
+    }
+    return test;
+  }, [selectSeatNumber]);
   return (
     <Layout>
       <canvas
@@ -158,13 +246,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
         <RestSeatTitle>잔여석</RestSeatTitle>
         {seatDataRemain[userSelectDay]?.map((seat, index) => {
           return (
-            <RestSeatInfo
-              index={index}
-              seatColorIndex={seatColorIndex}
-              onClick={() => {
-                setSeatColorIndex(index);
-              }}
-            >
+            <RestSeatInfo index={index} seatColorIndex={seatColorIndex}>
               <div
                 style={{
                   width: "10px",
@@ -197,44 +279,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
       </RestSeatWrapper>
       <RestSeatWrapper>
         <RestSeatTitle>선택좌석</RestSeatTitle>
-        {seatDataRemain[userSelectDay]?.map((seat, index) => {
-          return (
-            <RestSeatInfo
-              index={index}
-              seatColorIndex={seatColorIndex}
-              onClick={() => {
-                setSeatColorIndex(index);
-              }}
-            >
-              <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  backgroundColor: seat.color,
-                  alignSelf: "center",
-                  marginRight: "10px",
-                }}
-              ></div>
-              <div
-                style={{
-                  fontWeight: "600",
-                }}
-              >
-                {seat.status}석
-              </div>
-              <div
-                style={{
-                  color: "#808080",
-                  fontSize: "14px",
-                  marginLeft: "10px",
-                  alignSelf: "flex-end",
-                }}
-              >
-                {seat.count}석
-              </div>
-            </RestSeatInfo>
-          );
-        })}
+        {SeatCount()}
       </RestSeatWrapper>
     </Layout>
   );
