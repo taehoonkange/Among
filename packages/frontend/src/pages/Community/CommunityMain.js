@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
@@ -99,16 +99,19 @@ const CommunityMain = () => {
     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(showList.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(showList.length / 3));
-  }, [itemOffset]);
+  }, [itemOffset, showList]);
 
   // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * 3) % showList.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`,
-    );
-    setItemOffset(newOffset);
-  };
+  const handlePageClick = useCallback(
+    (event) => {
+      const newOffset = (event.selected * 3) % showList.length;
+      console.log(
+        `User requested page number ${event.selected}, which is offset ${newOffset}`,
+      );
+      setItemOffset(newOffset);
+    },
+    [showList],
+  );
 
   useEffect(() => {
     console.log(currentItems);
