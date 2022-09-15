@@ -22,6 +22,7 @@ const initialState = {
   userSelectDay: "",
   seatDataRemain: {},
   test11: {},
+  banTicketId: [],
 };
 
 const performanceSlice = createSlice({
@@ -166,7 +167,10 @@ const performanceSlice = createSlice({
       .addCase(getPerformance.rejected, (state, action) => {})
       .addCase(getPerformanceDetail.pending, (state) => {})
       .addCase(getPerformanceDetail.fulfilled, (state, action) => {
-        state.performanceDetail = action.payload;
+        console.log(action);
+        console.log(action.payload);
+        state.performanceDetail = action.payload.res;
+        state.banTicketId = action.payload.ban;
       })
       .addCase(getPerformanceDetail.rejected, (state, action) => {})
       .addCase(getSeatsData.pending, (state) => {})
@@ -175,7 +179,12 @@ const performanceSlice = createSlice({
         let sections = {};
         let seatDataRemaining = {};
         state.seatsData.forEach((el) => {
+          console.log(el.id);
           const monthDate = dayjs(el.day).format("YYYY-MM-DD");
+          // 공연 2
+          if (state.banTicketId.includes(el.id)) {
+            return;
+          }
           if (Array.isArray(sections[monthDate])) {
             sections[monthDate].push(el);
           } else {

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 const ShowDetail = () => {
   const dispatch = useDispatch();
   const performanceId = useSelector((state) => state.performance.performanceId);
-
+  const userID = useSelector((state) => state.userData.userID);
   const detectScroll = useRef();
   const path = useLocation().pathname;
   const mounted = useRef(false);
@@ -37,7 +37,8 @@ const ShowDetail = () => {
       dispatch(getPerformanceDetail(performanceId));
       dispatch(getSeatsData(performanceId));
     }
-  }, [performanceId]);
+    return () => dispatch(setPerformanceId({ value: 0 }));
+  }, [performanceId, userID]);
   return (
     <>
       <TopCss>

@@ -74,6 +74,7 @@ const InputWrapper = styled.div`
   padding: 5px 20px 5px 20px;
   & > input {
     margin-left: 10px;
+    width: 100px;
   }
   margin-bottom: 20px;
 `;
@@ -98,7 +99,7 @@ const ResellModal = () => {
         </InputWrapper> */}
         <InputWrapper>
           <div>가격</div>
-          <input></input>
+          <input type="number" max={10 * 0.3} min={0}></input>
         </InputWrapper>
         <ButtonWrapper>
           <ResellButton>거래 발급</ResellButton>

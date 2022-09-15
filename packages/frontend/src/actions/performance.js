@@ -74,16 +74,29 @@ export const performanceSeats = createAsyncThunk(
 
 export const getPerformanceDetail = createAsyncThunk(
   "get/getPerformanceDetail",
-  async (data, { rejectWithValue }) => {
+  async (data, thunkAPI) => {
     try {
-      console.log(data);
+      const state = thunkAPI.getState();
+      console.log(state.userData.userID);
       const response = await axios.get(
         requests(undefined, data).getPerformanceDetail,
       );
-      return response.data;
+      // 공연 1
+      let temp = [];
+      response.data.Tickets.map((el) => {
+        if (el.status === "OWNED") {
+          temp.push(el.id);
+        } else if (
+          el.status === "SALE" &&
+          el.OwnerId === state.userData.userID
+        ) {
+          temp.push(el.id);
+        }
+      });
+      return { res: response.data, ban: temp };
     } catch (error) {
       console.log(error.response.data);
-      return rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   },
 );
