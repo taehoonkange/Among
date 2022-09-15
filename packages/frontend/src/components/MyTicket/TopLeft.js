@@ -1,11 +1,17 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import ResellModal from "./ResellModal";
+import { setReSellModalOpen } from "../../slice/settingModalSlice";
 const TopLeft = () => {
+  const dispatch = useDispatch();
   const performanceDetail = useSelector(
     (state) => state.performance.performanceDetail,
+  );
+  const reSellModalOpen = useSelector(
+    (state) => state.settingModalOpen.reSellModalOpen,
   );
   return (
     <>
@@ -46,7 +52,14 @@ const TopLeft = () => {
           </ul>
           {/* <Link to="/Decorate">dd</Link> */}
           <DecoButton to="/Decorate">꾸미기</DecoButton>
-          <ResellButton>리셀하기</ResellButton>
+          <ResellButton
+            onClick={() => {
+              dispatch(setReSellModalOpen({ value: true }));
+            }}
+          >
+            리셀하기
+          </ResellButton>
+          {reSellModalOpen && <ResellModal></ResellModal>}
         </TicketInfoArea>
       </UnderTitle>
     </>
