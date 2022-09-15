@@ -8,9 +8,16 @@ import TopLeft from "../components/ShowDetail/TopLeft";
 import TopRight from "../components/ShowDetail/TopRight";
 import { setPerformanceId } from "../slice/performanceSlice";
 import { Link } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 const ShowDetail = () => {
   const dispatch = useDispatch();
   const performanceId = useSelector((state) => state.performance.performanceId);
+  const getPerformanceDetailLoading = useSelector(
+    (state) => state.performance.getPerformanceDetailLoading,
+  );
+  const performanceDetail = useSelector(
+    (state) => state.performance.performanceDetail,
+  );
   const userID = useSelector((state) => state.userData.userID);
   const detectScroll = useRef();
   const path = useLocation().pathname;
@@ -27,6 +34,7 @@ const ShowDetail = () => {
     const regex = /[^0-9]/g;
     const result = path.replace(regex, "");
     const number = parseInt(result);
+    console.log(number);
     dispatch(setPerformanceId({ value: number }));
   }, [path]);
 
@@ -37,8 +45,24 @@ const ShowDetail = () => {
       dispatch(getPerformanceDetail(performanceId));
       dispatch(getSeatsData(performanceId));
     }
-    return () => dispatch(setPerformanceId({ value: 0 }));
   }, [performanceId, userID]);
+  useEffect(() => {
+    return () => {
+      console.log("sbo");
+      dispatch(setPerformanceId({ value: 0 }));
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("퍼포먼스 디테일 바뀌었다.");
+  }, [performanceDetail]);
+  if (getPerformanceDetailLoading) {
+    return (
+      <Layout>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout>
+    );
+  }
   return (
     <>
       <TopCss>
@@ -120,4 +144,12 @@ const SideBtn = styled(Link)`
 const MiddleRightCss = styled.div`
   width: 330px;
   height: 630px;
+`;
+
+const Layout = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

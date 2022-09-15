@@ -38,7 +38,6 @@ const handleError = (e) => {
 };
 
 const ShowItem = ({ data, idx }) => {
-  console.log(data);
   return (
     <PerformContainer>
       <Link to={`/Show/${data.id}`}>

@@ -16,6 +16,9 @@ const initialState = {
   ticketSeats: [],
   performance: [],
   performanceId: 0,
+  getPerformanceDetailLoading: false,
+  getPerformanceDetailDone: false,
+  getPerformanceDetailError: null,
   performanceDetail: [],
   seatsData: [],
   daySeatsData: {},
@@ -165,21 +168,32 @@ const performanceSlice = createSlice({
         state.performance = action.payload;
       })
       .addCase(getPerformance.rejected, (state, action) => {})
-      .addCase(getPerformanceDetail.pending, (state) => {})
+      .addCase(getPerformanceDetail.pending, (state) => {
+        state.getPerformanceDetailLoading = true;
+        state.getPerformanceDetailDone = false;
+        state.getPerformanceDetailError = null;
+        return state;
+      })
       .addCase(getPerformanceDetail.fulfilled, (state, action) => {
-        console.log(action);
-        console.log(action.payload);
+        state.getPerformanceDetailLoading = false;
+        state.getPerformanceDetailDone = true;
+        state.getPerformanceDetailError = null;
         state.performanceDetail = action.payload.res;
         state.banTicketId = action.payload.ban;
+        console.log("바뀌었다");
+        return state;
       })
-      .addCase(getPerformanceDetail.rejected, (state, action) => {})
+      .addCase(getPerformanceDetail.rejected, (state, action) => {
+        state.getPerformanceDetailLoading = false;
+        state.getPerformanceDetailError = action.error.message;
+      })
       .addCase(getSeatsData.pending, (state) => {})
       .addCase(getSeatsData.fulfilled, (state, action) => {
         state.seatsData = action.payload;
         let sections = {};
         let seatDataRemaining = {};
         state.seatsData.forEach((el) => {
-          console.log(el.id);
+          // console.log(el.id);
           const monthDate = dayjs(el.day).format("YYYY-MM-DD");
           // 공연 2
           if (state.banTicketId.includes(el.id)) {
@@ -217,7 +231,6 @@ const performanceSlice = createSlice({
           }
           seatDataRemaining[key] = tempArr;
         }
-        console.log(seatDataRemaining);
         state.seatDataRemain = seatDataRemaining;
         // return state;
       })

@@ -35,7 +35,6 @@ export const getPerformance = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.get(requests().getPerformance);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -77,7 +76,7 @@ export const getPerformanceDetail = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      console.log(state.userData.userID);
+      // console.log(state.userData.userID);
       const response = await axios.get(
         requests(undefined, data).getPerformanceDetail,
       );

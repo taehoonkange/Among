@@ -63,7 +63,6 @@ const Show = () => {
   useEffect(() => {
     // Fetch items from another resources.
     const endOffset = itemOffset + 3;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(performanceData?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(performanceData?.length / 3));
   }, [itemOffset, performanceData]);
@@ -72,16 +71,12 @@ const Show = () => {
   const handlePageClick = useCallback(
     (event) => {
       const newOffset = (event.selected * 3) % performanceData.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`,
-      );
       setItemOffset(newOffset);
     },
     [performanceData],
   );
 
   useEffect(() => {
-    console.log("test");
     dispatch(getPerformance());
   }, []);
   return (

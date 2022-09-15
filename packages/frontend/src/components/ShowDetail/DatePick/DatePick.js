@@ -14,13 +14,13 @@ const DatePick = () => {
   const performanceDetail = useSelector(
     (state) => state.performance.performanceDetail,
   );
-  console.log(performanceDetail);
+  const getPerformanceDetailDone = useSelector(
+    (state) => state.performance.getPerformanceDetailDone,
+  );
   const [startDate, setStartDate] = useState(new Date());
   const [originStartDate, setOriginStartDate] = useState(new Date());
   const [originEndDate, setOriginEndDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const mounted = useRef(false);
-
   const getDayName = (date) => {
     return date
       .toLocaleDateString("ko-KR", {
@@ -36,15 +36,16 @@ const DatePick = () => {
       new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
     );
   };
+
   useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
+    if (!getPerformanceDetailDone) {
     } else {
       setStartDate(Date.parse(performanceDetail?.term_start_at));
       setOriginStartDate(Date.parse(performanceDetail?.term_start_at));
       setOriginEndDate(Date.parse(performanceDetail?.term_end_at));
     }
-  }, [performanceDetail]);
+    return () => {};
+  }, [performanceDetail, getPerformanceDetailDone]);
 
   // useEffect(() => {
   //   if (performanceDetail)
