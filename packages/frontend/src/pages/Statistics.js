@@ -1,0 +1,60 @@
+import React, { useState, useCallback } from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import styled from "styled-components";
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const Layout = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  & > h1 {
+    position: absolute;
+    top: 20px;
+    left: 15%;
+  }
+`;
+
+const Statistics = () => {
+  const [data1, setData1] = useState({
+    labels: ["잔여 티켓", "판매된 티켓", "리셀중인 티켓"],
+    datasets: [
+      {
+        data: [12, 19, 3],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(54, 162, 235, 0.7)",
+          "rgba(255, 206, 86, 0.7)",
+        ],
+      },
+    ],
+  });
+  const returnData = useCallback((a, b, c) => {
+    return {
+      labels: ["잔여 티켓", "판매된 티켓", "리셀중인 티켓"],
+      datasets: [
+        {
+          data: [a, b, c],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.7)",
+            "rgba(54, 162, 235, 0.7)",
+            "rgba(255, 206, 86, 0.7)",
+          ],
+        },
+      ],
+    };
+  }, []);
+  const Change = useCallback(() => {
+    setData1(returnData(20, 20, 10));
+  }, []);
+  return (
+    <Layout>
+      <h1>판매 현황</h1>
+      <Doughnut options={{ maintainAspectRatio: false }} data={data1} />
+      <button onClick={Change}></button>
+    </Layout>
+  );
+};
+
+export default Statistics;

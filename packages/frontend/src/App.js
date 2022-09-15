@@ -25,6 +25,7 @@ import GetUserData from "./hooks/GetUserData";
 import Decorate from "./pages/Decorate";
 import MyTicket from "./pages/MyTicket";
 import SelectSeat from "./pages/SelectSeat";
+import Statistics from "./pages/Statistics";
 const TotalWrapDiv = styled.div`
   position: relative;
   min-height: 120vh;
@@ -55,6 +56,8 @@ function App() {
           <Route path="/Show" element={<Show />} />
           <Route path="/Show/:idx" element={<ShowDetail />} />
           <Route path="/Show/SelectSeat" element={<SelectSeat />} />
+          <Route path="/Show/Statistics" element={<Statistics />} />
+
           <Route
             path="/Influencer/CommunityFeed/:id"
             element={<CommunityFeed />}
