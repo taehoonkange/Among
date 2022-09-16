@@ -7,27 +7,20 @@ function Dropdown({ selected, setSelected }) {
     (state) => state.performance.chartJsDataByDate,
   );
   const [isActive, setIsActive] = useState(false);
-  const options = [
-    "전체 기간",
-    "2022-09-15",
-    "2022-09-16",
-    "2022-09-17",
-    "2022-09-18",
-    "2022-09-19",
-  ];
+
   const renderDateList = () => {
     const renderArr = [];
-    renderArr.push(
-      <div
-        onClick={(e) => {
-          setSelected("전체기간");
-          setIsActive(false);
-        }}
-        className="dropdown-item"
-      >
-        {"전체기간"}
-      </div>,
-    );
+    // renderArr.push(
+    //   <div
+    //     onClick={(e) => {
+    //       setSelected("전체기간");
+    //       setIsActive(false);
+    //     }}
+    //     className="dropdown-item"
+    //   >
+    //     {"전체기간"}
+    //   </div>,
+    // );
     for (const date in chartJsDataByDate) {
       renderArr.push(
         <div
