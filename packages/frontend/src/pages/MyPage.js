@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import fetcher from "../fetcher";
 import useSWR from "swr";
+import axios from "../api";
 
 const MyPage = () => {
   const { data: Nick } = useSWR("/user/profile/nickname", fetcher);
@@ -28,6 +29,13 @@ const MyPage = () => {
     dispatcher(setUserProfile({ value: ImgSrc?.img_src }));
   }, [Nick, ImgSrc]);
 
+  useEffect(() => {
+    async function test() {
+      const res = await axios.get("/user/ticket");
+      console.log(res.data);
+    }
+    test();
+  }, []);
   return (
     <>
       <ConnectedContainer>

@@ -53,7 +53,7 @@ export default TopLeft;
 
 const TicketTitle = styled.h1`
   margin-left: 20px;
-  font-size: 26px;
+  font-size: 30px;
   margin-bottom: 20px;
 `;
 

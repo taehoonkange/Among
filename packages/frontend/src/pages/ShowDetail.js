@@ -72,9 +72,15 @@ const ShowDetail = () => {
         <TopRightCss>
           <TopRightFixed ref={detectScroll}>
             <TopRight></TopRight>
-            <SideBtnWrap>
-              <SideBtn to="/Show/SelectSeat">예매하기</SideBtn>
-            </SideBtnWrap>
+            {performanceDetail.UserId === userID ? (
+              <SideBtnWrap>
+                <SideBtn to="/Show/Statistics">통계보기</SideBtn>
+              </SideBtnWrap>
+            ) : (
+              <SideBtnWrap>
+                <SideBtn to="/Show/SelectSeat">예매하기</SideBtn>
+              </SideBtnWrap>
+            )}
           </TopRightFixed>
         </TopRightCss>
       </TopCss>
