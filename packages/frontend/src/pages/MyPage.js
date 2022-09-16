@@ -232,8 +232,12 @@ const MyPageContainer = styled.div`
   & .myPage_ticket_image {
     width: 200px;
     height: 300px;
+    transition: transform 350ms;
   }
 
+  & .myPage_ticket_image:hover {
+    transform: scale(1.05);
+  }
   & .myPage_ticket_date {
     width: 200px;
     font-weight: 700;
