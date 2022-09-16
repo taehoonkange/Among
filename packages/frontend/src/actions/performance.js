@@ -92,7 +92,7 @@ export const getPerformanceDetail = createAsyncThunk(
           temp.push(el.id);
         }
       });
-      return { res: response.data, ban: temp };
+      return { res: response.data, ban: temp, userID: state.userData.userID };
     } catch (error) {
       console.log(error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);

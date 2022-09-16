@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import styled from "styled-components";
@@ -18,6 +19,9 @@ const Layout = styled.div`
 `;
 
 const Statistics = () => {
+  const chartJsDataByDate = useSelector(
+    (state) => state.performance.chartJsDataByDate,
+  );
   const [data1, setData1] = useState({
     labels: ["잔여 티켓", "판매된 티켓", "리셀중인 티켓"],
     datasets: [
@@ -50,12 +54,26 @@ const Statistics = () => {
   const Change = useCallback(() => {
     setData1(returnData(20, 20, 10));
   }, []);
+
+  useEffect(() => {
+    console.log(selected);
+    console.log(chartJsDataByDate[selected]);
+    setData1(
+      returnData(
+        chartJsDataByDate[selected].remainTicketCount,
+        chartJsDataByDate[selected].saleTicketCount,
+        chartJsDataByDate[selected].resellTicketCount,
+      ),
+    );
+    return () => {};
+  }, [selected]);
+
   return (
     <Layout>
       <h1>판매 현황</h1>
       <Dropdown selected={selected} setSelected={setSelected}></Dropdown>
       <Doughnut options={{ maintainAspectRatio: false }} data={data1} />
-      <button onClick={Change}></button>
+      {/* <button onClick={Change}></button> */}
     </Layout>
   );
 };

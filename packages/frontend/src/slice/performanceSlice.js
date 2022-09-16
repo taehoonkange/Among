@@ -26,6 +26,7 @@ const initialState = {
   seatDataRemain: {},
   test11: {},
   banTicketId: [],
+  chartJsDataByDate: {},
 };
 
 const performanceSlice = createSlice({
@@ -180,9 +181,71 @@ const performanceSlice = createSlice({
         state.getPerformanceDetailError = null;
         state.performanceDetail = action.payload.res;
         state.banTicketId = action.payload.ban;
-        console.log("바뀌었다");
+        console.log(action.payload.res);
+
+        // 날짜별 티켓 정보 할당
+        const TicketInformationByDate = {};
+        action.payload.res.Tickets.map((el) => {
+          const monthDate = dayjs(el.day).format("YYYY-MM-DD");
+          if (Array.isArray(TicketInformationByDate[monthDate])) {
+            TicketInformationByDate[monthDate].push(el);
+          } else {
+            TicketInformationByDate[monthDate] = [el];
+          }
+        });
+
+        // 날짜별 티켓을 판매된티켓, 리셀티켓, 잔여티켓의 갯수를 세어 데이터를 할당
+        const chartJsDataByDate = {};
+
+        let saleTicketCount = 0;
+        let resellTicketCount = 0;
+        let remainTicketCount = 0;
+        let allTicketCount = action.payload.res.Tickets.length;
+        action.payload.res.Tickets.map((el) => {
+          if (el.status === "OWNED") {
+            saleTicketCount++;
+          } else if (
+            el.status === "SALE" &&
+            el.OwnerId !== action.payload.userID
+          ) {
+            resellTicketCount++;
+          }
+        });
+        remainTicketCount =
+          allTicketCount - (saleTicketCount + resellTicketCount);
+        chartJsDataByDate["전체기간"] = {
+          saleTicketCount: saleTicketCount,
+          resellTicketCount: resellTicketCount,
+          remainTicketCount: remainTicketCount,
+        };
+
+        for (const key in TicketInformationByDate) {
+          let saleTicketCount = 0;
+          let resellTicketCount = 0;
+          let remainTicketCount = 0;
+          let allTicketCount = TicketInformationByDate[key].length;
+          TicketInformationByDate[key].map((el) => {
+            if (el.status === "OWNED") {
+              saleTicketCount++;
+            } else if (
+              el.status === "SALE" &&
+              el.OwnerId !== action.payload.userID
+            ) {
+              resellTicketCount++;
+            }
+          });
+          remainTicketCount =
+            allTicketCount - (saleTicketCount + resellTicketCount);
+          chartJsDataByDate[key] = {
+            saleTicketCount: saleTicketCount,
+            resellTicketCount: resellTicketCount,
+            remainTicketCount: remainTicketCount,
+          };
+        }
+        state.chartJsDataByDate = chartJsDataByDate;
         return state;
       })
+
       .addCase(getPerformanceDetail.rejected, (state, action) => {
         state.getPerformanceDetailLoading = false;
         state.getPerformanceDetailError = action.error.message;
