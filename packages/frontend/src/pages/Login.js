@@ -17,7 +17,7 @@ const MyPage = () => {
         window.localStorage.setItem("isConnect", "true");
         try {
           const resRegister = await axios.post("/user", {
-            wallet_address: accounts[0],
+            wallet_address: "input123",
           });
           console.log(resRegister);
         } catch (err) {
@@ -26,7 +26,7 @@ const MyPage = () => {
           const resLogin = await axios.post(
             "/user/login",
             {
-              wallet_address: accounts[0],
+              wallet_address: "input123",
               nickname: "dd",
             },
             { withCredentials: true },

@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import {
+  getPerformanceDetail,
+  getSeatsData,
+  postTicketBuy,
+} from "../actions/performance";
 import SelectSeatInfo from "../components/SelectSeat/SelectSeatInfo";
+import { resetSaleTicketIdList } from "../slice/performanceSlice";
 const SelectSeat = () => {
+  const [selectSeatNumber, setSelcetSeatNumber] = useState({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const saleTicketIdList = useSelector(
+    (state) => state.performance.saleTicketIdList,
+  );
+  const ticketBuy = useCallback(() => {
+    dispatch(postTicketBuy(saleTicketIdList)).then(() => {
+      dispatch(getPerformanceDetail()).then(() => {
+        dispatch(getSeatsData());
+      });
+      dispatch(resetSaleTicketIdList());
+      setSelcetSeatNumber({});
+      window.alert("구매가 완료되었습니다.");
+      navigate("/MyPage");
+    });
+  }, [saleTicketIdList]);
+
   return (
     <TopCss>
       <TopLeft>
         <TopLeftCss>
           <UpperTitleArea>좌석 선택</UpperTitleArea>
-          <SelectSeatInfo></SelectSeatInfo>
+          <SelectSeatInfo
+            selectSeatNumber={selectSeatNumber}
+            setSelcetSeatNumber={setSelcetSeatNumber}
+          ></SelectSeatInfo>
           <SideBtnWrap2>
-            <SideBtn2>결제하기</SideBtn2>
+            <SideBtn2 onClick={ticketBuy}>결제하기</SideBtn2>
           </SideBtnWrap2>
         </TopLeftCss>
       </TopLeft>

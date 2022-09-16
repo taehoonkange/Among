@@ -14,6 +14,7 @@ export const requests = (state = undefined, data = undefined) => {
     getPerformance: `/performance`,
     getPerformanceDetail: `/performance/${data}/detail`,
     getSeatsData: `/performance/${data}/seatgui`,
+    postTicketBuy: `/ticket/buy`,
   };
 
   return requests1;

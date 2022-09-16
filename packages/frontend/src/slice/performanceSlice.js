@@ -8,6 +8,7 @@ import {
   getPerformance,
   getPerformanceDetail,
   getSeatsData,
+  postTicketBuy,
 } from "../actions/performance";
 import { data } from "./data";
 const initialState = {
@@ -27,6 +28,7 @@ const initialState = {
   test11: {},
   banTicketId: [],
   chartJsDataByDate: {},
+  saleTicketIdList: [],
 };
 
 const performanceSlice = createSlice({
@@ -136,6 +138,18 @@ const performanceSlice = createSlice({
           }
         });
       }
+    },
+    setSaleTicketMinusIdList: (state, { payload }) => {
+      const temp = [...state.saleTicketIdList];
+      const index = temp.indexOf(payload.value);
+      temp.splice(index, 1);
+      state.saleTicketIdList = [...temp];
+    },
+    setSaleTicketPlusIdList: (state, { payload }) => {
+      state.saleTicketIdList = [...state.saleTicketIdList, payload.value];
+    },
+    resetSaleTicketIdList: (state, { payload }) => {
+      state.saleTicketIdList = [];
     },
   },
   extraReducers: (builder) =>
@@ -297,7 +311,10 @@ const performanceSlice = createSlice({
         state.seatDataRemain = seatDataRemaining;
         // return state;
       })
-      .addCase(getSeatsData.rejected, (state, action) => {}),
+      .addCase(getSeatsData.rejected, (state, action) => {})
+      .addCase(postTicketBuy.pending, (state) => {})
+      .addCase(postTicketBuy.fulfilled, (state, action) => {})
+      .addCase(postTicketBuy.rejected, (state, action) => {}),
 });
 
 export const {
@@ -313,5 +330,8 @@ export const {
   setDaySeatsData,
   setDaySeatsDataOriginColor,
   setSeatDataRemain,
+  setSaleTicketPlusIdList,
+  resetSaleTicketIdList,
+  setSaleTicketMinusIdList,
 } = performanceSlice.actions;
 export default performanceSlice.reducer;

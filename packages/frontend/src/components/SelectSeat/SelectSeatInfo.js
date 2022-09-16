@@ -9,6 +9,9 @@ import {
   setDaySeatsData,
   setDaySeatsDataOriginColor,
   setSeatDataRemain,
+  setSaleTicketPlusIdList,
+  resetSaleTicketIdList,
+  setSaleTicketMinusIdList,
 } from "../../slice/performanceSlice";
 import { useDispatch, useSelector } from "react-redux";
 const seatColor = ["#FA58F4", "#6495ED", "#01DF3A"];
@@ -57,7 +60,12 @@ const RestSeatInfo = styled.div`
   }
 `;
 
-const SelectSeatInfo = ({ setSeatData, seatData }) => {
+const SelectSeatInfo = ({
+  setSeatData,
+  seatData,
+  selectSeatNumber,
+  setSelcetSeatNumber,
+}) => {
   const daySeatsData = useSelector((state) => state.performance.daySeatsData);
   const userSelectDay = useSelector((state) => state.performance.userSelectDay);
   const seatDataRemain = useSelector(
@@ -65,7 +73,6 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
   );
 
   const dispatch = useDispatch();
-  const [selectSeatNumber, setSelcetSeatNumber] = useState({});
   const [seatColorIndex, setSeatColorIndex] = useState(-1);
   const seats = useSelector((state) => state.performance.seats);
   const canvasRef = useRef();
@@ -127,6 +134,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
               dispatch(
                 setDaySeatsDataOriginColor({ i: i, day: userSelectDay }),
               );
+              dispatch(setSaleTicketMinusIdList({ value: el.id }));
               dispatch(
                 setSeatDataRemain({
                   type: "plus",
@@ -139,6 +147,8 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
               setSelcetSeatNumber({ ...selectSeatNumber, [el.status]: temp });
             } else if (i === el.seatNumber) {
               console.log(el);
+              dispatch(setSaleTicketPlusIdList({ value: el.id }));
+
               dispatch(
                 setSeatDataRemain({
                   type: "minus",
@@ -179,6 +189,7 @@ const SelectSeatInfo = ({ setSeatData, seatData }) => {
     return () => {
       dispatch(resetSeatsData());
       dispatch(resetTicketSeats());
+      dispatch(resetSaleTicketIdList());
       console.log("이게 왜 실행되냐");
     };
   }, []);

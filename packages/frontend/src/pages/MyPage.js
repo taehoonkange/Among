@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import fetcher from "../fetcher";
 import useSWR from "swr";
 import axios from "../api";
+import GetUserData from "../hooks/GetUserData";
 
 const MyPage = () => {
   const { data: Nick } = useSWR("/user/profile/nickname", fetcher);
@@ -36,6 +37,7 @@ const MyPage = () => {
     }
     test();
   }, []);
+  GetUserData();
   return (
     <>
       <ConnectedContainer>

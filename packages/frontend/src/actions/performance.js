@@ -112,3 +112,19 @@ export const getSeatsData = createAsyncThunk(
     }
   },
 );
+
+export const postTicketBuy = createAsyncThunk(
+  "post/postTicketBuy",
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    const newData = {
+      seats: data,
+    };
+    try {
+      await axios.post(requests().postTicketBuy, newData);
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
