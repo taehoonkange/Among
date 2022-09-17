@@ -88,15 +88,13 @@ const MyPage = () => {
           dispatch(patchUserProfileNickName(`귀한손님${randomNumber}`));
         }
       });
-      console.log(userProfile);
-      console.log(!userProfile);
     }
     initGetData();
   }, []);
   GetUserData();
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
+    setTimeout(() => setLoading(false), 500);
   }, []);
   /**
    * 현재 유저의 프로필의 상태에 따라 이미지를 달리 return 함
