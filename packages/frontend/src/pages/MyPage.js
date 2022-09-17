@@ -17,6 +17,7 @@ import GetUserData from "../hooks/GetUserData";
 import {
   getUserProfileNickname,
   patchtUserProfileImage,
+  patchtUserProfileImageName,
   patchUserProfileNickName,
   postUserProfileImage,
 } from "../actions/user";
@@ -40,9 +41,9 @@ const MyPage = () => {
   const dispatch = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
   const userProfile = useSelector((store) => store.userData.userProfile);
-  const userProfileName = useSelector(
-    (store) => store.userData.userProfileName,
-  );
+  // const userProfileName = useSelector(
+  //   (store) => store.userData.userProfileName,
+  // );
   const userType = useSelector((store) => store.userData.userType);
   const name = useSelector((store) => store.userData.userName);
   // useEffect(() => {
@@ -79,9 +80,11 @@ const MyPage = () => {
           convertURLtoFile(avatar).then((image) => {
             const imageFormData = new FormData();
             imageFormData.append("image", image);
-            dispatch(postUserProfileImage(imageFormData));
-            window.localStorage.setItem("randomImage", `${avatar}`);
-            dispatch(patchtUserProfileImage(userProfileName));
+            dispatch(postUserProfileImage(imageFormData)).then((state) => {
+              console.log(state);
+              window.localStorage.setItem("randomImage", `${avatar}`);
+              dispatch(patchtUserProfileImageName(state.payload));
+            });
           });
         }
         if (!state.payload.nickname?.nickname) {
@@ -110,12 +113,12 @@ const MyPage = () => {
           return window.localStorage.getItem("randomImage");
         }
       } else {
-        return `http://localhost:3065/${userProfileName}`;
+        return `http://localhost:3065/${userProfile.src}`;
       }
     } else {
       return avatar;
     }
-  }, [userProfile, userProfileName]);
+  }, [userProfile]);
 
   if (loading) {
     return (
@@ -223,7 +226,9 @@ const MyPage = () => {
           </div>
         </MyPageContainer>
       </>
-      {settingModalOpen && <SettingModal></SettingModal>}
+      {settingModalOpen && (
+        <SettingModal setLoading={setLoading}></SettingModal>
+      )}
     </>
   );
 };

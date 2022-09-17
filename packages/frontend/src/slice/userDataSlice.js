@@ -6,8 +6,9 @@ import {
   influencerRegister,
   postUserProfileImage,
   uploadInfluencerImages,
-  patchtUserProfileImage,
+  patchtUserProfileImageName,
   patchUserProfileNickName,
+  patchSubmitImgAndName,
 } from "../actions/user";
 
 const initialState = {
@@ -74,9 +75,9 @@ const userDataSlice = createSlice({
         state.userProfileName = payload;
       })
       .addCase(postUserProfileImage.rejected, (state, action) => {})
-      .addCase(patchtUserProfileImage.pending, (state) => {})
-      .addCase(patchtUserProfileImage.fulfilled, (state, { payload }) => {})
-      .addCase(patchtUserProfileImage.rejected, (state, action) => {})
+      .addCase(patchtUserProfileImageName.pending, (state) => {})
+      .addCase(patchtUserProfileImageName.fulfilled, (state, { payload }) => {})
+      .addCase(patchtUserProfileImageName.rejected, (state, action) => {})
       .addCase(patchUserProfileNickName.pending, (state) => {})
       .addCase(patchUserProfileNickName.fulfilled, (state, { payload }) => {})
       .addCase(patchUserProfileNickName.rejected, (state, action) => {})
@@ -105,7 +106,10 @@ const userDataSlice = createSlice({
         window.localStorage.setItem("userType", payload.userType);
         return state;
       })
-      .addCase(influencerRegister.rejected, (state, action) => {}),
+      .addCase(influencerRegister.rejected, (state, action) => {})
+      .addCase(patchSubmitImgAndName.pending, (state) => {})
+      .addCase(patchSubmitImgAndName.fulfilled, (state, { payload }) => {})
+      .addCase(patchSubmitImgAndName.rejected, (state, action) => {}),
 });
 
 export const {

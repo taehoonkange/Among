@@ -83,7 +83,7 @@ export const postUserProfileImage = createAsyncThunk(
 /**
  * 유저의 프로필 사진 이미지의 이름을 서버에 전송하는 함수
  */
-export const patchtUserProfileImage = createAsyncThunk(
+export const patchtUserProfileImageName = createAsyncThunk(
   "patch/patchUserProfileImage",
   async (data, thunkAPI) => {
     try {
@@ -107,6 +107,25 @@ export const patchUserProfileNickName = createAsyncThunk(
       await axios.patch(requests().patchUserProfileNickName, {
         nickname: data,
       });
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const patchSubmitImgAndName = createAsyncThunk(
+  "patch/patchSubmitImgAndName",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      await axios.patch(requests().patchUserProfileNickName, {
+        nickname: data.nickname,
+      });
+      await axios.patch(requests().patchUserProfileImage, {
+        image: data.imgName,
+      });
+      return "done";
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);
