@@ -1,5 +1,10 @@
 export const requests = (state = undefined, data = undefined) => {
   const requests1 = {
+    getUserProfile: `/user/image`,
+    getUserNickName: `/user/profile/nickname`,
+    postUserProfileImage: `/user/image`,
+    patchUserProfileImage: `/user/profile/image`,
+    patchUserProfileNickName: `/user/profile/nickname`,
     getPosts: `community/${state?.posts.NowCommunityId}/${
       state?.posts.communityCategory
     }/${100}/posts`,

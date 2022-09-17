@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { Grid } from "@mui/material";
 import Kdy from "../images/kdy.jpeg";
@@ -7,44 +7,133 @@ import ether from "../images/ethereum.png";
 import SettingModal from "../components/MyPage/SettingModal";
 import { setOpen } from "../slice/settingModalSlice";
 import { setUserName, setUserProfile } from "../slice/userDataSlice";
-
+import faker from "faker";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import fetcher from "../fetcher";
 import useSWR from "swr";
 import axios from "../api";
 import GetUserData from "../hooks/GetUserData";
+import {
+  getUserProfileNickname,
+  patchtUserProfileImage,
+  patchUserProfileNickName,
+  postUserProfileImage,
+} from "../actions/user";
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-avataaars-sprites";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const avatar = createAvatar(style, {
+  dataUri: true,
+});
 
 const MyPage = () => {
-  const { data: Nick } = useSWR("/user/profile/nickname", fetcher);
-  const { data: ImgSrc } = useSWR("/user/image", fetcher);
-
+  // const { data: Nick } = useSWR("/user/profile/nickname", fetcher);
+  // const { data: ImgSrc } = useSWR("/user/image", fetcher);
+  const [randomNumber, setRandomNumber] = useState(
+    Math.floor(Math.random() * 101),
+  );
+  const mounted = useRef(false);
+  const [loading, setLoading] = useState(true);
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
-  const dispatcher = useDispatch();
+  const dispatch = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
   const userProfile = useSelector((store) => store.userData.userProfile);
+  const userProfileName = useSelector(
+    (store) => store.userData.userProfileName,
+  );
   const userType = useSelector((store) => store.userData.userType);
   const name = useSelector((store) => store.userData.userName);
-  useEffect(() => {
-    dispatcher(setUserName({ value: Nick?.nickname }));
-    dispatcher(setUserProfile({ value: ImgSrc?.img_src }));
-  }, [Nick, ImgSrc]);
+  // useEffect(() => {
+  //   dispatch(setUserName({ value: Nick?.nickname }));
+  //   dispatch(setUserProfile({ value: ImgSrc?.img_src }));
+  // }, [Nick, ImgSrc]);
+
+  /**
+   * DataUrl 을 이미지파일로 변경해주는 함수
+   */
+  const convertURLtoFile = async (url) => {
+    console.log("1");
+    const response = await fetch(url);
+    const data = await response.blob();
+    const metadata = { type: `image/png` };
+    // const name = faker.name.findName();
+    return new Promise((resolve, reject) => {
+      resolve(new File([data], `DDDDDYYYYYKKKKK123.png`, metadata));
+      reject("error");
+    });
+  };
 
   useEffect(() => {
-    async function test() {
+    console.log(window.localStorage.getItem("randomImage"));
+    /**
+     * 마이페이지 최초 접속시 유저의 보유한 티켓정보, 유저의 닉네임, 유저의 프로필이미지를 GET 하는 함수
+     */
+    async function initGetData() {
       const res = await axios.get("/user/ticket");
-      console.log(res.data);
+      await dispatch(getUserProfileNickname()).then((state) => {
+        console.log("하이");
+        console.log(state);
+        if (!state.payload.profile?.src) {
+          convertURLtoFile(avatar).then((image) => {
+            const imageFormData = new FormData();
+            imageFormData.append("image", image);
+            dispatch(postUserProfileImage(imageFormData));
+            window.localStorage.setItem("randomImage", `${avatar}`);
+            dispatch(patchtUserProfileImage(userProfileName));
+          });
+        }
+        if (!state.payload.nickname?.nickname) {
+          dispatch(patchUserProfileNickName(`귀한손님${randomNumber}`));
+        }
+      });
+      console.log(userProfile);
+      console.log(!userProfile);
     }
-    test();
+    initGetData();
   }, []);
   GetUserData();
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+  /**
+   * 현재 유저의 프로필의 상태에 따라 이미지를 달리 return 함
+   * 순서도를 그려놓았음 참고하기 바람.
+   */
+  const checkImageStatus = useCallback(() => {
+    if (userProfile) {
+      if (userProfile.src.slice(0, 18) === "DDDDDYYYYYKKKKK123") {
+        if (!window.localStorage.getItem("randomImage")) {
+          window.localStorage.setItem("randomImage", `${avatar}`);
+          return avatar;
+        } else {
+          return window.localStorage.getItem("randomImage");
+        }
+      } else {
+        return `http://localhost:3065/${userProfileName}`;
+      }
+    } else {
+      return avatar;
+    }
+  }, [userProfile, userProfileName]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout>
+    );
+  }
+
   return (
     <>
       <ConnectedContainer>
         {/* 배경 */}
         <img
           className="backgroundImg"
-          src={`https://image.kmib.co.kr/online_image/2022/0101/2021123118131057409_1640941990_0924225097.jpg`}
+          src={`https://t1.kakaocdn.net/friends/prod/brand/201907_type2_2880.jpg`}
           alt=""
         />
         <Grid container spacing={2}>
@@ -52,14 +141,14 @@ const MyPage = () => {
             <div className="profileImgLocation" style={{}}>
               <img
                 className="profileSize"
-                src={userProfile ? `http://localhost:3065/${userProfile}` : Kdy}
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null; // prevents looping
-                  currentTarget.src = "images/MetaMask_Fox.svg.png";
-                }}
+                src={checkImageStatus()}
+                // onError={({ currentTarget }) => {
+                //   currentTarget.onerror = null; // prevents looping
+                //   currentTarget.src = "images/MetaMask_Fox.svg.png";
+                // }}
                 alt=""
                 onClick={() => {
-                  dispatcher(setOpen({ value: true }));
+                  dispatch(setOpen({ value: true }));
                 }}
               />
             </div>
@@ -76,7 +165,7 @@ const MyPage = () => {
         >
           {/* 닉네임 */}
           <UserInfo>
-            <h1>{name}</h1>
+            <h1>{name ? name : `귀한 손님${randomNumber}`}</h1>
           </UserInfo>
           {/* 지갑 주소 */}
           <div className="dappAddressWrapper">
@@ -258,4 +347,12 @@ const ShowRegister = styled(Link)`
   padding: 10px 20px 10px 20px;
   color: white;
   border-radius: 10px;
+`;
+
+const Layout = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
