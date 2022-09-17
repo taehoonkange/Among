@@ -1347,6 +1347,11 @@
   resolved "https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-2.0.2.tgz"
   integrity sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==
 
+"@dicebear/avatars-avataaars-sprites@^4.10.3":
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/@dicebear/avatars-avataaars-sprites/-/avatars-avataaars-sprites-4.10.3.tgz#e016d952b0d229dbb5108e5ab27e8742d98e27d3"
+  integrity sha512-9Oi1angCfw0tyHpAIOLIiHLY3Hnu5TrUaZ20zTAk1aQqXv8bSGGekXlOV4t3fzwxZiUGiAQeK8cwcCLwJpYWvg==
+
 "@dicebear/avatars@^4.10.3":
   version "4.10.3"
   resolved "https://registry.yarnpkg.com/@dicebear/avatars/-/avatars-4.10.3.tgz#c4ffe9c1ac1c1b69faa875ca5f42f8134d658619"

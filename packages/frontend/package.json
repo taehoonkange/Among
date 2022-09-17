@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@dicebear/avatars": "^4.10.3",
+    "@dicebear/avatars-avataaars-sprites": "^4.10.3",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
