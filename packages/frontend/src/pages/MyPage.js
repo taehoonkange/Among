@@ -69,7 +69,6 @@ const MyPage = () => {
       reject("error");
     });
   };
-  GetUserData();
 
   useEffect(() => {
     console.log(window.localStorage.getItem("randomImage"));
@@ -79,6 +78,7 @@ const MyPage = () => {
     async function initGetData() {
       // userID 정보를 받고나서 user의 티켓의 정보를 받기 위해서 then 안에 넣어주었습니다.
       dispatch(getUserDataServer()).then(() => {
+        console.log("11");
         dispatch(getUserTicket());
       });
       await dispatch(getUserProfileNickname()).then((state) => {
@@ -134,7 +134,7 @@ const MyPage = () => {
       </Layout>
     );
   }
-
+  console.log(myPageMyTicket);
   return (
     <>
       <ConnectedContainer>
@@ -146,7 +146,7 @@ const MyPage = () => {
         />
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <div className="profileImgLocation" style={{}}>
+            <div className="profileImgLocation">
               <img
                 className="profileSize"
                 src={checkImageStatus()}
@@ -202,13 +202,10 @@ const MyPage = () => {
                   <img
                     className="myPage_ticket_image"
                     alt=""
-                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
+                    src={`http://localhost:3065/${el.GetImg[0].src}`}
                   ></img>
-                  <div style={{ display: "flex" }}>
-                    <div className="myPage_ticket_date">
-                      {" "}
-                      {dayjs(el.day).format("YYYY.MM.DD")}
-                    </div>
+                  <div className="myPage_ticket_date">
+                    {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
                   <div className="myPage_ticket_desc">{el.description}</div>
                 </div>

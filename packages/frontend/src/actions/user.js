@@ -138,7 +138,6 @@ export const getUserTicket = createAsyncThunk(
   "get/getUserTicket",
   async (data, thunkAPI) => {
     try {
-      console.log(thunkAPI.getState());
       const response = await axios.get(userRequests().getUserTicket);
       return { res: response.data, id: thunkAPI.getState().userData.userID };
     } catch (error) {

@@ -116,22 +116,25 @@ const userDataSlice = createSlice({
       .addCase(getUserTicket.pending, (state) => {})
       .addCase(getUserTicket.fulfilled, (state, { payload }) => {
         state.userTicketData = payload.res;
+        let tempArray = [];
         payload.res.Owned.map((el) => {
           switch (el.status) {
             case "OWNED":
               let temp = { ...el, ticketType: "보유중" };
-              state.myPageMyTicket = [...state.myPageMyTicket, temp];
+              tempArray = [...tempArray, temp];
               break;
             case "SALE":
               if (el.Creates[0].id !== payload.id) {
                 let temp = { ...el, ticketType: "리셀중" };
-                state.myPageMyTicket = [...state.myPageMyTicket, temp];
+                tempArray = [...tempArray, temp];
               }
               break;
             default:
               break;
           }
+          state.myPageMyTicket = tempArray;
         });
+        return state;
       })
       .addCase(getUserTicket.rejected, (state, action) => {}),
 });
