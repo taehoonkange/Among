@@ -76,7 +76,7 @@ function App() {
           <Route path="/Guide" element={<Guide />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
-          <Route path="/MyTicket" element={<MyTicket />} />
+          <Route path="/MyTicket/:idx" element={<MyTicket />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
           <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>

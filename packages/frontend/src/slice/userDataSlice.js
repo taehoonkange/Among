@@ -132,6 +132,10 @@ const userDataSlice = createSlice({
             default:
               break;
           }
+          console.log(tempArray);
+          // tempArray.sort((a, b) => {
+          //   return new Date(a.day) - new Date(b.day);
+          // });
           let ss = [...tempArray, ...tempArray];
           state.myPageMyTicket = [...ss, ...ss];
         });

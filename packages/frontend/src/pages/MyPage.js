@@ -29,6 +29,7 @@ import {
 import { createAvatar } from "@dicebear/avatars";
 import * as style from "@dicebear/avatars-avataaars-sprites";
 import ClipLoader from "react-spinners/ClipLoader";
+import { setPerformanceId } from "../slice/performanceSlice";
 
 const avatar = createAvatar(style, {
   dataUri: true,
@@ -247,7 +248,7 @@ const MyPage = () => {
             {currentItems.map((el) => {
               console.log(el);
               return (
-                <div>
+                <Link to={`/MyTicket/${el.PerformanceId}`}>
                   <img
                     className="myPage_ticket_image"
                     alt=""
@@ -257,7 +258,7 @@ const MyPage = () => {
                     {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
                   <div className="myPage_ticket_desc">{el.description}</div>
-                </div>
+                </Link>
               );
             })}
           </div>

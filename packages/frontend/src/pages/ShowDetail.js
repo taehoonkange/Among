@@ -48,14 +48,10 @@ const ShowDetail = () => {
   }, [performanceId, userID]);
   useEffect(() => {
     return () => {
-      console.log("sbo");
       dispatch(setPerformanceId({ value: 0 }));
     };
   }, []);
 
-  useEffect(() => {
-    console.log("퍼포먼스 디테일 바뀌었다.");
-  }, [performanceDetail]);
   if (getPerformanceDetailLoading) {
     return (
       <Layout>
