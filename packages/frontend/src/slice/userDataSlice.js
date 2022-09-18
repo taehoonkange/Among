@@ -9,6 +9,7 @@ import {
   patchtUserProfileImageName,
   patchUserProfileNickName,
   patchSubmitImgAndName,
+  getUserTicket,
 } from "../actions/user";
 
 const initialState = {
@@ -25,6 +26,8 @@ const initialState = {
   userProfile: "",
   userProfileName: "",
   userName: "",
+  userTicketData: [],
+  myPageMyTicket: [],
 };
 
 const userDataSlice = createSlice({
@@ -109,7 +112,28 @@ const userDataSlice = createSlice({
       .addCase(influencerRegister.rejected, (state, action) => {})
       .addCase(patchSubmitImgAndName.pending, (state) => {})
       .addCase(patchSubmitImgAndName.fulfilled, (state, { payload }) => {})
-      .addCase(patchSubmitImgAndName.rejected, (state, action) => {}),
+      .addCase(patchSubmitImgAndName.rejected, (state, action) => {})
+      .addCase(getUserTicket.pending, (state) => {})
+      .addCase(getUserTicket.fulfilled, (state, { payload }) => {
+        state.userTicketData = payload.res;
+        payload.res.Owned.map((el) => {
+          switch (el.status) {
+            case "OWNED":
+              let temp = { ...el, ticketType: "보유중" };
+              state.myPageMyTicket = [...state.myPageMyTicket, temp];
+              break;
+            case "SALE":
+              if (el.Creates[0].id !== payload.id) {
+                let temp = { ...el, ticketType: "리셀중" };
+                state.myPageMyTicket = [...state.myPageMyTicket, temp];
+              }
+              break;
+            default:
+              break;
+          }
+        });
+      })
+      .addCase(getUserTicket.rejected, (state, action) => {}),
 });
 
 export const {

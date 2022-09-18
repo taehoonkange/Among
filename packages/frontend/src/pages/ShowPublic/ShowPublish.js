@@ -98,7 +98,7 @@ const ShowPublish = () => {
       end_at: endDate,
       description: apiData.description,
       tickets: ticketSeats,
-      image: imagePaths[0],
+      image: imagePaths[imagePaths.length - 1],
     };
     try {
       await dispatch(performanceResgister(data));

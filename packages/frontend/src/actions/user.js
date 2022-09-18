@@ -2,6 +2,7 @@ import axios from "../api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import faker from "faker";
 import { requests } from "../util/requests";
+import { userRequests } from "../util/userRequests";
 const shortid = require("shortid");
 
 axios.defaults.withCredentials = true; // front, backend 간 쿠키공유
@@ -128,6 +129,19 @@ export const patchSubmitImgAndName = createAsyncThunk(
       return "done";
     } catch (error) {
       console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getUserTicket = createAsyncThunk(
+  "get/getUserTicket",
+  async (data, thunkAPI) => {
+    try {
+      console.log(thunkAPI.getState());
+      const response = await axios.get(userRequests().getUserTicket);
+      return { res: response.data, id: thunkAPI.getState().userData.userID };
+    } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },

@@ -13,9 +13,12 @@ import { Link } from "react-router-dom";
 import fetcher from "../fetcher";
 import useSWR from "swr";
 import axios from "../api";
+import dayjs from "dayjs";
 import GetUserData from "../hooks/GetUserData";
 import {
+  getUserDataServer,
   getUserProfileNickname,
+  getUserTicket,
   patchtUserProfileImage,
   patchtUserProfileImageName,
   patchUserProfileNickName,
@@ -41,6 +44,7 @@ const MyPage = () => {
   const dispatch = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
   const userProfile = useSelector((store) => store.userData.userProfile);
+  const myPageMyTicket = useSelector((store) => store.userData.myPageMyTicket);
   // const userProfileName = useSelector(
   //   (store) => store.userData.userProfileName,
   // );
@@ -65,6 +69,7 @@ const MyPage = () => {
       reject("error");
     });
   };
+  GetUserData();
 
   useEffect(() => {
     console.log(window.localStorage.getItem("randomImage"));
@@ -72,7 +77,10 @@ const MyPage = () => {
      * 마이페이지 최초 접속시 유저의 보유한 티켓정보, 유저의 닉네임, 유저의 프로필이미지를 GET 하는 함수
      */
     async function initGetData() {
-      const res = await axios.get("/user/ticket");
+      // userID 정보를 받고나서 user의 티켓의 정보를 받기 위해서 then 안에 넣어주었습니다.
+      dispatch(getUserDataServer()).then(() => {
+        dispatch(getUserTicket());
+      });
       await dispatch(getUserProfileNickname()).then((state) => {
         console.log("하이");
         console.log(state);
@@ -94,7 +102,6 @@ const MyPage = () => {
     }
     initGetData();
   }, []);
-  GetUserData();
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 500);
@@ -188,7 +195,8 @@ const MyPage = () => {
         <MyPageContainer>
           <h2>나의 티켓</h2>
           <div>
-            {dummy.map((el) => {
+            {myPageMyTicket.map((el) => {
+              console.log(el);
               return (
                 <div>
                   <img
@@ -196,10 +204,13 @@ const MyPage = () => {
                     alt=""
                     src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
                   ></img>
-                  <div className="myPage_ticket_date">2022.07.16</div>
-                  <div className="myPage_ticket_desc">
-                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
+                  <div style={{ display: "flex" }}>
+                    <div className="myPage_ticket_date">
+                      {" "}
+                      {dayjs(el.day).format("YYYY.MM.DD")}
+                    </div>
                   </div>
+                  <div className="myPage_ticket_desc">{el.description}</div>
                 </div>
               );
             })}
@@ -216,7 +227,9 @@ const MyPage = () => {
                     alt=""
                     src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
                   ></img>
-                  <div className="myPage_ticket_date">2022.07.16</div>
+                  <div className="myPage_ticket_date">
+                    {/* {dayjs(el.day).format("YYYY.MM.DD")} */}
+                  </div>
                   <div className="myPage_ticket_desc">
                     2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
                   </div>
