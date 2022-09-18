@@ -132,7 +132,8 @@ const userDataSlice = createSlice({
             default:
               break;
           }
-          state.myPageMyTicket = tempArray;
+          let ss = [...tempArray, ...tempArray];
+          state.myPageMyTicket = [...ss, ...ss];
         });
         return state;
       })

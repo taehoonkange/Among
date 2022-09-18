@@ -15,6 +15,8 @@ import useSWR from "swr";
 import axios from "../api";
 import dayjs from "dayjs";
 import GetUserData from "../hooks/GetUserData";
+import ReactPaginate from "react-paginate";
+
 import {
   getUserDataServer,
   getUserProfileNickname,
@@ -41,6 +43,7 @@ const MyPage = () => {
   const mounted = useRef(false);
   const [loading, setLoading] = useState(true);
   const [dummy, setDummy] = useState([1, 2, 3, 4, 5]);
+
   const dispatch = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
   const userProfile = useSelector((store) => store.userData.userProfile);
@@ -54,6 +57,28 @@ const MyPage = () => {
   //   dispatch(setUserName({ value: Nick?.nickname }));
   //   dispatch(setUserProfile({ value: ImgSrc?.img_src }));
   // }, [Nick, ImgSrc]);
+
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + 5;
+    setCurrentItems(myPageMyTicket.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(myPageMyTicket.length / 5));
+  }, [itemOffset, myPageMyTicket]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = useCallback(
+    (event) => {
+      const newOffset = (event.selected * 5) % myPageMyTicket.length;
+      setItemOffset(newOffset);
+    },
+    [myPageMyTicket],
+  );
 
   /**
    * DataUrl 을 이미지파일로 변경해주는 함수
@@ -191,11 +216,35 @@ const MyPage = () => {
           )}
         </div>
       </ConnectedContainer>
+
       <>
         <MyPageContainer>
-          <h2>나의 티켓</h2>
+          <ReactPaginateWrapper>
+            <h2>나의 티켓</h2>
+            <ReactPaginateBox
+              nextLabel=">"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={0}
+              marginPagesDisplayed={0}
+              pageCount={pageCount}
+              previousLabel="<"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakLabel=""
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              containerClassName="pagination"
+              activeClassName="active"
+              renderOnZeroPageCount={null}
+              className="hey"
+            ></ReactPaginateBox>
+          </ReactPaginateWrapper>
           <div>
-            {myPageMyTicket.map((el) => {
+            {currentItems.map((el) => {
               console.log(el);
               return (
                 <div>
@@ -368,4 +417,44 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ReactPaginateWrapper = styled.span`
+  padding: 0px 3%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ReactPaginateBox = styled(ReactPaginate)`
+  display: flex;
+  cursor: pointer;
+  a {
+    text-align: center;
+    width: 100%;
+    font-weight: 700;
+  }
+  & > .page-item {
+    /* visibility: hidden; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef2f6;
+
+    line-height: 28px;
+    margin: 0 5px;
+    min-width: 28px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  & > .page-item.active {
+    display: none;
+    color: white;
+  }
+  & > .active {
+    background-color: #545c65;
+  }
+  & > .active a {
+    color: white;
+  }
 `;

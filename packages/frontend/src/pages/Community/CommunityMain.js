@@ -96,7 +96,6 @@ const CommunityMain = () => {
   useEffect(() => {
     // Fetch items from another resources.
     const endOffset = itemOffset + 3;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     setCurrentItems(showList.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(showList.length / 3));
   }, [itemOffset, showList]);
@@ -105,17 +104,11 @@ const CommunityMain = () => {
   const handlePageClick = useCallback(
     (event) => {
       const newOffset = (event.selected * 3) % showList.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`,
-      );
       setItemOffset(newOffset);
     },
     [showList],
   );
 
-  useEffect(() => {
-    console.log(currentItems);
-  }, [currentItems]);
   return (
     <TotalWidthSetting>
       <UpperTitleArea>
