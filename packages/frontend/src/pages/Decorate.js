@@ -6,6 +6,7 @@ import "file-saver"; // 이거 있어야 다운로드 작동함
 import { useDispatch, useSelector } from "react-redux";
 import { uploadImages } from "../actions/performance";
 import faker from "faker";
+import { DecorateTicket } from "../actions/ticketBook";
 const myTheme = {};
 const Layout = styled.div`
   display: flex;
@@ -19,6 +20,8 @@ const Decorate = () => {
   );
   const editorRef = useRef(null);
   const [data, setData] = useState();
+  const name = faker.name.findName();
+  const ticketID = useSelector((state) => state.ticketBook.ticketID);
   const editorToBase64 = async () => {
     const editorInstance = editorRef.current.getInstance();
     var image = editorInstance.toDataURL();
@@ -27,13 +30,18 @@ const Decorate = () => {
     const imageFile = await convertURLtoFile(image);
     const imageFormData = new FormData();
     imageFormData.append("image", imageFile);
-    dispatch(uploadImages(imageFormData));
+    dispatch(uploadImages(imageFormData)).then((state) => {
+      console.log(state.payload[0]);
+      dispatch(DecorateTicket(state.payload[0])); // 이미지가 서버에 포스트되면 , 이미지 src를 서버에 전송합니다.
+    });
   };
   const convertURLtoFile = async (url) => {
     const response = await fetch(url);
     const data = await response.blob();
     const metadata = { type: `image/png` };
-    return new File([data], `${faker.name.findName()}.png`, metadata);
+    // faker 라이브러리를 사용해서 랜덤 이름을 생성합니다.
+
+    return new File([data], `${name}.png`, metadata);
   };
   const Test = useCallback(() => {
     editorRef.current.getInstance().ui.resizeEditor({

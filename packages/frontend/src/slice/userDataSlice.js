@@ -59,6 +59,9 @@ const userDataSlice = createSlice({
     doneGetuserProfileLoading: (state, { payload }) => {
       state.getuserProfileLoading = true;
     },
+    /**
+      ticket의 ID를 저장한다.
+     */
   },
   extraReducers: (builder) =>
     builder

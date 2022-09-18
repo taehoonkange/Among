@@ -31,7 +31,7 @@ import { createAvatar } from "@dicebear/avatars";
 import * as style from "@dicebear/avatars-avataaars-sprites";
 import ClipLoader from "react-spinners/ClipLoader";
 import { setPerformanceId } from "../slice/performanceSlice";
-
+import { setTicketID } from "../slice/ticketBookSlice";
 const avatar = createAvatar(style, {
   dataUri: true,
 });
@@ -299,6 +299,14 @@ const MyPage = () => {
               console.log(el);
               return (
                 <Link
+                  onClick={() => {
+                    dispatch(
+                      setTicketID({
+                        // 누른 티켓의 ID를 저장하는 action 입니다.
+                        value: el.Creates[0].CreatTicket.TicketId,
+                      }),
+                    );
+                  }}
                   style={{ position: "relative" }}
                   to={`/MyTicket/${el.PerformanceId}`}
                 >

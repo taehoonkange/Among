@@ -47,7 +47,6 @@ const MyTicket = () => {
       <TopCss>
         <CategoryWrapper>
           <Category>나의 티켓</Category>
-          {/* <Title>2022 송가인 전국투어 콘서트 - 일산</Title> */}
         </CategoryWrapper>
         <TopLeftCss>
           <TopLeft></TopLeft>
