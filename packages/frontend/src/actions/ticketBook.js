@@ -5,7 +5,7 @@ import { ticketBookRequests } from "../util/ticketBookRequests";
 axios.defaults.withCredentials = true; // front, backend 간 쿠키공유
 
 export const DecorateTicket = createAsyncThunk(
-  "patch/DecorateTicket ",
+  "patch/DecorateTicket",
   async (data, thunkAPI) => {
     console.log(data);
     const dataState = thunkAPI.getState().ticketBook.ticketID;
@@ -14,6 +14,20 @@ export const DecorateTicket = createAsyncThunk(
         ticketBookRequests(undefined, dataState).decorateTicket,
         { image: data },
       );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getTicketBook = createAsyncThunk(
+  "get/getTicketBook",
+  async (data, thunkAPI) => {
+    console.log(data);
+    try {
+      const response = await axios.get(ticketBookRequests().getTicketBook);
       return response.data;
     } catch (error) {
       console.log(error);

@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import {} from "../actions/user";
 
-import { DecorateTicket } from "../actions/ticketBook";
+import { DecorateTicket, getTicketBook } from "../actions/ticketBook";
 
 const initialState = {
   ticketID: 0,
+  ticketBookData: [],
 };
 
 const ticketBookSlice = createSlice({
@@ -22,7 +23,12 @@ const ticketBookSlice = createSlice({
       .addCase(DecorateTicket.fulfilled, (state, { payload }) => {
         state.myPerformance = payload;
       })
-      .addCase(DecorateTicket.rejected, (state, action) => {}),
+      .addCase(DecorateTicket.rejected, (state, action) => {})
+      .addCase(getTicketBook.pending, (state) => {})
+      .addCase(getTicketBook.fulfilled, (state, { payload }) => {
+        state.ticketBookData = payload;
+      })
+      .addCase(getTicketBook.rejected, (state, action) => {}),
 });
 
 export const { setTicketID } = ticketBookSlice.actions;
