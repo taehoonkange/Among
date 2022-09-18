@@ -7,14 +7,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImages } from "../actions/performance";
 import faker from "faker";
 import { DecorateTicket } from "../actions/ticketBook";
+import { useNavigate } from "react-router-dom";
 const myTheme = {};
 const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+
+const Button = styled.div`
+  margin-left: 720px;
+  margin-top: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 50px;
+  border-radius: 10px;
+  color: white;
+  background-color: rgb(95, 60, 250);
 `;
 const Decorate = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const performanceDetail = useSelector(
     (state) => state.performance.performanceDetail,
   );
@@ -32,7 +49,9 @@ const Decorate = () => {
     imageFormData.append("image", imageFile);
     dispatch(uploadImages(imageFormData)).then((state) => {
       console.log(state.payload[0]);
-      dispatch(DecorateTicket(state.payload[0])); // 이미지가 서버에 포스트되면 , 이미지 src를 서버에 전송합니다.
+      dispatch(DecorateTicket(state.payload[0])).then(() => {
+        navigate("/MyPage");
+      }); // 이미지가 서버에 포스트되면 , 이미지 src를 서버에 전송합니다.
     });
   };
   const convertURLtoFile = async (url) => {
@@ -94,7 +113,7 @@ const Decorate = () => {
             // initMenu: "filter",
             uiSize: {
               width: "900px",
-              height: "605px",
+              height: "540px",
             },
             menuBarPosition: "top",
           }}
@@ -106,8 +125,8 @@ const Decorate = () => {
           }}
           usageStatistics={true}
         />
+        <Button onClick={editorToBase64}>저장하기</Button>
       </Layout>
-      <button onClick={editorToBase64}>저장하기</button>
 
       {/* <img src={data} alt="" /> */}
     </>
