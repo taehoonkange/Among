@@ -145,3 +145,15 @@ export const getUserTicket = createAsyncThunk(
     }
   },
 );
+
+export const getMyPerformance = createAsyncThunk(
+  "get/getMyPerformance",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.get(userRequests().getMyPerformance);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);

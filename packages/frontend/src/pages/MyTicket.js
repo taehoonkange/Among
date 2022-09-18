@@ -84,7 +84,7 @@ const TopCss = styled.div`
   align-items: center;
   justify-content: center;
   height: 630px;
-  margin-top: 150px;
+  margin-top: 50px;
   margin-bottom: 350px;
 `;
 

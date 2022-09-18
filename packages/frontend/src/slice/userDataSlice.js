@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getPerformance } from "../actions/performance";
 
 import {
   getUserDataServer,
@@ -10,6 +11,7 @@ import {
   patchUserProfileNickName,
   patchSubmitImgAndName,
   getUserTicket,
+  getMyPerformance,
 } from "../actions/user";
 
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
   userName: "",
   userTicketData: [],
   myPageMyTicket: [],
+  myPerformance: [],
 };
 
 const userDataSlice = createSlice({
@@ -117,10 +120,15 @@ const userDataSlice = createSlice({
       .addCase(getUserTicket.fulfilled, (state, { payload }) => {
         state.userTicketData = payload.res;
         let tempArray = [];
+        let temp;
         payload.res.Owned.map((el) => {
           switch (el.status) {
+            case "USED":
+              temp = { ...el, ticketType: "사용됨" };
+              tempArray = [...tempArray, temp];
+              break;
             case "OWNED":
-              let temp = { ...el, ticketType: "보유중" };
+              temp = { ...el, ticketType: "보유중" };
               tempArray = [...tempArray, temp];
               break;
             case "SALE":
@@ -132,16 +140,19 @@ const userDataSlice = createSlice({
             default:
               break;
           }
-          console.log(tempArray);
           // tempArray.sort((a, b) => {
           //   return new Date(a.day) - new Date(b.day);
           // });
-          let ss = [...tempArray, ...tempArray];
-          state.myPageMyTicket = [...ss, ...ss];
+          state.myPageMyTicket = tempArray;
         });
         return state;
       })
-      .addCase(getUserTicket.rejected, (state, action) => {}),
+      .addCase(getUserTicket.rejected, (state, action) => {})
+      .addCase(getMyPerformance.pending, (state) => {})
+      .addCase(getMyPerformance.fulfilled, (state, { payload }) => {
+        state.myPerformance = payload;
+      })
+      .addCase(getMyPerformance.rejected, (state, action) => {}),
 });
 
 export const {

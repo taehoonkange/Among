@@ -18,6 +18,7 @@ import GetUserData from "../hooks/GetUserData";
 import ReactPaginate from "react-paginate";
 
 import {
+  getMyPerformance,
   getUserDataServer,
   getUserProfileNickname,
   getUserTicket,
@@ -52,6 +53,7 @@ const MyPage = () => {
   // const userProfileName = useSelector(
   //   (store) => store.userData.userProfileName,
   // );
+  const myPerformance = useSelector((store) => store.userData.myPerformance);
   const userType = useSelector((store) => store.userData.userType);
   const name = useSelector((store) => store.userData.userName);
   // useEffect(() => {
@@ -64,6 +66,12 @@ const MyPage = () => {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
+
+  const [currentItemsPerformance, setCurrentItemsPerformance] = useState(null);
+  const [pageCountPerformance, setPageCountPerformance] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffsetPerformance, setItemOffsetPerformance] = useState(0);
 
   useEffect(() => {
     // Fetch items from another resources.
@@ -79,6 +87,22 @@ const MyPage = () => {
       setItemOffset(newOffset);
     },
     [myPageMyTicket],
+  );
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + 5;
+    setCurrentItemsPerformance(myPerformance.slice(itemOffset, endOffset));
+    setPageCountPerformance(Math.ceil(myPageMyTicket.length / 5));
+  }, [itemOffsetPerformance, myPerformance]);
+
+  // Invoke when user click to request another page.
+  const handlePageClickPerformance = useCallback(
+    (event) => {
+      const newOffset = (event.selected * 5) % myPerformance.length;
+      setItemOffsetPerformance(newOffset);
+    },
+    [myPerformance],
   );
 
   /**
@@ -104,8 +128,8 @@ const MyPage = () => {
     async function initGetData() {
       // userID 정보를 받고나서 user의 티켓의 정보를 받기 위해서 then 안에 넣어주었습니다.
       dispatch(getUserDataServer()).then(() => {
-        console.log("11");
         dispatch(getUserTicket());
+        dispatch(getMyPerformance());
       });
       await dispatch(getUserProfileNickname()).then((state) => {
         console.log("하이");
@@ -160,7 +184,33 @@ const MyPage = () => {
       </Layout>
     );
   }
-  console.log(myPageMyTicket);
+
+  const renderStatusLabel = (status) => {
+    switch (status) {
+      case "USED":
+        return (
+          <StatusLabel
+            color="rgb(95, 60, 250)"
+            background="linear-gradient(90deg, rgb(254, 224, 255) 0%, rgb(218, 235, 255) 100%)"
+          >
+            사용됨
+          </StatusLabel>
+        );
+      case "OWNED":
+        return (
+          <StatusLabel color="white" background="rgb(95, 60, 250)">
+            보유중
+          </StatusLabel>
+        );
+      case "SALE":
+        return (
+          <StatusLabel color="white" background="#ef3f43">
+            리셀중
+          </StatusLabel>
+        );
+      default:
+    }
+  };
   return (
     <>
       <ConnectedContainer>
@@ -248,12 +298,16 @@ const MyPage = () => {
             {currentItems.map((el) => {
               console.log(el);
               return (
-                <Link to={`/MyTicket/${el.PerformanceId}`}>
+                <Link
+                  style={{ position: "relative" }}
+                  to={`/MyTicket/${el.PerformanceId}`}
+                >
                   <img
                     className="myPage_ticket_image"
                     alt=""
                     src={`http://localhost:3065/${el.GetImg[0].src}`}
                   ></img>
+                  {renderStatusLabel(el.status)}
                   <div className="myPage_ticket_date">
                     {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
@@ -264,22 +318,43 @@ const MyPage = () => {
           </div>
         </MyPageContainer>
         <MyPageContainer>
-          <h2>판매 티켓</h2>
+          <ReactPaginateWrapper>
+            <h2>나의 공연</h2>
+            <ReactPaginateBox
+              nextLabel=">"
+              onPageChange={handlePageClickPerformance}
+              pageRangeDisplayed={0}
+              marginPagesDisplayed={0}
+              pageCount={pageCountPerformance}
+              previousLabel="<"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakLabel=""
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              containerClassName="pagination"
+              activeClassName="active"
+              renderOnZeroPageCount={null}
+              className="hey"
+            ></ReactPaginateBox>
+          </ReactPaginateWrapper>
           <div>
-            {dummy.map((el) => {
+            {currentItemsPerformance.map((el) => {
               return (
                 <div>
                   <img
                     className="myPage_ticket_image"
                     alt=""
-                    src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
+                    src={`http://localhost:3065/${el.Image.src}`}
                   ></img>
                   <div className="myPage_ticket_date">
-                    {/* {dayjs(el.day).format("YYYY.MM.DD")} */}
+                    {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
-                  <div className="myPage_ticket_desc">
-                    2022 10년 연속 1위 연극 옥탑방고양이-틴틴홀
-                  </div>
+                  <div className="myPage_ticket_desc">{el.description}</div>
                 </div>
               );
             })}
@@ -421,6 +496,7 @@ const Layout = styled.div`
 `;
 
 const ReactPaginateWrapper = styled.span`
+  margin-top: 20px;
   padding: 0px 3%;
   display: flex;
   justify-content: space-between;
@@ -429,6 +505,7 @@ const ReactPaginateWrapper = styled.span`
 const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
+  margin-bottom: 10px;
   a {
     text-align: center;
     width: 100%;
@@ -458,4 +535,17 @@ const ReactPaginateBox = styled(ReactPaginate)`
   & > .active a {
     color: white;
   }
+`;
+
+const StatusLabel = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0px;
+  left: 0px;
+  width: 100px;
+  height: 30px;
+  color: ${(props) => props.color};
+  background: ${(props) => props.background};
 `;
