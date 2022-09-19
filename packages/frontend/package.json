@@ -2,11 +2,14 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ehddud1006.github.io/Among-Front",
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
