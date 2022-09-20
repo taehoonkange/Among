@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { ticketInfo, ticketSalesRegistration } from "../actions/ticketResell";
+import {
+  patchResellTicket,
+  ticketInfo,
+  ticketSalesRegistration,
+} from "../actions/ticketResell";
 
 const initialState = {
   ticketDetailInfo: [],
@@ -20,9 +24,10 @@ const ticketResell = createSlice({
         console.log(payload);
         state.ticketDetailInfo = payload;
       })
-      .addCase(ticketInfo.rejected, (state, action) => {
-        console.log("에러난다");
-      }),
+      .addCase(ticketInfo.rejected, (state, action) => {})
+      .addCase(patchResellTicket.pending, (state) => {})
+      .addCase(patchResellTicket.fulfilled, (state, { payload }) => {})
+      .addCase(patchResellTicket.rejected, (state, action) => {}),
 });
 
 export const {} = ticketResell.actions;

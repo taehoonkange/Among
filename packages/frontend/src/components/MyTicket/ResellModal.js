@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
+import { patchResellTicket } from "../../actions/ticketResell";
 import close from "../../images/close.png";
 import { setReSellModalOpen } from "../../slice/settingModalSlice";
 const ModalBackground = styled.div`
@@ -79,45 +80,56 @@ const InputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-/**
- * 사용자가 입력한 금액이 알맞은 형식인지 체크하여 api 요청을 보내는 함수 입니다.
- * @param {String} priceSetByUser 유저가 입력한 가격
- * @param {RefObject} price 인플루언서가 등록가 원래의 가격 useRef값
- */
-const checkTextAndRequest = (priceSetByUser, price) => {
-  console.log(typeof price);
-  const regex = new RegExp(`^[0-9]+.{0,1}[0-9]*$`, "g"); // 첫시작이 무조건 숫자이도록 + 를 사용했으며 .{0,1}로 .이 0번 또는 1번이 오도록하였다. 그리고 그 뒤에 숫자는 입력되어도 되고 안되어도 된다.
-  const judgment = regex.test(priceSetByUser);
-  if (judgment && priceSetByUser[priceSetByUser.length - 1] !== ".") {
-    // 위 정규식을 통과했을때 예외가 생길부분이 ex) 13. 과 같은 .이 맨마지막에 올때이다. 이 경우를 체크하여준다.
-
-    if (
-      0 <= parseFloat(Number(priceSetByUser)) &&
-      parseFloat(Number(priceSetByUser)) <= price.current * 1.3
-    ) {
-      // 사용자가 입력한 금액이 0 이상 (인플루언서가 등록한 금액의*1.3) 이하이면 통과합니다.
-
-      window.alert("collect");
-    } else {
-      window.alert(price.current * 1.3);
-      window.alert(parseFloat(Number(priceSetByUser)));
-    }
-  } else {
-    window.alert("올바른 형식이 아닙니다. 입력하신가격을 확인해주세요.");
-  }
-};
-
 const ResellModal = () => {
   const [priceSetByUser, setPriceSetByUser] = useState("");
   const ticketDetailInfo = useSelector(
     (state) => state.ticketResell.ticketDetailInfo,
   );
+  const ticketID = useSelector((state) => state.ticketBook.ticketID);
+  console.log(ticketID);
   const price = useRef(Number(ticketDetailInfo.originalPrice)); // 티켓의 인플루언서가 처음 등록한 가격을 할당합니다.
   const dispatch = useDispatch();
 
   const onChangeText = (e) => {
     setPriceSetByUser(e.target.value);
   };
+
+  /**
+   * 사용자가 입력한 금액이 알맞은 형식인지 체크하여 api 요청을 보내는 함수 입니다.
+   * @param {String} priceSetByUser 유저가 입력한 가격
+   * @param {RefObject} price 인플루언서가 등록가 원래의 가격 useRef값
+   */
+  const checkTextAndRequest = useCallback(
+    (priceSetByUser, price) => {
+      console.log(typeof price);
+      const regex = new RegExp(`^[0-9]+.{0,1}[0-9]*$`, "g"); // 첫시작이 무조건 숫자이도록 + 를 사용했으며 .{0,1}로 .이 0번 또는 1번이 오도록하였다. 그리고 그 뒤에 숫자는 입력되어도 되고 안되어도 된다.
+      const judgment = regex.test(priceSetByUser);
+      if (judgment && priceSetByUser[priceSetByUser.length - 1] !== ".") {
+        // 위 정규식을 통과했을때 예외가 생길부분이 ex) 13. 과 같은 .이 맨마지막에 올때이다. 이 경우를 체크하여준다.
+
+        if (
+          0 <= parseFloat(Number(priceSetByUser)) &&
+          parseFloat(Number(priceSetByUser)) <= price.current * 1.3
+        ) {
+          // 사용자가 입력한 금액이 0 이상 (인플루언서가 등록한 금액의*1.3) 이하이면 통과합니다.
+
+          dispatch(
+            patchResellTicket({
+              price: String(priceSetByUser),
+              ticketID: ticketID,
+            }),
+          );
+          window.alert("collect");
+        } else {
+          window.alert(price.current * 1.3);
+          window.alert(parseFloat(Number(priceSetByUser)));
+        }
+      } else {
+        window.alert("올바른 형식이 아닙니다. 입력하신가격을 확인해주세요.");
+      }
+    },
+    [ticketID],
+  );
 
   return (
     <ModalBackground>
