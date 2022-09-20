@@ -5,6 +5,7 @@ import {
   patchResellTicket,
   ticketInfo,
   ticketSalesRegistration,
+  patchUseTicket,
 } from "../actions/ticketResell";
 
 const initialState = {
@@ -34,7 +35,10 @@ const ticketResell = createSlice({
       .addCase(getTicketResellData.fulfilled, (state, { payload }) => {
         state.ticketResellData = payload;
       })
-      .addCase(getTicketResellData.rejected, (state, action) => {}),
+      .addCase(getTicketResellData.rejected, (state, action) => {})
+      .addCase(patchUseTicket.pending, (state) => {})
+      .addCase(patchUseTicket.fulfilled, (state, { payload }) => {})
+      .addCase(patchUseTicket.rejected, (state, action) => {}),
 });
 
 export const {} = ticketResell.actions;

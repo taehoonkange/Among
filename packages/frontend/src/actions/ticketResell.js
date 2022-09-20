@@ -67,3 +67,18 @@ export const getTicketResellData = createAsyncThunk(
     }
   },
 );
+
+export const patchUseTicket = createAsyncThunk(
+  "get/useTicket",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.patch(
+        ticketResellRequests(undefined, data).ticketSell,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
