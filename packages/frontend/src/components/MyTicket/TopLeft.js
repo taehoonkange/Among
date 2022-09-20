@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import ResellModal from "./ResellModal";
 import { setReSellModalOpen } from "../../slice/settingModalSlice";
+import QRCode from "qrcode";
+
 const TopLeft = () => {
+  const [imageUrl, setImageUrl] = useState(""); // qr 코드로 만들어진 이미지를 저장하는 State
+  const ticketID = useSelector((state) => state.ticketBook.ticketID);
+
   const dispatch = useDispatch();
   const performanceDetail = useSelector(
     (state) => state.performance.performanceDetail,
@@ -13,6 +18,21 @@ const TopLeft = () => {
   const reSellModalOpen = useSelector(
     (state) => state.settingModalOpen.reSellModalOpen,
   );
+  /**
+   * qr 코드를 생성하는 함수입니다.
+   */
+  const generateQrCode = useCallback(async () => {
+    try {
+      const ticket = JSON.stringify(ticketID);
+      const response = await QRCode.toDataURL(ticket); // response 로 return 된 url을 저장합니다.
+      setImageUrl(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ticketID]);
+  useEffect(() => {
+    generateQrCode();
+  }, []);
   return (
     <>
       <TicketTitle>{performanceDetail.title}</TicketTitle>
@@ -51,14 +71,25 @@ const TopLeft = () => {
             </li>
           </ul>
           {/* <Link to="/Decorate">dd</Link> */}
-          <DecoButton to="/Decorate">꾸미기</DecoButton>
-          <ResellButton
-            onClick={() => {
-              dispatch(setReSellModalOpen({ value: true }));
-            }}
-          >
-            리셀하기
-          </ResellButton>
+          <div style={{ display: "flex", marginTop: "100px" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <DecoButton to="/Decorate">꾸미기</DecoButton>
+              <ResellButton
+                onClick={() => {
+                  dispatch(setReSellModalOpen({ value: true }));
+                }}
+              >
+                리셀하기
+              </ResellButton>
+            </div>
+            {/* qr 코드가 정상적으로 생성되었다면 렌더링합니다. */}
+            {imageUrl ? (
+              <a href={imageUrl} download>
+                {/*다운로드를 할 수 있습니다*/}
+                <img style={{ marginLeft: "20px" }} src={imageUrl} alt="img" />
+              </a>
+            ) : null}
+          </div>
           {reSellModalOpen && <ResellModal></ResellModal>}
         </TicketInfoArea>
       </UnderTitle>
@@ -121,7 +152,7 @@ const buttonCss = css`
 
 const DecoButton = styled(Link)`
   ${buttonCss}
-  margin-top: 100px;
+  /* margin-top: 100px; */
   background-color: rgb(95, 60, 250);
   ${(props) => props.margin && css``}
 `;
