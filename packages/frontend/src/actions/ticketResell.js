@@ -20,3 +20,20 @@ export const ticketSalesRegistration = createAsyncThunk(
     }
   },
 );
+
+export const ticketInfo = createAsyncThunk(
+  "get/ticketInfo",
+  async (data, thunkAPI) => {
+    console.log("테스트 콘솔");
+    console.log(data);
+    try {
+      const response = await axios.get(
+        ticketResellRequests(undefined, data).ticketInfo,
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);

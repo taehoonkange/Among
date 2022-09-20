@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import styled from "styled-components";
 import { getPerformanceDetail } from "../actions/performance";
+import { ticketInfo } from "../actions/ticketResell";
 import TopLeft from "../components/MyTicket/TopLeft";
 
 import Middle from "../components/ShowDetail/Middle";
@@ -14,10 +15,12 @@ const MyTicket = () => {
   const getPerformanceDetailLoading = useSelector(
     (state) => state.performance.getPerformanceDetailLoading,
   );
+  const ticketID = useSelector((state) => state.ticketBook.ticketID);
+  console.log(ticketID);
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const mounted = useRef(false);
-
+  const ticketInfoRef = useRef(false);
   useEffect(() => {
     const regex = /[^0-9]/g;
     const result = path.replace(regex, "");
@@ -33,6 +36,10 @@ const MyTicket = () => {
       dispatch(getPerformanceDetail(performanceId));
     }
   }, [performanceId]);
+
+  useEffect(() => {
+    dispatch(ticketInfo(ticketID)); // 티켓에 대한 정보를 받아옵니다.
+  }, [ticketID]);
 
   if (getPerformanceDetailLoading) {
     return (

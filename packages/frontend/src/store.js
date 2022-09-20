@@ -4,6 +4,7 @@ import settingModalSlice from "./slice/settingModalSlice";
 import postSlice from "./slice/postSlice";
 import performanceSlice from "./slice/performanceSlice";
 import ticketBookSlice from "./slice/ticketBookSlice";
+import ticketReSellSlice from "./slice/ticketReSellSlice";
 export const store = configureStore({
   reducer: {
     userData: userDataReducer,
@@ -11,5 +12,6 @@ export const store = configureStore({
     posts: postSlice,
     performance: performanceSlice,
     ticketBook: ticketBookSlice,
+    ticketResell: ticketReSellSlice,
   },
 });
