@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
+  getTicketResellData,
   patchResellTicket,
   ticketInfo,
   ticketSalesRegistration,
@@ -8,6 +9,7 @@ import {
 
 const initialState = {
   ticketDetailInfo: [],
+  ticketResellData: [],
 };
 
 const ticketResell = createSlice({
@@ -27,7 +29,12 @@ const ticketResell = createSlice({
       .addCase(ticketInfo.rejected, (state, action) => {})
       .addCase(patchResellTicket.pending, (state) => {})
       .addCase(patchResellTicket.fulfilled, (state, { payload }) => {})
-      .addCase(patchResellTicket.rejected, (state, action) => {}),
+      .addCase(patchResellTicket.rejected, (state, action) => {})
+      .addCase(getTicketResellData.pending, (state) => {})
+      .addCase(getTicketResellData.fulfilled, (state, { payload }) => {
+        state.ticketResellData = payload;
+      })
+      .addCase(getTicketResellData.rejected, (state, action) => {}),
 });
 
 export const {} = ticketResell.actions;
