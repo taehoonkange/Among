@@ -54,9 +54,13 @@
     "gh-pages": "^4.0.0",
     "lodash": "^4.17.21",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "qrcode": "^1.5.1",
 =======
 >>>>>>> f7af8e7 (build: yarn add lodash)
+=======
+    "qrcode": "^1.5.1",
+>>>>>>> cb1b9ca (build: yarn add qrcode)
     "react": "^18.1.0",
     "react-chartjs-2": "^4.3.1",
 =======
