@@ -40,6 +40,7 @@
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.1",
+    "@mui/styles": "^5.10.6",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/react": "^12.1.4",
     "@toast-ui/react-image-editor": "^3.15.2",
