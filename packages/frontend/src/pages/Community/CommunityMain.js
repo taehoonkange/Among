@@ -52,7 +52,9 @@ const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
   a {
+    width: 100%;
     color: #777;
+    text-align: center;
   }
   & > .page-item {
     display: flex;
