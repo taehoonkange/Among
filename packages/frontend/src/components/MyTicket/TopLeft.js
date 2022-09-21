@@ -10,13 +10,17 @@ import QRCode from "qrcode";
 const TopLeft = () => {
   const [imageUrl, setImageUrl] = useState(""); // qr 코드로 만들어진 이미지를 저장하는 State
   const ticketID = useSelector((state) => state.ticketBook.ticketID);
-
+  const [decoActive, setDecoActive] = useState(false);
+  const [resellActive, setResellActive] = useState(false);
   const dispatch = useDispatch();
   const performanceDetail = useSelector(
     (state) => state.performance.performanceDetail,
   );
   const reSellModalOpen = useSelector(
     (state) => state.settingModalOpen.reSellModalOpen,
+  );
+  const ticketStatusDetail = useSelector(
+    (state) => state.ticketResell.ticketStatusDetail,
   );
   /**
    * qr 코드를 생성하는 함수입니다.
@@ -30,8 +34,28 @@ const TopLeft = () => {
       console.log(error);
     }
   }, [ticketID]);
+
+  const DecorateAndResellActivateDetermine = useCallback(() => {
+    switch (ticketStatusDetail.ticketType) {
+      case "사용됨":
+        setDecoActive(true);
+        setResellActive(false);
+        break;
+      case "보유중":
+        setDecoActive(false);
+        setResellActive(true);
+        break;
+      case "리셀중":
+        setDecoActive(false);
+        setResellActive(false);
+        break;
+      default:
+        break;
+    }
+  }, [ticketStatusDetail]);
   useEffect(() => {
     generateQrCode();
+    DecorateAndResellActivateDetermine();
   }, []);
   return (
     <>
@@ -73,14 +97,22 @@ const TopLeft = () => {
           {/* <Link to="/Decorate">dd</Link> */}
           <div style={{ display: "flex", marginTop: "100px" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <DecoButton to="/Decorate">꾸미기</DecoButton>
-              <ResellButton
-                onClick={() => {
-                  dispatch(setReSellModalOpen({ value: true }));
-                }}
-              >
-                리셀하기
-              </ResellButton>
+              {decoActive ? (
+                <DecoButton to="/Decorate">꾸미기</DecoButton>
+              ) : (
+                <DisableButton>꾸미기</DisableButton>
+              )}
+              {resellActive ? (
+                <ResellButton
+                  onClick={() => {
+                    dispatch(setReSellModalOpen({ value: true }));
+                  }}
+                >
+                  리셀하기
+                </ResellButton>
+              ) : (
+                <DisableButton>리셀하기</DisableButton>
+              )}
             </div>
             {/* qr 코드가 정상적으로 생성되었다면 렌더링합니다. */}
             {imageUrl ? (
@@ -161,5 +193,10 @@ const ResellButton = styled.div`
   ${buttonCss}
   background-color: #ef3f43;
   margin-top: 5px;
-  cursor: pointer;
+`;
+
+const DisableButton = styled.div`
+  ${buttonCss}
+  background-color:#A2A2A2;
+  margin-top: 5px;
 `;
