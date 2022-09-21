@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setInfluencerDetailData } from "../../slice/postSlice";
 
 const PerformContainer = styled.div`
   width: 260px;
@@ -38,9 +40,13 @@ const handleError = (e) => {
 };
 
 const ShowItem = ({ data }) => {
+  const dispatch = useDispatch();
   return (
     <PerformContainer>
-      <Link to={`CommunityFeed/${data.Community.id}`}>
+      <Link
+        onClick={() => dispatch(setInfluencerDetailData({ value: data }))}
+        to={`CommunityFeed/${data.Community.id}`}
+      >
         <PosterImgContainer
           src={`http://localhost:3065/${data.Influencer.Image.src}`}
           onError={handleError}

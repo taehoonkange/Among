@@ -188,6 +188,7 @@ const initialState = {
   CommunityState: "",
   communityCategory: "",
   NowCommunityId: window.localStorage.getItem("NowCommuityId"),
+  influencerDetailData: [],
 };
 
 // initialState.mainPosts = initialState.mainPosts.concat(
@@ -339,6 +340,9 @@ const postSlice = createSlice({
     },
     setCommunityCategory: (state, { payload }) => {
       state.communityCategory = payload.value;
+    },
+    setInfluencerDetailData: (state, { payload }) => {
+      state.influencerDetailData = payload;
     },
   },
   extraReducers: (builder) =>
@@ -594,5 +598,6 @@ export const {
   deleteEditImage,
   resetHasMorePosts,
   setCommunityCategory,
+  setInfluencerDetailData,
 } = postSlice.actions;
 export default postSlice.reducer;
