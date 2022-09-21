@@ -128,3 +128,19 @@ export const postTicketBuy = createAsyncThunk(
     }
   },
 );
+
+export const getSearchPerformance = createAsyncThunk(
+  "get/getSearchPerformance",
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const res = await axios.get(
+        requests(undefined, data).getSearchPerformance,
+      );
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  },
+);

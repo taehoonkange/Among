@@ -16,6 +16,7 @@ export const requests = (state = undefined, data = undefined) => {
     performanceImage: `/performance/image`,
     performance: `/performance`,
     performanceSeats: `/performance/1/seatgui`,
+    getSearchPerformance: `/performance/${data}/search`,
     getPerformance: `/performance`,
     getPerformanceDetail: `/performance/${data}/detail`,
     getSeatsData: `/performance/${data}/seatgui`,

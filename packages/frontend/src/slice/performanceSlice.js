@@ -9,6 +9,7 @@ import {
   getPerformanceDetail,
   getSeatsData,
   postTicketBuy,
+  getSearchPerformance,
 } from "../actions/performance";
 import { data } from "./data";
 const initialState = {
@@ -311,7 +312,13 @@ const performanceSlice = createSlice({
       .addCase(getSeatsData.rejected, (state, action) => {})
       .addCase(postTicketBuy.pending, (state) => {})
       .addCase(postTicketBuy.fulfilled, (state, action) => {})
-      .addCase(postTicketBuy.rejected, (state, action) => {}),
+      .addCase(postTicketBuy.rejected, (state, action) => {})
+      .addCase(getSearchPerformance.pending, (state) => {})
+      .addCase(getSearchPerformance.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.performance = action.payload;
+      })
+      .addCase(getSearchPerformance.rejected, (state, action) => {}),
 });
 
 export const {

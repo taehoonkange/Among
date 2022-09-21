@@ -16,7 +16,7 @@ const QRcodeReader = () => {
    * qr 코드를 인식하는 함수 입니다.
    * qr 코드 인식시 api 요청이 여러번 가기때문에 쓰로틀링 처리를 해주었습니다.
    */
-  const debounceOnChange = _.throttle((result) => {
+  const throttleOnChange = _.throttle((result) => {
     let check = JSON.parse(result);
     // qr 코드가 찍히지 않을 경우에는 check에 null 이 들어갑니다.
     // qr 코드가 찍히면 Json stringify 로 된 문자열을 변환하여 티켓ID를 얻습니다.
@@ -46,7 +46,7 @@ const QRcodeReader = () => {
                   delay={300}
                   style={{ width: "100%", justifyContent: "center" }}
                   onError={handleErrorWebCam}
-                  onScan={debounceOnChange}
+                  onScan={throttleOnChange}
                 />
               </Grid>
             </Grid>

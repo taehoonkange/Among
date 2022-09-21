@@ -86,7 +86,7 @@ const InfluencerRegister = () => {
                       <StyledTextField
                         name="description"
                         type="text"
-                        label="공연 정보"
+                        label="인플루언서 소개"
                         rows={4}
                         multiline
                         value={desc}
