@@ -22,7 +22,6 @@ const QRcodeReader = () => {
     // qr 코드가 찍히면 Json stringify 로 된 문자열을 변환하여 티켓ID를 얻습니다.
     if (check === null) {
     } else {
-      console.log(check);
       dispatch(patchUseTicket(check));
       window.alert("인증되었습니다.");
     }

@@ -42,13 +42,11 @@ const Decorate = () => {
   const editorToBase64 = async () => {
     const editorInstance = editorRef.current.getInstance();
     var image = editorInstance.toDataURL();
-    console.log(image);
     setData(image);
     const imageFile = await convertURLtoFile(image);
     const imageFormData = new FormData();
     imageFormData.append("image", imageFile);
     dispatch(uploadImages(imageFormData)).then((state) => {
-      console.log(state.payload[0]);
       dispatch(DecorateTicket(state.payload[0])).then(() => {
         navigate("/MyPage");
       }); // 이미지가 서버에 포스트되면 , 이미지 src를 서버에 전송합니다.

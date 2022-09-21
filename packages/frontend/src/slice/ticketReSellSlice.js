@@ -32,7 +32,6 @@ const ticketResell = createSlice({
       .addCase(ticketSalesRegistration.rejected, (state, action) => {})
       .addCase(ticketInfo.pending, (state) => {})
       .addCase(ticketInfo.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.ticketDetailInfo = payload;
       })
       .addCase(ticketInfo.rejected, (state, action) => {})

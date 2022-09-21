@@ -97,7 +97,6 @@ const CommunityPostInput = ({ setEdit, postId, image, text }) => {
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {
-    console.log("images", e.target.files);
     const imageFormData = new FormData();
     [].forEach.call(e.target.files, (image) => {
       imageFormData.append("image", image);

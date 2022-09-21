@@ -86,7 +86,6 @@ const CommunityMain = () => {
   const ticketBookData = useSelector(
     (state) => state.ticketBook.ticketBookData,
   );
-  console.log(ticketBookData);
   useEffect(() => {
     dispatch(getTicketBook());
     return () => {};

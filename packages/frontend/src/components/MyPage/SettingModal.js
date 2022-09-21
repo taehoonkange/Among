@@ -26,15 +26,13 @@ const SettingModal = ({ setLoading }) => {
   const [name, setName] = useState(userName);
   const dispatch = useDispatch();
   const onChangeName = (e) => {
-    console.log(e.target.value);
     setName(e.target.value);
   };
 
   const submitImgAndName = useCallback(() => {
     setLoading(true);
     dispatch(patchSubmitImgAndName({ imgName: imgName, nickname: name })).then(
-      (state) => {
-        console.log(state);
+      () => {
         window.location.reload();
       },
     );
@@ -53,10 +51,6 @@ const SettingModal = ({ setLoading }) => {
       setImgName(state.payload),
     );
   }, []);
-
-  useEffect(() => {
-    console.log(img);
-  }, [img]);
 
   // const captureFile = async (e) => {
   //   // e.stopPropagation();

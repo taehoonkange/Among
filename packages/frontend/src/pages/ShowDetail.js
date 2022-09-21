@@ -34,7 +34,6 @@ const ShowDetail = () => {
     const regex = /[^0-9]/g;
     const result = path.replace(regex, "");
     const number = parseInt(result);
-    console.log(number);
     dispatch(setPerformanceId({ value: number }));
   }, [path]);
 

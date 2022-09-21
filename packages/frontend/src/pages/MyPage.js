@@ -110,7 +110,6 @@ const MyPage = () => {
    * DataUrl 을 이미지파일로 변경해주는 함수
    */
   const convertURLtoFile = async (url) => {
-    console.log("1");
     const response = await fetch(url);
     const data = await response.blob();
     const metadata = { type: `image/png` };
@@ -122,7 +121,6 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    console.log(window.localStorage.getItem("randomImage"));
     /**
      * 마이페이지 최초 접속시 유저의 보유한 티켓정보, 유저의 닉네임, 유저의 프로필이미지를 GET 하는 함수
      */
@@ -133,14 +131,11 @@ const MyPage = () => {
         dispatch(getMyPerformance());
       });
       await dispatch(getUserProfileNickname()).then((state) => {
-        console.log("하이");
-        console.log(state);
         if (!state.payload.profile?.src) {
           convertURLtoFile(avatar).then((image) => {
             const imageFormData = new FormData();
             imageFormData.append("image", image);
             dispatch(postUserProfileImage(imageFormData)).then((state) => {
-              console.log(state);
               window.localStorage.setItem("randomImage", `${avatar}`);
               dispatch(patchtUserProfileImageName(state.payload));
             });
@@ -297,7 +292,6 @@ const MyPage = () => {
           </ReactPaginateWrapper>
           <div>
             {currentItems.map((el) => {
-              console.log(el);
               return (
                 <Link
                   onClick={() => {

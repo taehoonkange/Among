@@ -88,7 +88,6 @@ const ResellModal = () => {
     (state) => state.ticketResell.ticketDetailInfo,
   );
   const ticketID = useSelector((state) => state.ticketBook.ticketID);
-  console.log(ticketID);
   const price = useRef(Number(ticketDetailInfo.originalPrice)); // 티켓의 인플루언서가 처음 등록한 가격을 할당합니다.
   const dispatch = useDispatch();
 

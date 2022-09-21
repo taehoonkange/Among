@@ -256,7 +256,6 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     addPost: (state, { payload }) => {
-      console.log("first");
       // num++;
       let dummyPost = { ...dummy };
       dummyPost.post = { ...dummyPost.post, content: payload.value };
@@ -264,16 +263,12 @@ const postSlice = createSlice({
         ...dummyPost.post.User,
         nickname: payload.userName,
       };
-      console.log(payload.userName);
       state = [dummyPost, ...state];
-      console.log([dummyPost, ...state]);
       // dummyPost = { ...dummyPost, id: num };
       return state;
     },
     addComment: (state, { payload }) => {
-      console.log(payload.id);
       const target = state.findIndex((v) => v.post.id === payload.id);
-      console.log(target);
       let OB = {
         id: shortid.generate(),
         content: payload.value,
@@ -323,11 +318,9 @@ const postSlice = createSlice({
       );
     },
     editPostImage: (state, { payload }) => {
-      console.log(payload.value);
       let res = [];
       payload.value.map((v) => res.push(v.src));
       state.editImagePaths = res;
-      console.log(state.editImagePaths);
       return state;
     },
     deleteEditImage: (state, { payload }) => {
@@ -408,21 +401,15 @@ const postSlice = createSlice({
       .addCase(testLoadPosts.rejected, (state, action) => {
         state.testLoadPostsLoading = false;
       })
-      .addCase(influencerLoadPosts.pending, (state) => {
-        console.log("pending");
-      })
+      .addCase(influencerLoadPosts.pending, (state) => {})
       .addCase(influencerLoadPosts.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.mainPosts = action.payload;
 
         return state;
       })
       .addCase(influencerLoadPosts.rejected, (state, action) => {})
-      .addCase(loadPosts.pending, (state) => {
-        console.log("pending");
-      })
+      .addCase(loadPosts.pending, (state) => {})
       .addCase(loadPosts.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.mainPosts = action.payload;
 
         return state;
@@ -434,22 +421,14 @@ const postSlice = createSlice({
         state.imagePaths = [];
         return state;
       })
-      .addCase(addPostServer.rejected, (state) => {
-        console.log("rejected");
-      })
-      .addCase(addCommentServer.pending, (state, action) => {
-        console.log("pending");
-      })
+      .addCase(addPostServer.rejected, (state) => {})
+      .addCase(addCommentServer.pending, (state, action) => {})
       .addCase(addCommentServer.fulfilled, (state, action) => {
         state.mainPosts = action.payload;
         return state;
       })
-      .addCase(addCommentServer.rejected, (state, action) => {
-        console.log("rejected");
-      })
-      .addCase(addReplyServer.pending, (state, action) => {
-        console.log("pending");
-      })
+      .addCase(addCommentServer.rejected, (state, action) => {})
+      .addCase(addReplyServer.pending, (state, action) => {})
       .addCase(addReplyServer.fulfilled, (state, action) => {
         state.mainPosts = action.payload;
         return state;
@@ -477,39 +456,30 @@ const postSlice = createSlice({
       .addCase(postLikeServer.pending, (state) => {})
       .addCase(postLikeServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
           return el;
         });
-        console.log(test);
         state.mainPosts = test;
-        console.log(action.payload);
-        console.log(state.mainPosts);
         return state;
       })
       .addCase(postLikeServer.rejected, (state) => {})
       .addCase(postDeleteLikeServer.pending, (state) => {})
       .addCase(postDeleteLikeServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
           return el;
         });
-        console.log(test);
         state.mainPosts = test;
-        console.log(action.payload);
-        console.log(state.mainPosts);
         // return state;
       })
       .addCase(postDeleteLikeServer.rejected, (state) => {})
       .addCase(editPostServer.pending, (state) => {})
       .addCase(editPostServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
@@ -519,13 +489,10 @@ const postSlice = createSlice({
         state.editImagePaths = [];
         return state;
       })
-      .addCase(editPostServer.rejected, (state) => {
-        console.log("rejected");
-      })
+      .addCase(editPostServer.rejected, (state) => {})
       .addCase(deleteCommentServer.pending, (state) => {})
       .addCase(deleteCommentServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
@@ -534,13 +501,10 @@ const postSlice = createSlice({
         state.mainPosts = test;
         return state;
       })
-      .addCase(deleteCommentServer.rejected, (state) => {
-        console.log("rejected");
-      })
+      .addCase(deleteCommentServer.rejected, (state) => {})
       .addCase(deleteReplyServer.pending, (state) => {})
       .addCase(deleteReplyServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
@@ -549,13 +513,10 @@ const postSlice = createSlice({
         state.mainPosts = test;
         return state;
       })
-      .addCase(deleteReplyServer.rejected, (state) => {
-        console.log("rejected");
-      })
+      .addCase(deleteReplyServer.rejected, (state) => {})
       .addCase(editCommentServer.pending, (state) => {})
       .addCase(editCommentServer.fulfilled, (state, action) => {
         let test = state.mainPosts.map((el) => {
-          console.log(el);
           if (action.payload.post.id === el.post.id) {
             return action.payload;
           }
@@ -564,29 +525,21 @@ const postSlice = createSlice({
         state.mainPosts = test;
         return state;
       })
-      .addCase(editCommentServer.rejected, (state) => {
-        console.log("rejected");
-      })
+      .addCase(editCommentServer.rejected, (state) => {})
       .addCase(InfluencerSearch.pending, (state) => {})
       .addCase(InfluencerSearch.fulfilled, (state, { payload }) => {
         state.influencerList = payload;
         return state;
       })
-      .addCase(InfluencerSearch.rejected, (state) => {
-        console.log("rejected");
-      })
+      .addCase(InfluencerSearch.rejected, (state) => {})
       .addCase(CommnunityCheckStatus.pending, (state) => {})
       .addCase(CommnunityCheckStatus.fulfilled, (state, { payload }) => {
-        console.log("맘스터치");
-        console.log(payload);
         state.CommunityState = payload.status;
         state.NowCommunityId = payload.CommunityId;
         window.localStorage.setItem("NowCommuityId", `${payload.CommunityId}`);
         return state;
       })
-      .addCase(CommnunityCheckStatus.rejected, (state) => {
-        console.log("rejected");
-      }),
+      .addCase(CommnunityCheckStatus.rejected, (state) => {}),
 });
 
 export const {

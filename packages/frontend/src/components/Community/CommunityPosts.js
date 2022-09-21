@@ -24,7 +24,6 @@ const MozaLayout = styled.div`
   border-radius: 6px;
 `;
 const CommunityPosts = ({ CatergoryType }) => {
-  console.log(CatergoryType);
   const CommunityState = useSelector((state) => state.posts.CommunityState);
 
   const dispatch = useDispatch();

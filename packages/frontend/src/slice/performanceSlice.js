@@ -44,7 +44,6 @@ const performanceSlice = createSlice({
         payload.value,
         ...state.seats.slice(payload.i + 1),
       ];
-      console.log(state.seats);
       return state;
     },
     resetSeatsData: (state) => {
@@ -157,7 +156,6 @@ const performanceSlice = createSlice({
       .addCase(performanceUploadImages.pending, (state) => {})
       .addCase(performanceUploadImages.fulfilled, (state, action) => {
         state.imagePaths = [...state.imagePaths, action.payload];
-        console.log(state.imagePaths);
       })
       .addCase(performanceUploadImages.rejected, (state, action) => {})
       .addCase(uploadImages.pending, (state) => {})
@@ -195,7 +193,6 @@ const performanceSlice = createSlice({
         state.getPerformanceDetailError = null;
         state.performanceDetail = action.payload.res;
         state.banTicketId = action.payload.ban;
-        console.log(action.payload.res);
 
         // 날짜별 티켓 정보 할당
         const TicketInformationByDate = {};

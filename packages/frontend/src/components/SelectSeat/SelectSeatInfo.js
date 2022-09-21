@@ -146,7 +146,6 @@ const SelectSeatInfo = ({
               temp = { ...temp, count: temp.count - 1 };
               setSelcetSeatNumber({ ...selectSeatNumber, [el.status]: temp });
             } else if (i === el.seatNumber) {
-              console.log(el);
               dispatch(setSaleTicketPlusIdList({ value: el.id }));
 
               dispatch(
@@ -158,7 +157,6 @@ const SelectSeatInfo = ({
               );
               dispatch(setDaySeatsData({ i: i, day: userSelectDay }));
               let temp = selectSeatNumber[el.status];
-              console.log(temp);
               temp = { ...temp, count: temp.count + 1 };
               setSelcetSeatNumber({ ...selectSeatNumber, [el.status]: temp });
             }
@@ -190,7 +188,6 @@ const SelectSeatInfo = ({
       dispatch(resetSeatsData());
       dispatch(resetTicketSeats());
       dispatch(resetSaleTicketIdList());
-      console.log("이게 왜 실행되냐");
     };
   }, []);
 
@@ -200,10 +197,8 @@ const SelectSeatInfo = ({
       let temp = { count: 0, color: seat.color };
       ans[seat.status] = temp;
     });
-    console.log(ans);
     for (let key in ans) {
       const value = ans[key];
-      console.log(value);
     }
     setSelcetSeatNumber(ans);
   }, []);

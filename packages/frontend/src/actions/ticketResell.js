@@ -7,7 +7,6 @@ axios.defaults.withCredentials = true; // front, backend 간 쿠키공유
 export const ticketSalesRegistration = createAsyncThunk(
   "patch/ticketSalesRegistration",
   async (data, thunkAPI) => {
-    console.log(data);
     const dataState = thunkAPI.getState().ticketBook.ticketID;
     try {
       const response = await axios.patch(
@@ -24,8 +23,6 @@ export const ticketSalesRegistration = createAsyncThunk(
 export const ticketInfo = createAsyncThunk(
   "get/ticketInfo",
   async (data, thunkAPI) => {
-    console.log("테스트 콘솔");
-    console.log(data);
     try {
       const response = await axios.get(
         ticketResellRequests(undefined, data).ticketInfo,

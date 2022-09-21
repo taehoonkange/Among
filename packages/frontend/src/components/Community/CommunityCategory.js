@@ -78,12 +78,9 @@ const CommunityCategory = () => {
     (state) => state.posts.influencerDetailData,
   );
 
-  console.log(influencerDetailData);
-
   useEffect(() => {
     var regex = /[^0-9]/g; // 숫자가 아닌 문자열을 선택하는 정규식
     var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
-    console.log(result); // 결과 출력
     setID(result);
   }, []);
 

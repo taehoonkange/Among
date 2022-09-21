@@ -83,7 +83,6 @@ const ReactPaginateBox = styled(ReactPaginate)`
 const CommunityMain = () => {
   const dispatch = useDispatch();
   const showList = useSelector((state) => state.posts.influencerList);
-  console.log(showList);
   useEffect(() => {
     dispatch(InfluencerSearch());
     return () => {};

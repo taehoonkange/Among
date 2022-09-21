@@ -60,7 +60,6 @@ const Navbar = () => {
               {},
               { withCredentials: true },
             );
-            console.log(resLogout);
           } catch (err) {
             console.log(err);
           }

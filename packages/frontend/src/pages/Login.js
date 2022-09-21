@@ -13,7 +13,6 @@ const MyPage = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        console.log(accounts[0]);
         window.localStorage.setItem("isConnect", "true");
         try {
           const resRegister = await axios.post(
@@ -23,7 +22,6 @@ const MyPage = () => {
             },
             { withCredentials: true },
           );
-          console.log(resRegister);
         } catch (err) {
           console.log(err);
         } finally {
@@ -35,7 +33,6 @@ const MyPage = () => {
             },
             { withCredentials: true },
           );
-          console.log(resLogin);
         }
       } else {
         // metamask가 설치되어있지 않은 경우 alert

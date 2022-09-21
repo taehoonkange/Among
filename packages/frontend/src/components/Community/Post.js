@@ -187,7 +187,6 @@ const Alert = styled.div`
 `;
 
 const CommunityPost = ({ CatergoryType, like, post }) => {
-  console.log(post);
   const userName = useSelector((state) => state.userData.userName);
   const userID = useSelector((state) => state.userData.userID);
   const CommunityState = useSelector((state) => state.posts.CommunityState);

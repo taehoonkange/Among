@@ -33,9 +33,9 @@ const Community = () => {
   );
   const hasMorePost = useSelector((state) => state.posts.hasMorePost);
   const handleScroll = (event) => {
-    console.log("scrollTop: ", event.currentTarget.scrollTop);
-    console.log("clientHeight: ", event.currentTarget.clientHeight);
-    console.log("scrollHeight:", event.currentTarget.scrollHeight);
+    // console.log("scrollTop: ", event.currentTarget.scrollTop);
+    // console.log("clientHeight: ", event.currentTarget.clientHeight);
+    // console.log("scrollHeight:", event.currentTarget.scrollHeight);
     if (
       event.currentTarget.scrollTop + 0.5 + event.currentTarget.clientHeight >
       event.currentTarget.scrollHeight - 300
@@ -53,7 +53,7 @@ const Community = () => {
 
   useEffect(() => {
     return () => {
-      console.log("화면이탈");
+      // console.log("화면이탈");
       dispatch(resetHasMorePosts());
     };
   }, []);

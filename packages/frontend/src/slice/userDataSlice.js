@@ -38,7 +38,6 @@ const userDataSlice = createSlice({
   initialState,
   reducers: {
     setUserData: (state, { payload }) => {
-      console.log(payload.value);
       state.userData = payload.value;
     },
     setAccount: (state, { payload }) => {
@@ -70,10 +69,8 @@ const userDataSlice = createSlice({
       })
       .addCase(getUserProfileNickname.fulfilled, (state, { payload }) => {
         state.getuserProfileDone = true;
-        console.log(payload);
         state.userProfile = payload.profile;
         state.userName = payload.nickname.nickname;
-        console.log(payload);
       })
       .addCase(getUserProfileNickname.rejected, (state, action) => {
         state.getuserProfileLoading = false;
@@ -102,16 +99,13 @@ const userDataSlice = createSlice({
       .addCase(getUserDataServer.rejected, (state, action) => {})
       .addCase(uploadInfluencerImages.pending, (state) => {})
       .addCase(uploadInfluencerImages.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.imagePaths = [...state.imagePaths, payload];
-        console.log(state.imagePaths);
         return state;
       })
       .addCase(uploadInfluencerImages.rejected, (state, action) => {})
       .addCase(influencerRegister.pending, (state) => {})
       .addCase(influencerRegister.fulfilled, (state, { payload }) => {
         state.userType = payload.userType;
-        console.log(payload);
         window.localStorage.setItem("userType", payload.userType);
         return state;
       })
