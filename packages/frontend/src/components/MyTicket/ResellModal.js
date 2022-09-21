@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { patchResellTicket } from "../../actions/ticketResell";
 import close from "../../images/close.png";
@@ -81,6 +82,7 @@ const InputWrapper = styled.div`
 `;
 
 const ResellModal = () => {
+  const navigate = useNavigate();
   const [priceSetByUser, setPriceSetByUser] = useState("");
   const ticketDetailInfo = useSelector(
     (state) => state.ticketResell.ticketDetailInfo,
@@ -119,7 +121,8 @@ const ResellModal = () => {
               ticketID: ticketID,
             }),
           );
-          window.alert("collect");
+          navigate("/MyPage");
+          dispatch(setReSellModalOpen({ value: false }));
         } else {
           window.alert(price.current * 1.3);
           window.alert(parseFloat(Number(priceSetByUser)));

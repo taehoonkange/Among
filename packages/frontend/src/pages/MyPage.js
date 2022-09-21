@@ -32,6 +32,7 @@ import * as style from "@dicebear/avatars-avataaars-sprites";
 import ClipLoader from "react-spinners/ClipLoader";
 import { setPerformanceId } from "../slice/performanceSlice";
 import { setTicketID } from "../slice/ticketBookSlice";
+import { setTicketStatusDetail } from "../slice/ticketReSellSlice";
 const avatar = createAvatar(style, {
   dataUri: true,
 });
@@ -187,7 +188,7 @@ const MyPage = () => {
 
   const renderStatusLabel = (status) => {
     switch (status) {
-      case "USED":
+      case "사용됨":
         return (
           <StatusLabel
             color="rgb(95, 60, 250)"
@@ -196,13 +197,13 @@ const MyPage = () => {
             사용됨
           </StatusLabel>
         );
-      case "OWNED":
+      case "보유중":
         return (
           <StatusLabel color="white" background="rgb(95, 60, 250)">
             보유중
           </StatusLabel>
         );
-      case "SALE":
+      case "리셀중":
         return (
           <StatusLabel color="white" background="#ef3f43">
             리셀중
@@ -306,6 +307,9 @@ const MyPage = () => {
                         value: el.Creates[0].CreatTicket.TicketId,
                       }),
                     );
+
+                    // 마이페이지 클릭시 데이터가 set 됩니다.
+                    dispatch(setTicketStatusDetail({ value: el }));
                   }}
                   style={{ position: "relative" }}
                   to={`/MyTicket/${el.PerformanceId}`}
@@ -315,7 +319,7 @@ const MyPage = () => {
                     alt=""
                     src={`http://localhost:3065/${el.GetImg[0].src}`}
                   ></img>
-                  {renderStatusLabel(el.status)}
+                  {renderStatusLabel(el.ticketType)}
                   <div className="myPage_ticket_date">
                     {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>

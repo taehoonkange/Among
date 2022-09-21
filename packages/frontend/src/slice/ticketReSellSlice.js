@@ -11,12 +11,20 @@ import {
 const initialState = {
   ticketDetailInfo: [],
   ticketResellData: [],
+  ticketStatusDetail: [],
 };
 
 const ticketResell = createSlice({
   name: "ticketResell",
   initialState,
-  reducers: {},
+  reducers: {
+    /**
+     * 마이페이지를 클릭했을때 제가 변환해둔 정보를 담기위해 선언한 reduecers 입니다.
+     */
+    setTicketStatusDetail: (state, { payload }) => {
+      state.ticketStatusDetail = payload.value;
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(ticketSalesRegistration.pending, (state) => {})
@@ -41,5 +49,5 @@ const ticketResell = createSlice({
       .addCase(patchUseTicket.rejected, (state, action) => {}),
 });
 
-export const {} = ticketResell.actions;
+export const { setTicketStatusDetail } = ticketResell.actions;
 export default ticketResell.reducer;
