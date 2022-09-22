@@ -5,7 +5,21 @@ const cookieParser = require(`cookie-parser`)
 const morgan = require(`morgan`)
 const path = require(`path`)
 const db = require(`./models`)
+const dotenv = require(`dotenv`)
+const passport = require(`passport`)
 
+const userRouter = require(`./routes/user`)
+const ticketRouter = require(`./routes/ticket`)
+const performanceRouter = require(`./routes/performance`)
+const communityRouter = require(`./routes/community`)
+const influencerRouter = require(`./routes/influencer`)
+const ticketbookRouter = require(`./routes/ticketbook`)
+const passportConfigure = require(`./passport`)
+
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger-output')
+
+dotenv.config()
 
 const app = express()
 
@@ -33,6 +47,21 @@ app.use(session({
   secret: process.env.COOKIE_SECRET
 }))
 
+app.use(passport.initialize())
+app.use(passport.session());
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+app.use(`/user`, userRouter)
+app.use(`/performance`, performanceRouter)
+app.use(`/ticket`, ticketRouter)
+app.use(`/community`, communityRouter)
+app.use(`/ticket`, ticketRouter)
+app.use(`/influencer`, influencerRouter)
+app.use(`/ticketbook`, ticketbookRouter)
+app.get(`/`, (req, res) =>{
+    res.send(`hello express`)
+})
 // app.use(passport.initialize())
 // app.use(passport.session())
 
