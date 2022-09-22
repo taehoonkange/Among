@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(7),
             allowNull: true
         },
-        // orginal Price 추가 리셀 가격 때문에
         price: {
             type: DataTypes.STRING(7),
             allowNull: true
@@ -44,7 +43,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
 
-        // 꾸며졌다는 boolean 추가 예정
     }, {
         modelName: 'Ticket',
         tableName: 'tickets',
@@ -52,11 +50,11 @@ module.exports = (sequelize, DataTypes) => {
         collate: `utf8mb4_general_ci`
     });
     Ticket.associate = (db) => {
-        db.Ticket.hasMany(db.User,{  foreignKey: `recordId`,as: 'Records'}) // 소유자 기록
-        db.Ticket.hasOne(db.User, { as : `Creater`}) // 생성자
-        db.Ticket.belongsTo(db.User) // 소유자가 어떤 티켓을 소지하는지
+        db.Ticket.belongsToMany(db.User,{  through: 'Record',as: 'Records'}) // 소유자 기록
+        db.Ticket.belongsToMany(db.User, { through: `CreatTicket`, as : `Creates`}) // 생성자
+        db.Ticket.belongsTo(db.User, {foreignKey: `OwnerId`}) // 소유자가 어떤 티켓을 소지하는지
         db.Ticket.belongsTo(db.Performance) // 어떤 공연의 티켓인지
-        db.Ticket.hasOne(db.Image) // 티켓 이미지
+        db.Ticket.belongsToMany(db.Image, { through: `ticketImage`, as: `GetImg`}) // 티켓 이미지
         db.Ticket.hasOne(db.Seat) // 티켓 좌석
 
     }
