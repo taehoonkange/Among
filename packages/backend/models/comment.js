@@ -3,12 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         content: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
-        // 부모 댓글 idx
-        ref_comment: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
+        }
 
     }, {
         modelName: 'Comment',
@@ -18,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     Comment.associate = (db) => {
         db.Comment.belongsTo(db.User)
-        db.Comment.belongsTo(db.Board)
+        db.Comment.belongsTo(db.Post)
+        db.Comment.belongsToMany(db.Comment, {through: `Ref`, as: `Refs`})
     }
 
     return Comment;
