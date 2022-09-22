@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         status: {
             type: DataTypes.ENUM({
-                    values: [`SALE`, `OWNED`, `USED`]
+                    values: [`SALE`, `OWNED`, `USED`, `EXPIRED`]
                 }
             ),
             defaultValue: `SALE`,
