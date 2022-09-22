@@ -62,9 +62,6 @@ app.use(`/ticketbook`, ticketbookRouter)
 app.get(`/`, (req, res) =>{
     res.send(`hello express`)
 })
-// app.use(passport.initialize())
-// app.use(passport.session())
-
 
 
 app.listen(3065, () =>{
