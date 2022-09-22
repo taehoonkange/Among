@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
+        originalPrice:{
+            type: DataTypes.STRING(7),
+            allowNull: true
+        },
+        // orginal Price 추가 리셀 가격 때문에
         price: {
             type: DataTypes.STRING(7),
             allowNull: true
