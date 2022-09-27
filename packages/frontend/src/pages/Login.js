@@ -13,7 +13,7 @@ const MyPage = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        window.localStorage.setItem("isConnect", "true");
+        window.sessionStorage.setItem("isConnect", "true");
         try {
           const resRegister = await axios.post(
             "/user",
