@@ -76,7 +76,6 @@ export const getPerformanceDetail = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      // console.log(state.userData.userID);
       const response = await axios.get(
         requests(undefined, data).getPerformanceDetail,
       );

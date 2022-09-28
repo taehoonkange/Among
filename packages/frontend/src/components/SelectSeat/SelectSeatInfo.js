@@ -175,8 +175,6 @@ const SelectSeatInfo = ({
     ctx.current = canvas.getContext("2d");
     draw();
     drawSelectSeat();
-    // clickEvent();
-    // socket.emit("joinRoom", "A");
     canvas.addEventListener("mouseup", mouseUp);
     return () => {
       canvas.removeEventListener("mouseup", mouseUp);

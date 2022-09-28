@@ -26,7 +26,6 @@ const pages = [
   { name: "공연", link: "Show" },
   { name: "티켓북", link: "TicketBook" },
   { name: "티켓리셀", link: "TicketReSell" },
-  { name: "가이드", link: "Guide" },
 ];
 
 const Logo = styled.img`

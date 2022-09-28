@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { InfluencerSearch } from "../actions/post";
 import ReactPaginate from "react-paginate";
 import { getTicketResellData } from "../actions/ticketResell";
+import ClipLoader from "react-spinners/ClipLoader";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -81,7 +82,16 @@ const ReactPaginateBox = styled(ReactPaginate)`
   }
 `;
 
+const Layout2 = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const TicketResell = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const ticketResellData = useSelector(
     (state) => state.ticketResell.ticketResellData,
@@ -100,19 +110,31 @@ const TicketResell = () => {
 
   useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + 3;
+    const endOffset = itemOffset + 9;
     setCurrentItems(ticketResellData.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(ticketResellData.length / 3));
+    setPageCount(Math.ceil(ticketResellData.length / 9));
   }, [itemOffset, ticketResellData]);
 
   // Invoke when user click to request another page.
   const handlePageClick = useCallback(
     (event) => {
-      const newOffset = (event.selected * 3) % ticketResellData.length;
+      const newOffset = (event.selected * 9) % ticketResellData.length;
       setItemOffset(newOffset);
     },
     [ticketResellData],
   );
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1500);
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout2>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout2>
+    );
+  }
 
   return (
     <TotalWidthSetting>
