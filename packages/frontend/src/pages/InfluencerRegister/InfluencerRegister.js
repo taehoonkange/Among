@@ -8,7 +8,9 @@ import Button from "@mui/material/Button";
 import "./ShowPublic.module.css";
 import { influencerRegister, uploadInfluencerImages } from "../../actions/user";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const InfluencerRegister = () => {
+  const navigate = useNavigate();
   const imagePaths = useSelector((state) => state.userData.imagePaths);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
@@ -45,7 +47,9 @@ const InfluencerRegister = () => {
       formData.append("image", imagePaths[0]);
       formData.append("description", desc);
       formData.append("name", name);
-      dispatch(influencerRegister(formData));
+      dispatch(influencerRegister(formData)).then(() => {
+        navigate("/MyPage");
+      });
       setName("");
       setDesc("");
     },
