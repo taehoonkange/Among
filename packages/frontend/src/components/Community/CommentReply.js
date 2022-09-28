@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteReplyServer, editCommentServer } from "../../actions/post";
-
+import pepe from "../../images/pepe.jpeg";
 const Layout = styled.div`
   display: flex;
 `;
@@ -91,10 +91,7 @@ const CommentReply = ({ element, commentId, postId }) => {
     <Layout>
       <CommentProfileText>
         {/* <img alt="" src={element.User.profileImage} /> */}
-        <img
-          alt=""
-          src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s"
-        />
+        <img alt={pepe} src="" />
         <CommentText>
           <div>{element.User.nickname}</div>
           {edit ? (

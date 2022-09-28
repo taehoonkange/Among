@@ -317,7 +317,10 @@ const MyPage = () => {
                   <div className="myPage_ticket_date">
                     {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
-                  <div className="myPage_ticket_desc">{el.description}</div>
+                  <div className="myPage_ticket_desc">
+                    {" "}
+                    {el.description.substring(0, 90) + "..."}
+                  </div>
                 </Link>
               );
             })}
@@ -360,7 +363,9 @@ const MyPage = () => {
                   <div className="myPage_ticket_date">
                     {dayjs(el.day).format("YYYY.MM.DD")}
                   </div>
-                  <div className="myPage_ticket_desc">{el.description}</div>
+                  <div className="myPage_ticket_desc">
+                    {el.description.substring(0, 90) + "..."}
+                  </div>
                 </div>
               );
             })}
