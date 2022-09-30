@@ -1,27 +1,64 @@
 import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { getPerformanceDetail, getSeatsData } from "../actions/performance";
 import Middle from "../components/ShowDetail/Middle";
 import TopLeft from "../components/ShowDetail/TopLeft";
 import TopRight from "../components/ShowDetail/TopRight";
-
+import { setPerformanceId } from "../slice/performanceSlice";
+import { Link } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 const ShowDetail = () => {
+  const dispatch = useDispatch();
+  const performanceId = useSelector((state) => state.performance.performanceId);
+  const getPerformanceDetailLoading = useSelector(
+    (state) => state.performance.getPerformanceDetailLoading,
+  );
+  const performanceDetail = useSelector(
+    (state) => state.performance.performanceDetail,
+  );
+  const userID = useSelector((state) => state.userData.userID);
   const detectScroll = useRef();
+  const path = useLocation().pathname;
+  const mounted = useRef(false);
   const listener = () => {
-    if (window.pageYOffset + 1300 > document.body.scrollHeight)
-      detectScroll.current.style.top = "0px";
-    else {
-      detectScroll.current.style.top = "150px";
-    }
+    // if (window.pageYOffset + 1300 > document.body.scrollHeight)
+    //   detectScroll.current.style.top = "0px";
+    // else {
+    // detectScroll.current.style.top = "150px";
+    // }
   };
 
   useEffect(() => {
-    console.log(document.body.scrollHeight);
-    window.addEventListener("scroll", listener);
+    const regex = /[^0-9]/g;
+    const result = path.replace(regex, "");
+    const number = parseInt(result);
+    console.log(number);
+    dispatch(setPerformanceId({ value: number }));
+  }, [path]);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      dispatch(getPerformanceDetail(performanceId));
+      dispatch(getSeatsData(performanceId));
+    }
+  }, [performanceId, userID]);
+  useEffect(() => {
     return () => {
-      window.removeEventListener("scroll", listener);
+      dispatch(setPerformanceId({ value: 0 }));
     };
   }, []);
 
+  if (getPerformanceDetailLoading) {
+    return (
+      <Layout>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout>
+    );
+  }
   return (
     <>
       <TopCss>
@@ -31,9 +68,15 @@ const ShowDetail = () => {
         <TopRightCss>
           <TopRightFixed ref={detectScroll}>
             <TopRight></TopRight>
-            <SideBtnWrap>
-              <SideBtn>예매하기</SideBtn>
-            </SideBtnWrap>
+            {performanceDetail.UserId === userID ? (
+              <SideBtnWrap>
+                <SideBtn to="/Show/Statistics">통계보기</SideBtn>
+              </SideBtnWrap>
+            ) : (
+              <SideBtnWrap>
+                <SideBtn to="/Show/SelectSeat">예매하기</SideBtn>
+              </SideBtnWrap>
+            )}
           </TopRightFixed>
         </TopRightCss>
       </TopCss>
@@ -72,7 +115,7 @@ const TopRightCss = styled.div`
 const TopRightFixed = styled.div`
   width: 370px;
   height: 630px;
-  position: fixed;
+  /* position: fixed; */
   top: 0px;
   margin-left: 50px;
   background-color: white;
@@ -82,7 +125,8 @@ const SideBtnWrap = styled.div`
   margin-top: 20px;
 `;
 
-const SideBtn = styled.div`
+const SideBtn = styled(Link)`
+  cursor: pointer;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -102,4 +146,12 @@ const SideBtn = styled.div`
 const MiddleRightCss = styled.div`
   width: 330px;
   height: 630px;
+`;
+
+const Layout = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

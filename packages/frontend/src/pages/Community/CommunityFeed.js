@@ -8,6 +8,7 @@ import { loadPosts, testLoadPosts } from "../../actions/post";
 import { resetHasMorePosts, setCommunityCategory } from "../../slice/postSlice";
 import GetUserData from "../../hooks/GetUserData";
 import GetUserStatus from "../../hooks/GetUserStatus";
+import ClipLoader from "react-spinners/ClipLoader";
 const Layout = styled.div`
   display: flex;
   justify-content: center;
@@ -16,7 +17,16 @@ const Layout = styled.div`
   height: 100%;
 `;
 
+const Layout2 = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Community = () => {
+  const [loading, setLoading] = useState(true);
   const [id, setID] = useState();
   const path = useRef(useLocation().pathname);
   const dispatch = useDispatch();
@@ -50,8 +60,21 @@ const Community = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
   GetUserData();
   GetUserStatus(id);
+
+  if (loading) {
+    return (
+      <Layout2>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout2>
+    );
+  }
+
   return (
     <Layout onScroll={handleScroll}>
       <CommunityCategory></CommunityCategory>

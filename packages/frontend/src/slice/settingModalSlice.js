@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   open: false,
+  reSellModalOpen: false,
 };
 
 const settingModalSlice = createSlice({
@@ -11,8 +12,11 @@ const settingModalSlice = createSlice({
     setOpen: (state, { payload }) => {
       state.open = payload.value;
     },
+    setReSellModalOpen: (state, { payload }) => {
+      state.reSellModalOpen = payload.value;
+    },
   },
 });
 
-export const { setOpen } = settingModalSlice.actions;
+export const { setOpen, setReSellModalOpen } = settingModalSlice.actions;
 export default settingModalSlice.reducer;

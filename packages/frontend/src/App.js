@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "../src/pages/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -18,9 +18,14 @@ import MyPage from "./pages/MyPage";
 import TicketReSell from "./pages/TicketReSell";
 import ShowDetail from "./pages/ShowDetail";
 import ShowPublish from "./pages/ShowPublic/ShowPublish";
+import SeatInfo from "./pages/SeatInfo";
 import InfluencerRegister from "./pages/InfluencerRegister/InfluencerRegister";
 import CommunityMain from "./pages/Community/CommunityMain";
 import GetUserData from "./hooks/GetUserData";
+import Decorate from "./pages/Decorate";
+import MyTicket from "./pages/MyTicket";
+import SelectSeat from "./pages/SelectSeat";
+import Statistics from "./pages/Statistics";
 const TotalWrapDiv = styled.div`
   position: relative;
   min-height: 120vh;
@@ -50,6 +55,9 @@ function App() {
           <Route path="/Influencer" element={<CommunityMain />} />
           <Route path="/Show" element={<Show />} />
           <Route path="/Show/:idx" element={<ShowDetail />} />
+          <Route path="/Show/SelectSeat" element={<SelectSeat />} />
+          <Route path="/Show/Statistics" element={<Statistics />} />
+
           <Route
             path="/Influencer/CommunityFeed/:id"
             element={<CommunityFeed />}
@@ -62,12 +70,13 @@ function App() {
             path="/Influencer/CommunityInfluencer/:id"
             element={<CommunityInfluencer />}
           />
-
+          <Route path="/Decorate" element={<Decorate />} />
           <Route path="/TicketBook" element={<TicketBook />} />
           <Route path="/TicketReSell" element={<TicketReSell />} />
           <Route path="/Guide" element={<Guide />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/MyPage" element={<MyPage />} />
+          <Route path="/MyTicket/:idx" element={<MyTicket />} />
           <Route path="/ShowPublish" element={<ShowPublish />} />
           <Route path="/InfluencerRegister" element={<InfluencerRegister />} />
         </Routes>

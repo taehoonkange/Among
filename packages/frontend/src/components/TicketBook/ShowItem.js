@@ -33,25 +33,23 @@ const NameDiv = styled.div`
   text-overflow: ellipsis;
 `;
 
-const handleError = (e) => {
-  e.target.src = "images/posterImg1.png";
-};
+// const handleError = (e) => {
+//   e.target.src = "images/posterImg1.png";
+// };
 
-const ShowItem = ({ data, idx }) => {
+const ShowItem = ({ data }) => {
+  console.log(data);
   return (
     <PerformContainer>
-      <Link to={`/Show/${data.id}`}>
+      <div>
         <PosterImgContainer
-          src={`http://localhost:3065/${data.Image.src}`}
-          onError={handleError}
+          src={`http://localhost:3065/${data.GetImg[0].src}`}
+          //   onError={handleError}
           alt="poster img"
         />
-        <DurationDiv>
-          {dayjs(data.term_start_at).format("YYYY-MM-DD")} {" ~ "}
-          {dayjs(data.term_end_at).format("YYYY-MM-DD")}
-        </DurationDiv>
-        <NameDiv>{data.title}</NameDiv>
-      </Link>
+        <DurationDiv>{dayjs(data.day).format("YYYY-MM-DD")}</DurationDiv>
+        <NameDiv>{data.name}</NameDiv>
+      </div>
     </PerformContainer>
   );
 };

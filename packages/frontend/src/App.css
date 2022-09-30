@@ -23,3 +23,23 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.upper-canvas {
+  min-width: 300px !important;
+  min-height: 300px !important;
+}
+
+.lower-canvas {
+  min-width: 300px !important;
+  min-height: 300px !important;
+}
+
+.tui-image-editor-canvas-container {
+  max-width: 300px !important;
+  max-height: 300px !important;
+}
+
+.tui-image-editor {
+  width: 300px !important;
+  height: 300px !important;
+}

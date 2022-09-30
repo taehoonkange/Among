@@ -9,7 +9,7 @@ import { store } from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router>
+  <Router basename="Among-Front">
     <Provider store={store}>
       <App />
     </Provider>
