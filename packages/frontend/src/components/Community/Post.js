@@ -12,7 +12,7 @@ import CommentComp from "./Comment";
 import ImageZoom from "./ImagesZoom/index";
 import { addComment, editPostImage } from "../../slice/postSlice";
 import moza1 from "../../images/moza1.png";
-import btss from "../../images/BTSS.jpeg";
+import btss from "../../images/pororo.jpeg";
 import {
   addCommentServer,
   deletePostServer,

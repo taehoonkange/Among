@@ -71,7 +71,6 @@ const Statistics = () => {
       <h1>판매 현황</h1>
       <Dropdown selected={selected} setSelected={setSelected}></Dropdown>
       <Doughnut options={{ maintainAspectRatio: false }} data={data1} />
-      {/* <button onClick={Change}></button> */}
     </Layout>
   );
 };

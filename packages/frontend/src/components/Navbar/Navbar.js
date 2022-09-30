@@ -26,7 +26,6 @@ const pages = [
   { name: "공연", link: "Show" },
   { name: "티켓북", link: "TicketBook" },
   { name: "티켓리셀", link: "TicketReSell" },
-  { name: "가이드", link: "Guide" },
 ];
 
 const Logo = styled.img`
@@ -52,7 +51,7 @@ const Navbar = () => {
     window.ethereum.on("accountsChanged", (accounts) => {
       if (accounts.length > 0) console.log("good");
       else {
-        window.localStorage.removeItem("isConnect");
+        window.sessionStorage.removeItem("isConnect");
         async function logout() {
           try {
             const resLogout = await axios.post(
@@ -248,7 +247,7 @@ const Navbar = () => {
             })}
           </Box>
 
-          {window.localStorage.getItem("isConnect") === "true" && (
+          {window.sessionStorage.getItem("isConnect") === "true" && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton
@@ -267,7 +266,7 @@ const Navbar = () => {
               </Tooltip>
             </Box>
           )}
-          {window.localStorage.getItem("isConnect") !== "true" && (
+          {window.sessionStorage.getItem("isConnect") !== "true" && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton

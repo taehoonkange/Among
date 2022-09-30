@@ -8,6 +8,7 @@ import ShowItem from "../../components/Community/ShowItem";
 import { useDispatch, useSelector } from "react-redux";
 import { InfluencerSearch } from "../../actions/post";
 import ReactPaginate from "react-paginate";
+import ClipLoader from "react-spinners/ClipLoader";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -80,7 +81,16 @@ const ReactPaginateBox = styled(ReactPaginate)`
   }
 `;
 
+const Layout2 = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const CommunityMain = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const showList = useSelector((state) => state.posts.influencerList);
   useEffect(() => {
@@ -96,19 +106,31 @@ const CommunityMain = () => {
 
   useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + 3;
+    const endOffset = itemOffset + 9;
     setCurrentItems(showList.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(showList.length / 3));
+    setPageCount(Math.ceil(showList.length / 9));
   }, [itemOffset, showList]);
 
   // Invoke when user click to request another page.
   const handlePageClick = useCallback(
     (event) => {
-      const newOffset = (event.selected * 3) % showList.length;
+      const newOffset = (event.selected * 9) % showList.length;
       setItemOffset(newOffset);
     },
     [showList],
   );
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout2>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout2>
+    );
+  }
 
   return (
     <TotalWidthSetting>

@@ -9,6 +9,7 @@ import ShowItem from "../components/Show/ShowItem";
 import ReactPaginate from "react-paginate";
 import "./pagination.css";
 import { getPerformance, getSearchPerformance } from "../actions/performance";
+import ClipLoader from "react-spinners/ClipLoader";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -50,6 +51,7 @@ const ReactPaginateWrapper = styled.div`
   justify-content: center;
 `;
 const Show = () => {
+  const [loading, setLoading] = useState(true);
   const [searchTitle, setSearchTitle] = useState("");
   const onChangeSearchTitle = useCallback((e) => {
     setSearchTitle(e.target.value);
@@ -66,9 +68,9 @@ const Show = () => {
 
   useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + 3;
+    const endOffset = itemOffset + 9;
     setCurrentItems(performanceData?.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(performanceData?.length / 3));
+    setPageCount(Math.ceil(performanceData?.length / 9));
   }, [itemOffset, performanceData]);
 
   const onKeydown = useCallback(
@@ -89,7 +91,7 @@ const Show = () => {
   // Invoke when user click to request another page.
   const handlePageClick = useCallback(
     (event) => {
-      const newOffset = (event.selected * 3) % performanceData.length;
+      const newOffset = (event.selected * 9) % performanceData.length;
       setItemOffset(newOffset);
     },
     [performanceData],
@@ -98,6 +100,19 @@ const Show = () => {
   useEffect(() => {
     dispatch(getPerformance());
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout2>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout2>
+    );
+  }
+
   return (
     <TotalWidthSetting>
       <UpperTitleArea>
@@ -212,4 +227,12 @@ const ReactPaginateBox = styled(ReactPaginate)`
   & > a.page-link {
     width: 100%;
   }
+`;
+
+const Layout2 = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
