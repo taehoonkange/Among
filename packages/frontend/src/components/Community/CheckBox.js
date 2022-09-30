@@ -58,7 +58,6 @@ export default function App({ check, setCheck }) {
 
   const onChangeNormal = (e) => {
     setCheck(e.target.value);
-    console.log(e.target.value);
   };
   return (
     <CheckBoxWrapper>

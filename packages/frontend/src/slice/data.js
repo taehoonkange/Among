@@ -24,5 +24,3 @@ for (let i = 0; i < 40; i++) {
   data.push(ob);
   row++;
 }
-
-console.log(data);

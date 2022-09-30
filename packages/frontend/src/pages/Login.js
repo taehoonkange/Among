@@ -13,29 +13,26 @@ const MyPage = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        console.log(accounts[0]);
         window.localStorage.setItem("isConnect", "true");
         try {
           const resRegister = await axios.post(
             "/user",
             {
-              wallet_address: "input1235",
+              wallet_address: "input12325111",
             },
             { withCredentials: true },
           );
-          console.log(resRegister);
         } catch (err) {
           console.log(err);
         } finally {
           const resLogin = await axios.post(
             "/user/login",
             {
-              wallet_address: "input1235",
+              wallet_address: "input12325111",
               nickname: "dd",
             },
             { withCredentials: true },
           );
-          console.log(resLogin);
         }
       } else {
         // metamask가 설치되어있지 않은 경우 alert

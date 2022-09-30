@@ -38,7 +38,6 @@ const NameDiv = styled.div`
 // };
 
 const ShowItem = ({ data }) => {
-  console.log(data);
   return (
     <PerformContainer>
       <div>

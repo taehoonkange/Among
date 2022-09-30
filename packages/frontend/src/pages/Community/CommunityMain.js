@@ -52,7 +52,9 @@ const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
   a {
+    width: 100%;
     color: #777;
+    text-align: center;
   }
   & > .page-item {
     display: flex;
@@ -81,7 +83,6 @@ const ReactPaginateBox = styled(ReactPaginate)`
 const CommunityMain = () => {
   const dispatch = useDispatch();
   const showList = useSelector((state) => state.posts.influencerList);
-  console.log(showList);
   useEffect(() => {
     dispatch(InfluencerSearch());
     return () => {};
@@ -125,23 +126,7 @@ const CommunityMain = () => {
         </p>
       </UpperTitleArea>
       <TotalWrapJustifyCenter>
-        <SearchBarCategoryArea>
-          <TextField
-            id="search"
-            label="인플루언서 검색"
-            variant="standard"
-            sx={{ ml: 5, width: 300 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton type="submit" aria-label="search">
-                    <SearchIcon style={{ color: "#000000" }} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </SearchBarCategoryArea>
+        <SearchBarCategoryArea></SearchBarCategoryArea>
         <ShowListArea>
           <Grid container spacing={7} rowSpacing={6}>
             {currentItems?.map((show, idx) => (

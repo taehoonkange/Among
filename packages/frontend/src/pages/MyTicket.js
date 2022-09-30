@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import styled from "styled-components";
 import { getPerformanceDetail } from "../actions/performance";
+import { ticketInfo } from "../actions/ticketResell";
 import TopLeft from "../components/MyTicket/TopLeft";
 
 import Middle from "../components/ShowDetail/Middle";
@@ -14,10 +15,15 @@ const MyTicket = () => {
   const getPerformanceDetailLoading = useSelector(
     (state) => state.performance.getPerformanceDetailLoading,
   );
+  const ticketStatusDetail = useSelector(
+    (state) => state.ticketResell.ticketStatusDetail,
+  );
+  const ticketID = useSelector((state) => state.ticketBook.ticketID);
+  console.log(ticketID);
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const mounted = useRef(false);
-
+  const ticketInfoRef = useRef(false);
   useEffect(() => {
     const regex = /[^0-9]/g;
     const result = path.replace(regex, "");
@@ -34,6 +40,36 @@ const MyTicket = () => {
     }
   }, [performanceId]);
 
+  useEffect(() => {
+    dispatch(ticketInfo(ticketID)); // 티켓에 대한 정보를 받아옵니다.
+  }, [ticketID]);
+
+  const renderStatusLabel = (status) => {
+    switch (status) {
+      case "사용됨":
+        return (
+          <StatusLabel
+            color="rgb(95, 60, 250)"
+            background="linear-gradient(90deg, rgb(254, 224, 255) 0%, rgb(218, 235, 255) 100%)"
+          >
+            사용됨
+          </StatusLabel>
+        );
+      case "보유중":
+        return (
+          <StatusLabel color="white" background="rgb(95, 60, 250)">
+            보유중
+          </StatusLabel>
+        );
+      case "리셀중":
+        return (
+          <StatusLabel color="white" background="#ef3f43">
+            리셀중
+          </StatusLabel>
+        );
+      default:
+    }
+  };
   if (getPerformanceDetailLoading) {
     return (
       <Layout>
@@ -47,6 +83,7 @@ const MyTicket = () => {
       <TopCss>
         <CategoryWrapper>
           <Category>나의 티켓</Category>
+          {renderStatusLabel(ticketStatusDetail.ticketType)}
         </CategoryWrapper>
         <TopLeftCss>
           <TopLeft></TopLeft>
@@ -60,6 +97,7 @@ const MyTicket = () => {
 
 export default MyTicket;
 const CategoryWrapper = styled.div`
+  display: flex;
   padding-left: 40px;
   width: 830px;
   height: 10px;
@@ -103,4 +141,16 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StatusLabel = styled.div`
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 80px;
+  height: 35px;
+  color: ${(props) => props.color};
+  background: ${(props) => props.background};
 `;

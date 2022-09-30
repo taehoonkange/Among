@@ -56,8 +56,6 @@ const Statistics = () => {
   }, []);
 
   useEffect(() => {
-    console.log(selected);
-    console.log(chartJsDataByDate[selected]);
     setData1(
       returnData(
         chartJsDataByDate[selected].remainTicketCount,

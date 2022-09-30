@@ -32,12 +32,6 @@ const ShowPublish = () => {
     setApiData({ ...apiData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    console.log(startDate);
-    console.log(dayjs(startDate).format("YYYY-MM-DD HH:mm:ss"));
-    return () => {};
-  }, [startDate]);
-
   return (
     <div className="ShowPublic">
       <TopCss>

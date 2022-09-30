@@ -53,7 +53,9 @@ const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
   a {
+    width: 100%;
     color: #777;
+    text-align: center;
   }
   & > .page-item {
     display: flex;
@@ -84,7 +86,6 @@ const CommunityMain = () => {
   const ticketBookData = useSelector(
     (state) => state.ticketBook.ticketBookData,
   );
-  console.log(ticketBookData);
   useEffect(() => {
     dispatch(getTicketBook());
     return () => {};

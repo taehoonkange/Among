@@ -9,6 +9,7 @@ import {
   getPerformanceDetail,
   getSeatsData,
   postTicketBuy,
+  getSearchPerformance,
 } from "../actions/performance";
 import { data } from "./data";
 const initialState = {
@@ -44,7 +45,6 @@ const performanceSlice = createSlice({
         payload.value,
         ...state.seats.slice(payload.i + 1),
       ];
-      console.log(state.seats);
       return state;
     },
     resetSeatsData: (state) => {
@@ -157,7 +157,6 @@ const performanceSlice = createSlice({
       .addCase(performanceUploadImages.pending, (state) => {})
       .addCase(performanceUploadImages.fulfilled, (state, action) => {
         state.imagePaths = [...state.imagePaths, action.payload];
-        console.log(state.imagePaths);
       })
       .addCase(performanceUploadImages.rejected, (state, action) => {})
       .addCase(uploadImages.pending, (state) => {})
@@ -195,7 +194,6 @@ const performanceSlice = createSlice({
         state.getPerformanceDetailError = null;
         state.performanceDetail = action.payload.res;
         state.banTicketId = action.payload.ban;
-        console.log(action.payload.res);
 
         // 날짜별 티켓 정보 할당
         const TicketInformationByDate = {};
@@ -314,7 +312,13 @@ const performanceSlice = createSlice({
       .addCase(getSeatsData.rejected, (state, action) => {})
       .addCase(postTicketBuy.pending, (state) => {})
       .addCase(postTicketBuy.fulfilled, (state, action) => {})
-      .addCase(postTicketBuy.rejected, (state, action) => {}),
+      .addCase(postTicketBuy.rejected, (state, action) => {})
+      .addCase(getSearchPerformance.pending, (state) => {})
+      .addCase(getSearchPerformance.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.performance = action.payload;
+      })
+      .addCase(getSearchPerformance.rejected, (state, action) => {}),
 });
 
 export const {

@@ -1,6 +1,7 @@
 import React from "react";
 import "./Banner.css";
 import arrow from "../../images/right-arrow.png";
+import { Link } from "react-router-dom";
 
 const Banner1 = () => {
   return (
@@ -20,7 +21,9 @@ const Banner1 = () => {
             alt="화살표이미지"
             src={arrow}
           ></img>
-          <div className="cl arrowText">행사 구경하러가기</div>
+          <Link to="/Show" className="cl arrowText">
+            행사 구경하러가기
+          </Link>
         </div>
       </div>
     </div>

@@ -19,7 +19,6 @@ const ConfirmModal = ({ setDeletePost, id }) => {
     confirmButtonText: "네, 삭제하겠습니다!",
     cancelButtonText: "취소",
   }).then((result) => {
-    console.log(result);
     if (result.isConfirmed) {
       dispatcher(deletePostServer({ id: id }));
       MySwal.fire(

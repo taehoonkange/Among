@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import Kdy from "../../images/kdy.jpeg";
@@ -20,7 +21,7 @@ const Frame = css`
 const InfluenceName = styled.div`
   ${Frame}
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 const Follower = styled.div`
@@ -73,19 +74,25 @@ const Influencer = styled(Link)`
 const CommunityCategory = () => {
   const path = useRef(useLocation().pathname);
   const [id, setID] = useState();
-  console.log("path");
-  console.log(path.current);
+  const influencerDetailData = useSelector(
+    (state) => state.posts.influencerDetailData,
+  );
+
   useEffect(() => {
     var regex = /[^0-9]/g; // 숫자가 아닌 문자열을 선택하는 정규식
     var result = path.current.replace(regex, ""); // 원래 문자열에서 숫자가 아닌 모든 문자열을 빈 문자로 변경
-    console.log(result); // 결과 출력
     setID(result);
   }, []);
+
   return (
     <Layout>
-      <InfluenceName>PONY</InfluenceName>
-      <Follower>193,027 Follower</Follower>
-      <Profile src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrdjtR1sgogr2JkoOOTybl4feZyZbdIZDb9JoT-wgH&s"></Profile>
+      <InfluenceName>
+        {influencerDetailData.value.Influencer.name}
+      </InfluenceName>
+      {/* <Follower>193,027 Follower</Follower> */}
+      <Profile
+        src={`http://localhost:3065/${influencerDetailData.value.Influencer.Image.src}`}
+      ></Profile>
       <Feed path={path.current} id={id} to={`/Influencer/CommunityFeed/${id}`}>
         Feed
       </Feed>

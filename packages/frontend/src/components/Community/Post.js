@@ -12,7 +12,7 @@ import CommentComp from "./Comment";
 import ImageZoom from "./ImagesZoom/index";
 import { addComment, editPostImage } from "../../slice/postSlice";
 import moza1 from "../../images/moza1.png";
-
+import btss from "../../images/BTSS.jpeg";
 import {
   addCommentServer,
   deletePostServer,
@@ -187,7 +187,6 @@ const Alert = styled.div`
 `;
 
 const CommunityPost = ({ CatergoryType, like, post }) => {
-  console.log(post);
   const userName = useSelector((state) => state.userData.userName);
   const userID = useSelector((state) => state.userData.userID);
   const CommunityState = useSelector((state) => state.posts.CommunityState);
@@ -327,10 +326,7 @@ const CommunityPost = ({ CatergoryType, like, post }) => {
     <Layout>
       <Header>
         {/* <img src={post.User.profileImage} alt=""></img> */}
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3jUUXgzZXEr2ae7R7AKA16GP8IkABr-MQTbCmGvI&s"
-          alt=""
-        ></img>
+        <img src={btss} alt=""></img>
         <HeaderNameDate>
           <div>{post.User.nickname}</div>
           <div>{dayjs(post.createdAt).format("YYYY.MM.DD HH:mm")}</div>

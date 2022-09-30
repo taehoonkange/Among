@@ -12,7 +12,6 @@ export const getUserDataServer = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.get(`/user`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -25,7 +24,6 @@ export const uploadInfluencerImages = createAsyncThunk(
   "post/uploadInfluencerImages",
   async (data, { rejectWithValue }) => {
     try {
-      console.log(data);
       const response = await axios.post("influencer/image", data); // POST /post/images
       return response.data;
     } catch (error) {
@@ -39,7 +37,6 @@ export const influencerRegister = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post("influencer/register", data); // POST /post/images
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -51,11 +48,8 @@ export const getUserProfileNickname = createAsyncThunk(
   "get/getUserProfileNickname",
   async (data, thunkAPI) => {
     try {
-      console.log("getUserProfileNickName");
       const response1 = await axios.get(requests().getUserProfile);
-      console.log(response1);
       const response2 = await axios.get(requests().getUserNickName);
-      console.log(response2);
       return { profile: response1.data, nickname: response2.data };
     } catch (error) {
       console.log(error);
@@ -71,7 +65,6 @@ export const postUserProfileImage = createAsyncThunk(
   "post/postUserProfileImage",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
       const response = await axios.post(requests().postUserProfileImage, data);
       return response.data;
     } catch (error) {
@@ -88,7 +81,6 @@ export const patchtUserProfileImageName = createAsyncThunk(
   "patch/patchUserProfileImage",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
       await axios.patch(requests().patchUserProfileImage, { image: data });
     } catch (error) {
       console.log(error);
@@ -104,7 +96,6 @@ export const patchUserProfileNickName = createAsyncThunk(
   "patch/patchUserProfileNickName",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
       await axios.patch(requests().patchUserProfileNickName, {
         nickname: data,
       });
@@ -119,7 +110,6 @@ export const patchSubmitImgAndName = createAsyncThunk(
   "patch/patchSubmitImgAndName",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
       await axios.patch(requests().patchUserProfileNickName, {
         nickname: data.nickname,
       });

@@ -177,7 +177,6 @@ const SeatInfomation = ({ setSeatData, seatData }) => {
     return () => {
       dispatch(resetSeatsData());
       dispatch(resetTicketSeats());
-      console.log("이게 왜 실행되냐");
     };
   }, []);
   return (

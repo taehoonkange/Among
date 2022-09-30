@@ -8,7 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import ShowItem from "../components/Show/ShowItem";
 import ReactPaginate from "react-paginate";
 import "./pagination.css";
-import { getPerformance } from "../actions/performance";
+import { getPerformance, getSearchPerformance } from "../actions/performance";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -50,6 +50,10 @@ const ReactPaginateWrapper = styled.div`
   justify-content: center;
 `;
 const Show = () => {
+  const [searchTitle, setSearchTitle] = useState("");
+  const onChangeSearchTitle = useCallback((e) => {
+    setSearchTitle(e.target.value);
+  }, []);
   const dispatch = useDispatch();
   const performanceData = useSelector((state) => state.performance.performance);
   const items = [...Array(50).keys()];
@@ -66,6 +70,21 @@ const Show = () => {
     setCurrentItems(performanceData?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(performanceData?.length / 3));
   }, [itemOffset, performanceData]);
+
+  const onKeydown = useCallback(
+    (e) => {
+      if (e.key === "Enter" && e.keyCode === 13) {
+        if (!e.shiftKey) {
+          console.log(searchTitle);
+          e.preventDefault();
+          if (searchTitle?.trim() !== "") {
+            dispatch(getSearchPerformance(searchTitle));
+          }
+        }
+      }
+    },
+    [searchTitle],
+  );
 
   // Invoke when user click to request another page.
   const handlePageClick = useCallback(
@@ -98,13 +117,21 @@ const Show = () => {
         <SearchBarCategoryArea>
           <TextField
             id="search"
-            label="제목 또는 판매자"
+            label="공연제목"
             variant="standard"
             sx={{ ml: 5, width: 300 }}
+            value={searchTitle}
+            onChange={onChangeSearchTitle}
+            onKeyDown={onKeydown}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton type="submit" aria-label="search">
+                  <IconButton
+                    aria-label="search"
+                    onClick={() => {
+                      dispatch(getSearchPerformance(searchTitle));
+                    }}
+                  >
                     <SearchIcon style={{ color: "#000000" }} />
                   </IconButton>
                 </InputAdornment>
@@ -155,11 +182,9 @@ const ReactPaginateBox = styled(ReactPaginate)`
   display: flex;
   cursor: pointer;
   a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     color: #777;
+    text-align: center;
   }
   & > .page-item {
     display: flex;

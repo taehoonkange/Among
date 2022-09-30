@@ -34,7 +34,6 @@ const ShowDetail = () => {
     const regex = /[^0-9]/g;
     const result = path.replace(regex, "");
     const number = parseInt(result);
-    console.log(number);
     dispatch(setPerformanceId({ value: number }));
   }, [path]);
 
@@ -69,9 +68,14 @@ const ShowDetail = () => {
           <TopRightFixed ref={detectScroll}>
             <TopRight></TopRight>
             {performanceDetail.UserId === userID ? (
-              <SideBtnWrap>
-                <SideBtn to="/Show/Statistics">통계보기</SideBtn>
-              </SideBtnWrap>
+              <>
+                <SideBtnWrap>
+                  <SideBtn to="/Show/Statistics">통계보기</SideBtn>
+                </SideBtnWrap>
+                <SideBtnWrap2>
+                  <SideBtn2 to="/Show/QRcodeReader">QR코드 인식</SideBtn2>
+                </SideBtnWrap2>
+              </>
             ) : (
               <SideBtnWrap>
                 <SideBtn to="/Show/SelectSeat">예매하기</SideBtn>
@@ -122,10 +126,17 @@ const TopRightFixed = styled.div`
 `;
 
 const SideBtnWrap = styled.div`
+  z-index: 100;
   margin-top: 20px;
 `;
 
+const SideBtnWrap2 = styled.div`
+  cursor: pointer;
+  z-index: 100;
+  margin-top: 10px;
+`;
 const SideBtn = styled(Link)`
+  z-index: 100;
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -143,9 +154,29 @@ const SideBtn = styled(Link)`
   box-sizing: border-box;
 `;
 
+const SideBtn2 = styled(Link)`
+  z-index: 100;
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ef3f43;
+  border: 0.1rem solid #ef3f43;
+  border-radius: 1rem;
+  text-align: center;
+  box-sizing: border-box;
+`;
+
 const MiddleRightCss = styled.div`
+  margin-top: 150px;
   width: 330px;
-  height: 630px;
+  height: 480px;
 `;
 
 const Layout = styled.div`

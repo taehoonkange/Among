@@ -70,21 +70,12 @@ const ShowPublish = () => {
   const onCreate = (grade, price, seats) => {
     const newItem = { grade, price, seats, id: dataId.current };
     dataId.current++;
-    console.log(newItem);
     setSeatData([newItem, ...seatData]);
   };
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput]);
-
-  useEffect(() => {
-    console.log(apiData);
-    console.log(termStartDate);
-    console.log(termEndDate);
-    console.log(startDate);
-    console.log(endDate);
-  }, [apiData, termStartDate, termEndDate, startDate, endDate]);
 
   const register = useCallback(async () => {
     let data = {
