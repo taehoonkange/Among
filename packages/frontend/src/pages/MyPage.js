@@ -21,6 +21,7 @@ const MyPage = () => {
   const dispatcher = useDispatch();
   const settingModalOpen = useSelector((store) => store.settingModalOpen.open);
   const userProfile = useSelector((store) => store.userData.userProfile);
+  const userType = useSelector((store) => store.userData.userType);
   const name = useSelector((store) => store.userData.userName);
   useEffect(() => {
     dispatcher(setUserName({ value: Nick?.nickname }));
@@ -74,7 +75,13 @@ const MyPage = () => {
               {window.ethereum.selectedAddress}
             </div>
           </div>
-          <ShowRegister to="/ShowPublish">공연 등록</ShowRegister>
+          {window.localStorage.getItem("userType") !== "INFLUENCER" ? (
+            <ShowRegister to="/InfluencerRegister">
+              인플루언서 등록
+            </ShowRegister>
+          ) : (
+            <ShowRegister to="/ShowPublish">공연 등록</ShowRegister>
+          )}
         </div>
       </ConnectedContainer>
       <>
@@ -127,6 +134,7 @@ const MyPage = () => {
 export default MyPage;
 
 const ConnectedContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +152,7 @@ const ConnectedContainer = styled.div`
   & .profileImgLocation {
     display: flex;
     position: absolute;
-    top: 370px;
+    top: 275px;
     left: 50%;
     transform: translate(-50%, -50%);
   }

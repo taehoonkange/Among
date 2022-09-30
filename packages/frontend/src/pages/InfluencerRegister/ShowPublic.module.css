@@ -1,0 +1,88 @@
+.ShowPublic input {
+  padding: 5px;
+}
+
+.ShowPublic .react-datepicker__header {
+  background-color: white;
+  border-bottom: none;
+}
+
+.ShowPublic .react-datepicker__day-names {
+  background-color: #f4f6f9;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.ShowPublic .react-datepicker__day-name {
+  width: 38px;
+  line-height: 35px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.ShowPublic .react-datepicker__day {
+  width: 38px;
+  line-height: 35px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.ShowPublic .react-datepicker__day:hover {
+  border-radius: 100%;
+}
+
+.ShowPublic .react-datepicker__day--keyboard-selected:hover {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+}
+
+.ShowPublic .react-datepicker {
+  border-radius: 5px;
+}
+
+.ShowPublic .back {
+  width: 12px;
+  height: 12px;
+  margin-right: 30px;
+  margin-left: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.ShowPublic .saturday {
+  color: rgb(0, 0, 255);
+}
+
+.ShowPublic .sunday {
+  color: rgb(255, 0, 0);
+}
+
+.ShowPublic .react-datepicker__day--disabled.sunday {
+  color: #ffbec0;
+}
+
+.ShowPublic .react-datepicker__day--disabled.saturday {
+  color: #bbdefb;
+}
+
+.ShowPublic .react-datepicker__day--keyboard-selected {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+  color: white;
+}
+
+.ShowPublic
+  li.react-datepicker__time-list-item.react-datepicker__time-list-item--selected {
+  background-color: rgb(95, 60, 250) !important;
+}
+
+.ShowPublic .react-datepicker__day--selected:hover {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+  color: white;
+}
+
+.ShowPublic .react-datepicker__day--selected {
+  background-color: rgb(95, 60, 250);
+  border-radius: 100%;
+  color: white;
+}

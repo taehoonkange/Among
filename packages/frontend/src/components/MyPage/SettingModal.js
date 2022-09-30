@@ -132,7 +132,7 @@ const SettingModalLayout = styled.div`
   height: 450px;
   background-color: white;
   position: absolute;
-  top: 25%;
+  top: 40%;
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
