@@ -354,19 +354,21 @@ const MyPage = () => {
           <div>
             {currentItemsPerformance.map((el) => {
               return (
-                <div>
+                <Link to={`/Show/${el.id}`}>
                   <img
                     className="myPage_ticket_image"
                     alt=""
                     src={`http://localhost:3065/${el.Image.src}`}
                   ></img>
                   <div className="myPage_ticket_date">
-                    {dayjs(el.day).format("YYYY.MM.DD")}
+                    {dayjs(el.term_start_at).format("YYYY.MM.DD") +
+                      " - " +
+                      dayjs(el.term_end_at).format("YYYY.MM.DD")}
                   </div>
                   <div className="myPage_ticket_desc">
                     {el.description.substring(0, 90) + "..."}
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
