@@ -112,6 +112,8 @@ const CommunityPostInput = ({ CatergoryType }) => {
     [value, userName, imagePaths],
   );
   const onClickImageUpload = useCallback(() => {
+    console.log("왜");
+    console.log(imageInput);
     imageInput.current.click();
   }, [imageInput.current]);
 

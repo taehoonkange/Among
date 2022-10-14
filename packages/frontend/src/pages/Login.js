@@ -18,7 +18,7 @@ const MyPage = () => {
           const resRegister = await axios.post(
             "/user",
             {
-              wallet_address: "input102",
+              wallet_address: "input101",
             },
             { withCredentials: true },
           );
@@ -28,7 +28,7 @@ const MyPage = () => {
           const resLogin = await axios.post(
             "/user/login",
             {
-              wallet_address: "input102",
+              wallet_address: "input101",
               nickname: "dd",
             },
             { withCredentials: true },

@@ -42,7 +42,11 @@ const ShowItem = ({ data, idx }) => {
     <PerformContainer>
       <Link to={`/Show/${data.id}`}>
         <PosterImgContainer
-          src={`http://localhost:3065/${data.Image.src}`}
+          src={
+            data.Image?.src === undefined
+              ? "http://ticketimage.interpark.com/rz/image/play/goods/poster/22/22012631_p_s.jpg"
+              : `http://localhost:3065/${data.Image?.src}`
+          }
           onError={handleError}
           alt="poster img"
         />

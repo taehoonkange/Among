@@ -35,6 +35,7 @@ const NameDiv = styled.div`
 
 // const handleError = (e) => {
 //   e.target.src = "images/posterImg1.png";
+
 // };
 
 const ShowItem = ({ data }) => {

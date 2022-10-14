@@ -358,7 +358,11 @@ const MyPage = () => {
                   <img
                     className="myPage_ticket_image"
                     alt=""
-                    src={`http://localhost:3065/${el.Image.src}`}
+                    src={
+                      el.Image?.src === undefined
+                        ? "https://ticketimage.interpark.com/Play/image/large/22/22012184_p.gif"
+                        : `http://localhost:3065/${el.Image?.src}`
+                    }
                   ></img>
                   <div className="myPage_ticket_date">
                     {dayjs(el.term_start_at).format("YYYY.MM.DD") +
