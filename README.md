@@ -52,51 +52,51 @@
 ### 5.1 인플루언서 페이지  
 회원은 누구나 인플루언서를 등록하여, 인플루언서로 활동할 수 있다.  
 ![](./readme-img/1.png)
-<center>[그림] 인플루언서 페이지</center>
+<div align="center">[그림] 인플루언서 페이지</div>
 
 팬들은 자신의 인플루언서를 찾아 커뮤니티를 이용할 수 있다.
 
 ### 5.2 커뮤니티 페이지  
 ![](./readme-img/2.png)
-<center>[그림] 인플루언서 페이지</center>
+<div align="center">[그림] 인플루언서 페이지</div>
 
 같은 인플루언서를 좋아하는 팬들은 커뮤니티에서 서로 이야기를 주고받을 수 있 다.또한 인플루언서가 남긴 피드를 읽을 수 있다.
 
 ### 5.3 공연 등록 페이지    
 인플루언서는 자신의 공연을 등록할 수 있다.   
 ![](./readme-img/3.png)
-<center>[그림] 공연 등록 페이지</center>
+<div align="center">[그림] 공연 등록 페이지</div>
 
 인플루언서는 좌석의 수량을 선택하고 배치를 할 수 있다.
 
 ### 5.4 공연 티켓 판매현황 페이지  
 ![](./readme-img/4.png)
-<center>[그림] 공연 등록 페이지</center>
+<div align="center">[그림] 공연 등록 페이지</div>
 
 인플루언서는 자신의 공연에 대한 판매 현황의 정보를 시각화된 데이터를 통해 알 수 있다.  
 ![](./readme-img/5.png)
-<center>[그림] 공연 티켓 판매현황 페이지</center>
+<div align="center">[그림] 공연 티켓 판매현황 페이지</div>
 
 ### 5.5 공연 티켓 사용 페이지  
 티켓이 생성될 때 발급된 QR 코드를 리더기에 인식시켜 티켓을 사용한다.  
 ![](./readme-img/6.png)
-<center>[그림] 공연 티켓 사용 페이지</center>
+<div align="center">[그림] 공연 티켓 사용 페이지</div>
 
 ### 5.6 티켓북 페이지  
 팬들은 사용한 티켓에 대하여 커스텀 꾸미기를 할 수 있다.  
 ![](./readme-img/7.png)
 
-<center>[그림] 티켓북 페이지</center>
+<div align="center">[그림] 티켓북 페이지</div>
 
 티켓북에서 자신이 커스텀한 티켓들을 소장할 수 있다.  
 ![](./readme-img/8.png)  
 
-<center>[그림] 티켓북 페이지</center>
+<div align="center">[그림] 티켓북 페이지</div>
 
 ### 5.7 마이페이지  
 마이페이지에서 자신이 보유한 티켓과 등록한 공연에 대한 정보를 얻을 수 있다.
 ![](./readme-img/9.png)
-<center>[그림] 마이 페이지</center>
+<div align="center">[그림] 마이 페이지</div>
 
 <div id="6"></div>
 
