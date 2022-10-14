@@ -17,17 +17,22 @@ const PosterImgContainer = styled.img`
     transform: scale(1.03);
   }
 `;
+const imgUrl = [
+  "http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg",
+  "https://ticketimage.interpark.com/Play/image/large/22/22008449_p.gif",
+  "https://ticketimage.interpark.com/Play/image/large/22/22009050_p.gif",
+  "https://ticketimage.interpark.com/Play/image/large/22/22012184_p.gif",
+];
 
-const HomeShow = () => {
+const HomeShow = ({ index }) => {
   const handleError = (e) => {
     e.target.src = "images/posterImg1.png";
   };
-
   return (
     <PerformContainer>
-      <Link to={`/Detail/`}>
+      <Link to={`/Show`}>
         <PosterImgContainer
-          src={`http://ticketimage.interpark.com/TCMS4/Main/201903/TicketTodayNew_TicketTodayDrama_5c9237a5-782b-4c0d-8beb-2e70ebe260a0.jpg`}
+          src={imgUrl[index]}
           onError={handleError}
           alt="poster img"
         />

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const MiddleLeft = () => {
   const [pageNum, setPageNum] = useState(1);
-
+  const performanceDetail = useSelector(
+    (state) => state.performance.performanceDetail,
+  );
   const handlePageNum = (page) => {
     setPageNum(page);
   };
@@ -35,6 +38,8 @@ const MiddleLeft = () => {
             예매가능시간: 전일17시(월~토 관람 시)까지/전일 11시(일요일 관람
             시)까지
           </DescriptionDiv>
+
+          <div>{performanceDetail.description}</div>
         </div>
       )}
       {pageNum === 2 && (

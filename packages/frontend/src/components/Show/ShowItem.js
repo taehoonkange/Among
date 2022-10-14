@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import dayjs from "dayjs";
 const PerformContainer = styled.div`
   width: 260px;
 `;
@@ -37,17 +37,24 @@ const handleError = (e) => {
   e.target.src = "images/posterImg1.png";
 };
 
-const ShowItem = ({ idx }) => {
+const ShowItem = ({ data, idx }) => {
   return (
     <PerformContainer>
-      <Link to={`/Show/${idx}`}>
+      <Link to={`/Show/${data.id}`}>
         <PosterImgContainer
-          src={`https://ticketimage.interpark.com/Play/image/large/22/22008692_p.gif`}
+          src={
+            data.Image?.src === undefined
+              ? "http://ticketimage.interpark.com/rz/image/play/goods/poster/22/22012631_p_s.jpg"
+              : `http://localhost:3065/${data.Image?.src}`
+          }
           onError={handleError}
           alt="poster img"
         />
-        <DurationDiv>2022.07.16</DurationDiv>
-        <NameDiv>HIPHOPPLAYA FESTIVAL 2022</NameDiv>
+        <DurationDiv>
+          {dayjs(data.term_start_at).format("YYYY-MM-DD")} {" ~ "}
+          {dayjs(data.term_end_at).format("YYYY-MM-DD")}
+        </DurationDiv>
+        <NameDiv>{data.title}</NameDiv>
       </Link>
     </PerformContainer>
   );

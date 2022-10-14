@@ -8,99 +8,97 @@ import Kdy from "../../images/kdy.jpeg";
 import needImg from "../../images/needImg.png";
 
 import axios from "../../api";
+import {
+  patchSubmitImgAndName,
+  patchtUserProfileImageName,
+  postUserProfileImage,
+} from "../../actions/user";
+import { setDefaultLocale } from "react-datepicker";
 
-const SettingModal = () => {
+const SettingModal = ({ setLoading }) => {
   const userName = useSelector((store) => store.userData.userName);
   const userProfile = useSelector((store) => store.userData.userProfile);
+  // const userProfileName = useSelector(
+  //   (store) => store.userData.userProfileName,
+  // );
   const [img, setImg] = useState("");
-  const [test, setTest] = useState("");
+  const [imgName, setImgName] = useState("");
   const [name, setName] = useState(userName);
-  const dispatcher = useDispatch();
+  const dispatch = useDispatch();
   const onChangeName = (e) => {
-    console.log(e.target.value);
     setName(e.target.value);
   };
 
   const submitImgAndName = useCallback(() => {
-    axios
-      .patch(
-        "/user/profile/nickname",
-        {
-          nickname: name,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res);
-      });
-    console.log(img);
-    axios
-      .patch(
-        "/user/profile/image",
-        {
-          image: userProfile,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res);
-        dispatcher(setUserProfile({ value: test }));
-        setImg("");
-      });
-  }, [name, img, test]);
+    setLoading(true);
+    dispatch(patchSubmitImgAndName({ imgName: imgName, nickname: name })).then(
+      () => {
+        window.location.reload();
+      },
+    );
+  }, [imgName, name]);
 
-  const captureFile = async (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    let file = e.target.files[0];
+  const captureFile = useCallback((e) => {
+    // e.stopPropagation();
+    // e.preventDefault();
+    const file = e.target.files[0];
     setImg(file);
-    const formData = new FormData();
-    formData.append("image", file);
-    await axios({
-      method: "post",
-      url: "/user/image",
-      data: formData,
-      withCredentials: true,
-    })
-      .then((res) => {
-        setTest(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (image) => {
+      imageFormData.append("image", image);
+    });
+    dispatch(postUserProfileImage(imageFormData)).then((state) =>
+      setImgName(state.payload),
+    );
+  }, []);
 
+  // const captureFile = async (e) => {
+  //   // e.stopPropagation();
+  //   // e.preventDefault();
+  //   let file = e.target.files[0];
+  //   setImg(file);
+  //   const formData = new FormData();
+  //   formData.append("image", file);
+  //   await axios({
+  //     method: "post",
+  //     url: "/user/image",
+  //     data: formData,
+  //     withCredentials: true,
+  //   })
+  //     .then((res) => {
+  //       setTest(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
+  const checkImageStatus = useCallback(() => {
+    if (!img) {
+      if (userProfile?.src?.slice(0, 18) === "DDDDDYYYYYKKKKK123") {
+        return window.localStorage.getItem("randomImage");
+      } else {
+        return `http://localhost:3065/${userProfile.src}`;
+      }
+    } else {
+      return URL.createObjectURL(img);
+    }
+  }, [userProfile, img]);
   return (
     <SettingModalLayout>
       <img
         onClick={() => {
-          dispatcher(setOpen({ value: false }));
+          dispatch(setOpen({ value: false }));
           setImg("");
         }}
         className="SettingModalImage"
         alt=""
         src={xbutton}
       ></img>
-      <input
-        id="image"
-        type="file"
-        accept="image/*"
-        onChange={captureFile}
-        hidden
-      />
+      <input id="image" type="file" multiple onChange={captureFile} hidden />
       <label style={{ cursor: "pointer" }} htmlFor="image">
         <img
           className="SettingModalProfile"
           alt=""
-          src={(function () {
-            if (img && userProfile) {
-              return URL.createObjectURL(img);
-            } else if (userProfile && !img) {
-              return `http://localhost:3065/${userProfile}`;
-            } else if (!userProfile && img) {
-              return URL.createObjectURL(img);
-            } else {
-              return Kdy;
-            }
-          })()}
+          src={checkImageStatus()}
         ></img>
       </label>
 
@@ -114,8 +112,8 @@ const SettingModal = () => {
       <div
         onClick={() => {
           submitImgAndName();
-          dispatcher(setUserName({ value: name }));
-          dispatcher(setOpen({ value: false }));
+          dispatch(setUserName({ value: name }));
+          dispatch(setOpen({ value: false }));
         }}
         className="SettingModalButton"
       >
@@ -132,7 +130,7 @@ const SettingModalLayout = styled.div`
   height: 450px;
   background-color: white;
   position: absolute;
-  top: 25%;
+  top: 40%;
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);

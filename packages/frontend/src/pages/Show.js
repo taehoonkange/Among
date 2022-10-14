@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import ShowItem from "../components/Show/ShowItem";
+import ReactPaginate from "react-paginate";
+import "./pagination.css";
+import { getPerformance, getSearchPerformance } from "../actions/performance";
+import ClipLoader from "react-spinners/ClipLoader";
 const TotalWidthSetting = styled.div`
   width: 1400px;
   padding-bottom: 100px;
@@ -40,8 +45,73 @@ const ShowListArea = styled.div`
   margin-top: 20px;
 `;
 
+const ReactPaginateWrapper = styled.div`
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+`;
 const Show = () => {
-  const [showList, SetShowList] = useState([1, 2, 3, 4, 5]);
+  const [loading, setLoading] = useState(true);
+  const [searchTitle, setSearchTitle] = useState("");
+  const onChangeSearchTitle = useCallback((e) => {
+    setSearchTitle(e.target.value);
+  }, []);
+  const dispatch = useDispatch();
+  const performanceData = useSelector((state) => state.performance.performance);
+  const items = [...Array(50).keys()];
+  const [showList, SetShowList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + 9;
+    setCurrentItems(performanceData?.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(performanceData?.length / 9));
+  }, [itemOffset, performanceData]);
+
+  const onKeydown = useCallback(
+    (e) => {
+      if (e.key === "Enter" && e.keyCode === 13) {
+        if (!e.shiftKey) {
+          console.log(searchTitle);
+          e.preventDefault();
+          if (searchTitle?.trim() !== "") {
+            dispatch(getSearchPerformance(searchTitle));
+          }
+        }
+      }
+    },
+    [searchTitle],
+  );
+
+  // Invoke when user click to request another page.
+  const handlePageClick = useCallback(
+    (event) => {
+      const newOffset = (event.selected * 9) % performanceData.length;
+      setItemOffset(newOffset);
+    },
+    [performanceData],
+  );
+
+  useEffect(() => {
+    dispatch(getPerformance());
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
+  if (loading) {
+    return (
+      <Layout2>
+        <ClipLoader color="rgb(95, 60, 250)" />
+      </Layout2>
+    );
+  }
 
   return (
     <TotalWidthSetting>
@@ -62,13 +132,21 @@ const Show = () => {
         <SearchBarCategoryArea>
           <TextField
             id="search"
-            label="제목 또는 판매자"
+            label="공연제목"
             variant="standard"
             sx={{ ml: 5, width: 300 }}
+            value={searchTitle}
+            onChange={onChangeSearchTitle}
+            onKeyDown={onKeydown}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton type="submit" aria-label="search">
+                  <IconButton
+                    aria-label="search"
+                    onClick={() => {
+                      dispatch(getSearchPerformance(searchTitle));
+                    }}
+                  >
                     <SearchIcon style={{ color: "#000000" }} />
                   </IconButton>
                 </InputAdornment>
@@ -78,16 +156,83 @@ const Show = () => {
         </SearchBarCategoryArea>
         <ShowListArea>
           <Grid container spacing={7} rowSpacing={6}>
-            {showList.map((show, idx) => (
-              <Grid item xs={4} key={idx}>
-                <ShowItem idx={idx} />
+            {currentItems?.map((show, idx) => (
+              <Grid style={{ paddingTop: "0px" }} item xs={4} key={idx}>
+                <ShowItem data={show} idx={idx} />
               </Grid>
             ))}
           </Grid>
         </ShowListArea>
       </TotalWrapJustifyCenter>
+      <ReactPaginateWrapper>
+        <ReactPaginateBox
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={0}
+          pageCount={pageCount}
+          previousLabel="<"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel=""
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+          className="hey"
+        />
+      </ReactPaginateWrapper>
     </TotalWidthSetting>
   );
 };
 
 export default Show;
+
+const ReactPaginateBox = styled(ReactPaginate)`
+  display: flex;
+  cursor: pointer;
+  a {
+    width: 100%;
+    color: #777;
+    text-align: center;
+  }
+  & > .page-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4em;
+    background: #eef2f6;
+
+    line-height: 28px;
+    margin: 0 5px;
+    min-width: 28px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  & > .page-item.active {
+    color: white;
+  }
+  & > .active {
+    background-color: #545c65;
+  }
+  & > .active a {
+    color: white;
+  }
+
+  & > a.page-link {
+    width: 100%;
+  }
+`;
+
+const Layout2 = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

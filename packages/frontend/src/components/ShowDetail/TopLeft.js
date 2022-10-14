@@ -1,14 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-
+import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 const TopLeft = () => {
+  const performanceDetail = useSelector(
+    (state) => state.performance.performanceDetail,
+  );
   return (
     <>
-      <TicketTitle>HIPHOPPLAYA FESTIVAL 2022</TicketTitle>
+      <TicketTitle>{performanceDetail.title}</TicketTitle>
       <UnderTitle>
         <PosterArea>
           <Poster
-            src={`https://ticketimage.interpark.com/Play/image/large/22/22008692_p.gif`}
+            src={`http://localhost:3065/${performanceDetail.Image?.src}`}
             alt="poster img"
           ></Poster>
         </PosterArea>
@@ -16,19 +20,23 @@ const TopLeft = () => {
           <ul>
             <li>
               <strong>장소</strong>
-              <div>서울 난지 한강공원</div>
+              <div>{performanceDetail.place}</div>
             </li>
             <li>
               <strong>공연기간</strong>
-              <div>2022.09.17 ~ 2022.09.18</div>
+              <div>
+                {dayjs(performanceDetail.term_start_at).format("YYYY-MM-DD")}{" "}
+                {" ~ "}
+                {dayjs(performanceDetail.term_end_at).format("YYYY-MM-DD")}
+              </div>
             </li>
             <li>
               <strong>공연시간</strong>
-              <div>960분</div>
+              <div>{performanceDetail.time}</div>
             </li>
             <li>
               <strong>관람연령</strong>
-              <div>만 7세이상</div>
+              <div>{performanceDetail.limitedAge}</div>
             </li>
             <li>
               <strong>가격</strong>
@@ -45,7 +53,7 @@ export default TopLeft;
 
 const TicketTitle = styled.h1`
   margin-left: 20px;
-  font-size: 26px;
+  font-size: 30px;
   margin-bottom: 20px;
 `;
 

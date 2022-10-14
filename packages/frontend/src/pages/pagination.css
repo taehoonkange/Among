@@ -1,0 +1,42 @@
+/* ::-webkit-scrollbar {
+  width: 0px;
+}
+::-webkit-scroll-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+} */
+
+.pagination {
+  display: flex;
+  list-style: none;
+  cursor: pointer;
+}
+/* 
+.pagination a {
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid rgb(95, 60, 250);
+  color: rgb(95, 60, 250);
+}
+
+.pagination__link {
+  font-weight: bold;
+}
+
+.pagination__link--active a {
+  color: #fff;
+  background: rgb(95, 60, 250);
+}
+
+.pagination__link--disabled a {
+  color: rgb(198, 197, 202);
+  border: 1px solid rgb(198, 197, 202);
+}
+
+.page-item.active {
+  background-color: red;
+  border-radius: 5px;
+} */

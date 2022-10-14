@@ -1,14 +1,16 @@
 .SliderWrapper {
-  height: 87vh;
+  height: 100vh;
   width: 100vw;
 }
 .textWrapper {
   margin-left: 10%;
   margin-right: 10%;
   margin-top: 10%;
+  animation: slide 1500ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 135px;
 }
 .test {
-  font-size: 50px;
+  font-size: 3rem;
   line-height: 56px;
   font-weight: 700;
 }
@@ -26,11 +28,11 @@
 
 .disc {
   margin-top: 30px;
-  font-size: 26px;
+  font-size: 1.5rem;
 }
 .disc2 {
   margin-top: 10px;
-  font-size: 26px;
+  font-size: 1.5rem;
 }
 
 .linkWrapper {
@@ -40,6 +42,46 @@
 
 .arrowText {
   margin-left: 13px;
-  font-size: 26px;
+  font-size: 1.5rem;
   font-weight: 700;
+}
+
+@keyframes slide {
+  from {
+    margin-top: 20%;
+    opacity: 0;
+  }
+  to {
+    margin-top: 10%;
+    opacity: 1;
+  }
+}
+
+@keyframes leftSlide {
+  from {
+    padding-left: 0%;
+    opacity: 0;
+  }
+  to {
+    padding-left: 12%;
+    opacity: 1;
+  }
+}
+
+@keyframes RightSlide {
+  from {
+    padding-left: 10%;
+  }
+  to {
+    padding-left: 2%;
+  }
+}
+
+@keyframes Oppa {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

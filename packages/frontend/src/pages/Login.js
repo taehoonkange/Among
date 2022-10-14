@@ -13,25 +13,26 @@ const MyPage = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        console.log(accounts[0]);
-        window.localStorage.setItem("isConnect", "true");
+        window.sessionStorage.setItem("isConnect", "true");
         try {
-          const resRegister = await axios.post("/user", {
-            wallet_address: accounts[0],
-          });
-          console.log(resRegister);
+          const resRegister = await axios.post(
+            "/user",
+            {
+              wallet_address: "input101",
+            },
+            { withCredentials: true },
+          );
         } catch (err) {
           console.log(err);
         } finally {
           const resLogin = await axios.post(
             "/user/login",
             {
-              wallet_address: accounts[0],
+              wallet_address: "input101",
               nickname: "dd",
             },
             { withCredentials: true },
           );
-          console.log(resLogin);
         }
       } else {
         // metamask가 설치되어있지 않은 경우 alert
@@ -50,7 +51,7 @@ const MyPage = () => {
 
   return (
     <UnconnectedContainer>
-      <h1 style={{ marginTop: "5%", fontSize: "50px" }}>
+      <h1 style={{ fontSize: "50px" }}>
         아래 버튼을 눌러 지갑을 연결해주세요.
       </h1>
       <LogInButton variant="contained" onClick={onC}>
@@ -72,7 +73,6 @@ const UnconnectedContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   height: 100%;
-  margin-top: 5rem;
 `;
 
 const LogInButton = styled.button`
